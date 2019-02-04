@@ -6,7 +6,11 @@ class Project {
 
 const projects = {
   state: {
-    projects: []
+    projects: [
+      {
+        id: 0
+      }
+    ]
   },
   mutations: {
     addNewProject(state) {

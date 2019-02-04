@@ -9,7 +9,12 @@ class Story {
 
 const stories = {
   state: {
-    stories: []
+    stories: [
+      {
+        id: 0,
+        projectId: 0
+      }
+    ]
   },
   getters: {
     stories: state => state.stories
