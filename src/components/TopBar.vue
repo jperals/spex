@@ -26,9 +26,10 @@
   display: flex;
   flex-direction: row;
   background-color: white;
-  border-bottom: 1px solid #707679;
+  border-bottom: 1px solid #c6c8c9;
   width: 100%;
   height: 64px;
+  overflow: inherit;
 
   .BackIcon {
     width: 24px;
@@ -121,7 +122,7 @@
     visibility: hidden;
     width: 120px;
     margin-left: -32px;
-    background-color: #031b26;
+    background-color: #707679;
     color: #fff;
     font-weight: 200;
     text-align: center;

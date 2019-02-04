@@ -2,11 +2,11 @@ const frames = {
   state: {
     frames: [
       {
-        title: 'Coming home',
+        title: "",
         story: 0
       },
       {
-        title: 'Lights on',
+        title: "",
         story: 0
       }
     ]
@@ -16,17 +16,17 @@ const frames = {
   },
   mutations: {
     removeFrame(state, frame) {
-      const index = state.frames.findIndex(item => item.id)
-      if(index === -1) {
-        console.warn('Frame with id', frame.id, 'not found.')
-        return
+      const index = state.frames.findIndex(item => item.id);
+      if (index === -1) {
+        console.warn("Frame with id", frame.id, "not found.");
+        return;
       }
-      state.frames.splice(index)
+      state.frames.splice(index);
     },
     updateFrames(state, frames) {
-      state.frames = frames
+      state.frames = frames;
     }
   }
-}
+};
 
 export default frames;

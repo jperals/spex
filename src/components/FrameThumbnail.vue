@@ -17,10 +17,13 @@
   display: inline-block;
   width: $frame-thumbnail-width;
   margin-right: 20px;
+  input::placeholder {
+    opacity: 0.7;
+  }
   .picture {
     height: $frame-thumbnail-height;
     width: 100%;
-    border: 2px solid #707679;
+    border: 2px solid #979c9e;
     background-image: url("../assets/icons/noImage.png");
     background-size: 24px;
     background-repeat: no-repeat;
@@ -37,7 +40,7 @@
     margin-top: 8px;
     font-size: 24px;
     font-weight: 400;
-    color: #707679;
+    color: #031b26;
     line-height: 32px;
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="placeholder" @click="addNewFrame">
+  <div class="addNewFrame" @click="addNewFrame">
     <div class="newFrame"></div>
   </div>
 </template>
@@ -7,7 +7,7 @@
 <style scoped lang="scss">
 @import "./frame-thumbnail-size.scss";
 
-.placeholder {
+.addNewFrame {
   display: flex;
   align-items: center;
   width: $frame-thumbnail-width;

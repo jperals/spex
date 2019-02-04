@@ -35,6 +35,11 @@ input {
   line-height: 40px;
 }
 
+input::placeholder,
+textarea::placeholder {
+  opacity: 0.7;
+}
+
 .top {
   margin-left: 422px;
   margin-top: 80px;
