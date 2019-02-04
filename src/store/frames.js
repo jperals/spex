@@ -9,7 +9,16 @@ class Frame {
 
 const frames = {
   state: {
-    frames: []
+    frames: [
+      {
+        title: 'Coming home',
+        story: 0
+      },
+      {
+        title: 'Lights on',
+        story: 0
+      }
+    ]
   },
   getters: {
     frames: state => state.frames

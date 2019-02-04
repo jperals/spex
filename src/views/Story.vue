@@ -6,8 +6,7 @@
         <input v-model="story.title">
         <textarea v-model="story.description"></textarea>
       </div>
-      <div class="frames">
-      </div>
+      <FrameThumbnails :story-id="storyId"></FrameThumbnails>
     </div>
   </div>
 </template>
@@ -18,11 +17,13 @@
 
 <script>
   import TopBar from '@/components/TopBar.vue'
+  import FrameThumbnails from '@/components/FrameThumbnails'
   import store from '@/store'
 
   export default {
     name: 'story',
     components: {
+      FrameThumbnails,
       TopBar
     },
     props: {
@@ -31,9 +32,6 @@
       }
     },
     computed: {
-      frames() {
-        return store.framesFromStory(this.story.id)
-      },
       story() {
         return store.getters.storyById(this.storyId)
       }
