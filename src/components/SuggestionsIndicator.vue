@@ -5,6 +5,23 @@
 </template>
 
 <style>
+  .suggestions-indicator{
+    height: 24px;
+    font-family: TitilliumWeb-SemiBold;
+    font-size: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    color: #56A8D1;
+    letter-spacing: 0.33px;
+    background-color: #EEF6FA;
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: solid;
+    border-radius: 24px;
+    border-width: 2px;
+  }
 
 </style>
 
