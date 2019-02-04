@@ -3,8 +3,8 @@
     <top-bar></top-bar>
     <div class="story" v-if="story">
       <div class="top">
-        <input v-bind="story.title">
-        <textarea v-bind="story.description"></textarea>
+        <input v-model="story.title">
+        <textarea v-model="story.description"></textarea>
       </div>
       <div class="frames">
       </div>
