@@ -71,7 +71,6 @@
         vertical-align: middle;
         margin-top: 16px;
         margin-bottom: 16px;
-        font-family: TitilliumWeb-Regular;
         }
 
     .StoryIcon{
