@@ -131,7 +131,7 @@
         margin-left: -32px;
         background-color: #031B26;
         color: #fff;
-        font-family: TitilliumWeb-Regular; 
+        font-weight: 200;
         text-align: center;
         padding: 5px 0;
         border-radius: 6px;

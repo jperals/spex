@@ -3,40 +3,76 @@
     <top-bar></top-bar>
     <div class="story" v-if="story">
       <div class="top">
-        <input v-model="story.title">
-        <textarea v-model="story.description"></textarea>
+        <input
+          v-model="story.title"
+          placeholder="Give your story a title"
+          onfocus="this.placeholder = ''"
+          onblur="this.placeholder = 'Give your story a title'"
+        >
+        
+        <textarea
+          v-model="story.description"
+          placeholder="Write a short description"
+          onfocus="this.placeholder = ''"
+          onblur="this.placeholder = 'Write a short description'"
+        ></textarea>
       </div>
-      <div class="frames">
-      </div>
+      <div class="frames"></div>
     </div>
   </div>
 </template>
 
-<style>
+<style scoped lang="scss">
+input {
+  font-weight: 800;
+  font-size: 40px;
+  width: 624px;
+  outline: none;
+  color: #031b26;
+  border: none;
+  margin-top: 80px;
+  line-height: 40px;
+}
 
+.top {
+  margin-left: 432px;
+  margin-top: 80px;
+}
+
+textarea {
+  font-weight: 400;
+  font-size: 28px;
+  width: 624px;
+  outline: none;
+  color: #031b26;
+  border: none;
+  margin-top: 8px;
+  line-height: 38px;
+  resize: none;
+}
 </style>
-
+  
 <script>
-  import TopBar from '@/components/TopBar.vue'
-  import store from '@/store'
+import TopBar from "@/components/TopBar.vue";
+import store from "@/store";
 
-  export default {
-    name: 'story',
-    components: {
-      TopBar
+export default {
+  name: "story",
+  components: {
+    TopBar
+  },
+  props: {
+    storyId: {
+      type: String
+    }
+  },
+  computed: {
+    frames() {
+      return store.framesFromStory(this.story.id);
     },
-    props: {
-      storyId: {
-        type: String
-      }
-    },
-    computed: {
-      frames() {
-        return store.framesFromStory(this.story.id)
-      },
-      story() {
-        return store.getters.storyById(this.storyId)
-      }
+    story() {
+      return store.getters.storyById(this.storyId);
     }
   }
+};
 </script>
