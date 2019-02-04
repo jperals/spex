@@ -5,6 +5,7 @@
     <span class="PageTitle">
     Story Title
     </span>
+    <SuggestionsIndicator :number-of-suggestions="numberOfSuggestions"></SuggestionsIndicator>
     <div class="Components"></div>
     <div class="Divider"></div>
     <div class="StoryIcon"></div>
@@ -89,3 +90,23 @@
 
   
 </style>
+
+<script>
+  import SuggestionsIndicator from '@/components/SuggestionsIndicator'
+  export default {
+    name: 'top-bar',
+    components: {SuggestionsIndicator},
+    props: {
+      numberOfSuggestions: {
+        type: Number,
+        default: 0
+      }
+    }
+  }
+</script>
+
+<docs>
+  ```jsx
+  <top-bar :number-of-suggestions="2"></top-bar>
+  ```
+</docs>
