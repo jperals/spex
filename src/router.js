@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import Story from './views/Story.vue'
+import store from '@/store'
 
 Vue.use(Router)
 
@@ -18,6 +20,14 @@ export default new Router({
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+    },
+    {
+      path: '/story/:storyId',
+      name: 'story',
+      component: Story,
+      // See https://router.vuejs.org/guide/essentials/passing-props.html#boolean-mode
+      // > When props is set to true, the route.params will be set as the component props.
+      props: true
     }
   ]
 })

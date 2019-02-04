@@ -12,12 +12,23 @@ const stories = {
     stories: [
       {
         id: 0,
-        projectId: 0
+        projectId: 0,
+        title: 'Home Lighting',
+        description: 'When I come home, I want my home to welcome me with a warm atmosphere.'
       }
     ]
   },
   getters: {
-    stories: state => state.stories
+    framesFromStory: (state, getters) => (story) => {
+      try {
+        return getters.frames.filter(item => item.storyId === story.id)
+      } catch(e) {
+        console.warn(e)
+        return []
+      }
+    },
+    stories: state => state.stories,
+    storyById: (state, getters) => id => getters.stories.find(story => story.id === Number(id))
   },
   mutations: {
     addNewStory(state, project) {
