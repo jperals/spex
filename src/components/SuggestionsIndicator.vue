@@ -7,7 +7,6 @@
 <style>
   .suggestions-indicator{
     height: 24px;
-    font-family: TitilliumWeb-SemiBold;
     font-size: 16px;
     padding-left: 16px;
     padding-right: 16px;
