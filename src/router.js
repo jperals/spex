@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Story from './views/Story.vue'
-import store from '@/store'
 
 Vue.use(Router)
 
