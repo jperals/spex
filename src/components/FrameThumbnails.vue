@@ -24,8 +24,8 @@
     },
     props: {
       storyId: {
-        type: Number,
-        default: 0
+        type: String,
+        default: '0'
       }
     },
     computed: {
