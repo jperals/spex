@@ -1,43 +1,65 @@
 <template>
   <div class="frame-thumbnail">
     <div class="picture"></div>
-    <input class="title" v-model="frame.title" placeholder="Point title">
+    <input
+      class="title"
+      v-model="frame.title"
+      placeholder="Frame Title"
+      onfocus="this.placeholder = ''"
+      onblur="this.placeholder = 'Frame Title'"
+    >
   </div>
 </template>
 
 <style scoped lang="scss">
-  @import './frame-thumbnail-size';
-  .frame-thumbnail {
-    display: inline-block;
-    width: $frame-thumbnail-width;
-    margin-right: 20px;
-    .picture {
-      height: $frame-thumbnail-height;
-      width: 100%;
-      border: 1px solid lightgray;
-      box-sizing: border-box;
-    }
-    .title {
-      display: block;
-      width: 100%;
-      padding: 0;
-      border: 0;
-    }
+@import "./frame-thumbnail-size";
+.frame-thumbnail {
+  display: inline-block;
+  width: $frame-thumbnail-width;
+  margin-right: 20px;
+  .picture {
+    height: $frame-thumbnail-height;
+    width: 100%;
+    border: 2px solid #707679;
+    background-image: url("../assets/icons/noImage.png");
+    background-size: 24px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #f2f6f7;
+    border-radius: 2px;
+    box-sizing: border-box;
   }
+  .title {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: none;
+    margin-top: 8px;
+    font-size: 24px;
+    font-weight: 400;
+    color: #707679;
+    line-height: 32px;
+  }
+}
+
+textarea:focus,
+input:focus {
+  outline: none;
+}
 </style>
 
 <script>
-  export default {
-    name: 'frame-thumbnail',
-    props: {
-      frame: {
-        type: Object,
-        default: () => {
-          return {
-            title: 'Frame title'
-          }
-        }
+export default {
+  name: "frame-thumbnail",
+  props: {
+    frame: {
+      type: Object,
+      default: () => {
+        return {
+          title: "Frame title"
+        };
       }
     }
   }
+};
 </script>
