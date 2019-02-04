@@ -9,7 +9,7 @@
           onfocus="this.placeholder = ''"
           onblur="this.placeholder = 'Give your story a title'"
         >
-
+        
         <textarea
           v-model="story.description"
           placeholder="Write a short description"
@@ -17,7 +17,9 @@
           onblur="this.placeholder = 'Write a short description'"
         ></textarea>
       </div>
-      <FrameThumbnails :story-id="storyId"></FrameThumbnails>
+      <div class="thumbnails">
+        <FrameThumbnails :story-id="storyId"></FrameThumbnails>
+      </div>
     </div>
   </div>
 </template>
@@ -30,12 +32,11 @@ input {
   outline: none;
   color: #031b26;
   border: none;
-  margin-top: 80px;
   line-height: 40px;
 }
 
 .top {
-  margin-left: 432px;
+  margin-left: 422px;
   margin-top: 80px;
 }
 
@@ -50,28 +51,33 @@ textarea {
   line-height: 38px;
   resize: none;
 }
+
+.thumbnails {
+  margin-left: 218px;
+  margin-top: 32px;
+}
 </style>
   
 <script>
-  import TopBar from '@/components/TopBar.vue'
-  import FrameThumbnails from '@/components/FrameThumbnails'
-  import store from '@/store'
+import TopBar from "@/components/TopBar.vue";
+import FrameThumbnails from "@/components/FrameThumbnails";
+import store from "@/store";
 
-  export default {
-    name: 'story',
-    components: {
-      FrameThumbnails,
-      TopBar
-    },
-    props: {
-      storyId: {
-        type: String
-      }
-    },
-    computed: {
-      story() {
-        return store.getters.storyById(this.storyId)
-      }
+export default {
+  name: "story",
+  components: {
+    FrameThumbnails,
+    TopBar
+  },
+  props: {
+    storyId: {
+      type: String
+    }
+  },
+  computed: {
+    story() {
+      return store.getters.storyById(this.storyId);
     }
   }
+};
 </script>
