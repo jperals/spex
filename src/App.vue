@@ -5,9 +5,14 @@
 </template>
 
 <style lang="scss">
-#app {
-  font-family: Titillium Web;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  body {
+    margin: 0;
+  }
+
+  #app {
+    font-family: Titillium Web;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
 </style>
