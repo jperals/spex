@@ -19,12 +19,12 @@ module.exports = {
         'font-family': 'Titillium Web'
       }
     }
-    // },
-    // theme: {
-    //   fontFamily: {
-    //     base: 'Titillium Web'
-    //   }
   }
+  // },
+  // theme: {
+  //   fontFamily: {
+  //     base: 'Titillium Web'
+  //   }
   // sections: [
   //   {
   //     name: 'First Section',
