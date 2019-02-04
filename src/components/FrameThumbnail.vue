@@ -6,13 +6,16 @@
 </template>
 
 <style scoped lang="scss">
+  @import './frame-thumbnail-size';
   .frame-thumbnail {
     display: inline-block;
-    width: 300px;
+    width: $frame-thumbnail-width;
+    margin-right: 20px;
     .picture {
-      height: 200px;
+      height: $frame-thumbnail-height;
       width: 100%;
       border: 1px solid lightgray;
+      box-sizing: border-box;
     }
     .title {
       display: block;

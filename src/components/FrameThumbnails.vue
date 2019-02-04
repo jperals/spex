@@ -1,20 +1,26 @@
 <template>
   <div class="frames">
-    <FrameThumbnail class="frame" v-for="frame in frames" :key="frame.id" :frame="frame"></FrameThumbnail>
+    <FrameThumbnail v-for="frame in frames" :key="frame.id" :frame="frame"></FrameThumbnail>
+    <FrameThumbnailPlaceholder :story="story"></FrameThumbnailPlaceholder>
   </div>
 </template>
 
-<style>
-
+<style scoped>
+  .frames {
+    display: flex;
+    flex-direction: row;
+  }
 </style>
 
 <script>
   import FrameThumbnail from '@/components/FrameThumbnail'
+  import FrameThumbnailPlaceholder from '@/components/FrameThumbnailPlaceholder'
   import store from '@/store'
   export default {
     name: 'frame-thumbnails',
     components: {
-      FrameThumbnail
+      FrameThumbnail,
+      FrameThumbnailPlaceholder
     },
     props: {
       storyId: {
