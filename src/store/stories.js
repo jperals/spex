@@ -1,3 +1,5 @@
+import Frame from './Frame'
+
 class Story {
   constructor(project) {
     this.id = stories.state.stories.length
@@ -14,14 +16,24 @@ const stories = {
         id: 0,
         projectId: 0,
         title: 'Home Lighting',
-        description: 'When I come home, I want my home to welcome me with a warm atmosphere.'
+        description: 'When I come home, I want my home to welcome me with a warm atmosphere.',
+        frames: [
+          {
+            title: 'Coming home',
+            story: 0
+          },
+          {
+            title: 'Lights on',
+            story: 0
+          }
+        ]
       }
     ]
   },
   getters: {
-    framesFromStory: (state, getters) => (story) => {
+    framesFromStory: () => (story) => {
       try {
-        return getters.frames.filter(item => item.storyId === story.id)
+        return story.frames
       } catch(e) {
         console.warn(e)
         return []
@@ -31,8 +43,15 @@ const stories = {
     storyById: (state, getters) => id => getters.stories.find(story => story.id === Number(id))
   },
   mutations: {
+    addFrame(state, story, frame) {
+      story.frames.push(frame)
+    },
+    addNewFrame(state, story) {
+      console.log(story)
+      story.frames.push(new Frame(story))
+    },
     addNewStory(state, project) {
-      state.projects.push(new Story(project))
+      state.stories.push(new Story(project))
     },
     removeStory(state, story) {
       const index = state.stories.findIndex(item => item.id === story.id)

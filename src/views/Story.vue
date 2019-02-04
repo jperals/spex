@@ -18,7 +18,7 @@
         ></textarea>
       </div>
       <div class="thumbnails">
-        <FrameThumbnails :story-id="storyId"></FrameThumbnails>
+        <FrameThumbnails :story-id="storyId" :frames="frames"></FrameThumbnails>
       </div>
     </div>
   </div>
@@ -75,6 +75,9 @@ export default {
     }
   },
   computed: {
+    frames() {
+      return store.getters.framesFromStory(this.story)
+    },
     story() {
       return store.getters.storyById(this.storyId);
     }

@@ -23,15 +23,15 @@
       FrameThumbnailPlaceholder
     },
     props: {
+      frames: {
+        type: Array
+      },
       storyId: {
         type: String,
         default: '0'
       }
     },
     computed: {
-      frames() {
-        return store.getters.framesFromStory(this.story.id)
-      },
       story() {
         return store.getters.storyById(this.storyId)
       }
