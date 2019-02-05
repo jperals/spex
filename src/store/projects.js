@@ -1,6 +1,6 @@
 class Project {
   constructor() {
-    this.id = projects.state.projects.length
+    this.id = projects.state.projects.length.toString()
   }
 }
 

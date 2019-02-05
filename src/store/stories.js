@@ -1,54 +1,36 @@
-import Frame from './Frame'
-
-class Story {
-  constructor(project) {
-    this.id = stories.state.stories.length
-    if(project) {
-      this.projectId = project.id
+export class Story {
+  constructor(props) {
+    this.id = stories.state.stories.length.toString()
+    if(props && props.project) {
+      this.projectId = props.project.id
     }
+    this.frames = []
+    Object.assign(this, props)
   }
 }
 
 const stories = {
   state: {
-    stories: [
-      {
-        id: 0,
-        projectId: 0,
-        title: 'Home Lighting',
-        description: 'When I come home, I want my home to welcome me with a warm atmosphere.',
-        frames: [
-          {
-            title: 'Coming home',
-            story: 0
-          },
-          {
-            title: 'Lights on',
-            story: 0
-          }
-        ]
-      }
-    ]
+    stories: []
   },
   getters: {
-    framesFromStory: () => (story) => {
+    framesFromStory: (state, getters) => (story) => {
       try {
-        return story.frames
+        return story.frames.map(frameId => getters.frameById(frameId))
       } catch(e) {
         console.warn(e)
         return []
       }
     },
     stories: state => state.stories,
-    storyById: (state, getters) => id => getters.stories.find(story => story.id === Number(id))
+    storyById: (state, getters) => id => getters.stories.find(story => story.id === id)
   },
   mutations: {
-    addFrame(state, story, frame) {
-      story.frames.push(frame)
+    addFrame(state, { story, frame }) {
+      story.frames.push(frame.id)
     },
-    addNewFrame(state, story) {
-      console.log(story)
-      story.frames.push(new Frame(story))
+    addStory(state, story) {
+      state.stories.push(story)
     },
     addNewStory(state, project) {
       state.stories.push(new Story(project))

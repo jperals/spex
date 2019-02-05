@@ -1,20 +1,17 @@
+import Frame from "./Frame";
+
 const frames = {
   state: {
-    frames: [
-      {
-        title: "",
-        story: 0
-      },
-      {
-        title: "",
-        story: 0
-      }
-    ]
+    frames: []
   },
   getters: {
+    frameById: state => id => state.frames.find(frame => frame.id === id),
     frames: state => state.frames
   },
   mutations: {
+    addFrame(state, {frame}) {
+      state.frames.push(frame)
+    },
     removeFrame(state, frame) {
       const index = state.frames.findIndex(item => item.id);
       if (index === -1) {
@@ -25,6 +22,12 @@ const frames = {
     },
     updateFrames(state, frames) {
       state.frames = frames;
+    }
+  },
+  actions: {
+    addNewFrame(context, story) {
+      const frame = new Frame({story})
+      context.commit('addFrame', {story, frame})
     }
   }
 };

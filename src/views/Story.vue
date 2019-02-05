@@ -53,7 +53,7 @@ textarea {
   margin-top: 48px;
 }
 </style>
-  
+
 <script>
 import TopBar from "@/components/TopBar.vue";
 import FrameThumbnails from "@/components/FrameThumbnails";

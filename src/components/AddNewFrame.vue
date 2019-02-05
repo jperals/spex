@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     addNewFrame() {
-      store.commit("addNewFrame", this.story);
+      store.dispatch("addNewFrame", this.story);
     }
   }
 };
