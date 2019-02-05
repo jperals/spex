@@ -118,7 +118,6 @@ textarea {
       }
     },
     mounted() {
-      this.updateImageUrl(this.frame.image)
       const dragAndDropArea = this.$refs.dragAndDropArea
       if (!dragAndDropArea) {
         console.warn('Drag and drop area not found')
@@ -137,11 +136,11 @@ textarea {
         this.handleFiles(files);
       },
       handleFile(file) {
-        store.commit('addImage', {
+        store.dispatch('addImage', {
           frame: this.frame,
-          image: file
+          imageFile: file
         })
-        this.updateImageUrl(file)
+          .then(this.updateImageUrl)
       },
       handleFiles(files) {
         this.handleFile(files[0])
@@ -149,23 +148,16 @@ textarea {
       handleFileSelect(event) {
         this.handleFiles(event.target.files);
       },
-      updateImageUrl(file) {
-        if(file) {
-          const reader = new FileReader()
-          reader.onload = (e) => {
-            this.imageUrl = e.target.result
-          }
-          reader.readAsDataURL(file)
-        } else {
-          this.imageUrl = null
-        }
+      updateImageUrl() {
+        this.imageUrl = this.frame.imageUrl
       }
     },
     watch: {
-      frame(frame) {
-        if(frame) {
-          this.updateImageUrl(frame.image)
-        }
+      frame() {
+        this.updateImageUrl()
+      },
+      '$route.params.frameId'() {
+        this.updateImageUrl()
       }
     }
   }

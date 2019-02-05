@@ -13,6 +13,6 @@ export default class Frame {
       console.warn('File is not an image')
       return
     }
-    this.image = file
+    this.imageFile = file
   }
 }

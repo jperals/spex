@@ -13,8 +13,8 @@ const frames = {
     addFrame(state, {frame}) {
       state.frames.push(frame)
     },
-    addImage(state, {frame, image}) {
-      frame.addImage(image)
+    addImage(state, {frame, imageFile}) {
+      frame.addImage(imageFile)
     },
     removeFrame(state, frame) {
       const index = state.frames.findIndex(item => item.id);
@@ -24,6 +24,9 @@ const frames = {
       }
       state.frames.splice(index);
     },
+    setImageUrl(state, {frame, imageUrl}) {
+      frame.imageUrl = imageUrl
+    },
     updateFrames(state, frames) {
       state.frames = frames;
     }
@@ -32,6 +35,18 @@ const frames = {
     addNewFrame(context, story) {
       const frame = new Frame({story})
       context.commit('addFrame', {story, frame})
+    },
+    addImage(context, {frame, imageFile}) {
+      context.commit('addImage', {frame, imageFile})
+      const reader = new FileReader()
+      return new Promise((resolve, reject) => {
+        reader.onload = (e) => {
+          const imageUrl = e.target.result
+          context.commit('setImageUrl', {frame, imageUrl})
+          resolve(imageUrl)
+        }
+        reader.readAsDataURL(imageFile)
+      })
     }
   }
 };
