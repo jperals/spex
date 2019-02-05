@@ -8,7 +8,11 @@ export default class Frame {
     }
     Object.assign(this, props)
   }
-  addImage(image) {
-    this.image = image
+  addImage(file) {
+    if(!(file.type.startsWith('image/'))) {
+      console.warn('File is not an image')
+      return
+    }
+    this.image = file
   }
 }

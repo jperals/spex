@@ -3,8 +3,8 @@
     <top-bar :story="story"></top-bar>
     <div class="top" v-if="frame">
       <div class="picture-frame" ref="dragAndDropArea">
-        <div v-if="frame.imageUrl">
-          <img src="frame.imageUrl">
+        <div v-if="imageUrl">
+          <img ref="frameImage" :src="imageUrl">
         </div>
         <div v-else>
           <input type="file" class="picture-input" @change="handleFileSelect" ref="fileInput">
@@ -28,6 +28,11 @@
 
   export default {
     name: 'frame',
+    data() {
+      return {
+        imageUrl: null
+      }
+    },
     props: {
       frameId: {
         type: String
@@ -49,6 +54,7 @@
       }
     },
     mounted() {
+      this.updateImageUrl(this.frame.image)
       const dragAndDropArea = this.$refs.dragAndDropArea
       if (!dragAndDropArea) {
         console.warn('Drag and drop area not found')
@@ -66,11 +72,36 @@
         const files = dt.files;
         this.handleFiles(files);
       },
+      handleFile(file) {
+        store.commit('addImage', {
+          frame: this.frame,
+          image: file
+        })
+        this.updateImageUrl(file)
+      },
       handleFiles(files) {
-        console.log(files)
+        this.handleFile(files[0])
       },
       handleFileSelect(event) {
         this.handleFiles(event.target.files);
+      },
+      updateImageUrl(file) {
+        if(file) {
+          const reader = new FileReader()
+          reader.onload = (e) => {
+            this.imageUrl = e.target.result
+          }
+          reader.readAsDataURL(file)
+        } else {
+          this.imageUrl = null
+        }
+      }
+    },
+    watch: {
+      frame(frame) {
+        if(frame) {
+          this.updateImageUrl(frame.image)
+        }
       }
     }
   }
