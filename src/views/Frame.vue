@@ -93,7 +93,8 @@ textarea {
     name: 'frame',
     data() {
       return {
-        imageUrl: null
+        imageUrl: null,
+        changeTrack: 1
       }
     },
     props: {
@@ -108,16 +109,17 @@ textarea {
     },
     computed: {
       frame() {
-        return store.getters.frameById(this.frameId)
+        return this.changeTrack && store.getters.frameById(this.frameId)
       },
       story() {
         return store.getters.storyFromFrame(this.frame)
       },
       storyFrames() {
-        return store.getters.framesFromSameStory(this.frame)
+        return this.changeTrack && store.getters.framesFromSameStory(this.frame)
       }
     },
     mounted() {
+      this.updateImageUrl()
       const dragAndDropArea = this.$refs.dragAndDropArea
       if (!dragAndDropArea) {
         console.warn('Drag and drop area not found')
@@ -149,13 +151,11 @@ textarea {
         this.handleFiles(event.target.files);
       },
       updateImageUrl() {
+        this.changeTrack += 1
         this.imageUrl = this.frame.imageUrl
       }
     },
     watch: {
-      frame() {
-        this.updateImageUrl()
-      },
       '$route.params.frameId'() {
         this.updateImageUrl()
       }
