@@ -1,5 +1,5 @@
 <template>
-  <img ref="frameImage" :src="imageUrl">
+  <img :src="imageUrl">
 </template>
 
 <style lang="scss" scoped>
