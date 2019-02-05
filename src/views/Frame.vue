@@ -3,13 +3,11 @@
     <top-bar :story="story"></top-bar>
     <div class="top" v-if="frame">
       <div class="picture-frame image" ref="dragAndDropArea">
-        <FrameImage :image-url="imageUrl" v-if="imageUrl"></FrameImage>
-        <div v-else>
-          <input type="file" class="picture-input" @change="handleFileSelect" ref="fileInput">
-        </div>
+        <FrameImage :image-url="imageUrl"></FrameImage>
+        <input v-if="!imageUrl" type="file" class="picture-input" @change="handleFileSelect" ref="fileInput">
       </div>
       <div class="text">
-        <input v-model="frame.title" placeholder="Frame Title">
+        <input class="title" v-model="frame.title" placeholder="Frame Title">
         <textarea
             v-model="frame.description"
             placeholder="Describe what happens in this frame"
@@ -22,7 +20,7 @@
 </template>
 
 <style scoped lang="scss">
-input {
+.title {
   font-weight: 800;
   font-size: 40px;
   width: 624px;
@@ -35,7 +33,6 @@ input {
 .image {
   height: 333px;
   width: 600px;
-  border: 2px solid #979c9e;
   background-image: url("../assets/icons/noImage.png");
   background-size: 24px;
   background-repeat: no-repeat;
@@ -45,6 +42,17 @@ input {
   box-sizing: border-box;
   margin: auto;
   margin-top: 48px;
+  position: relative;
+}
+
+.picture-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  width: 100%;
 }
 
 .text {
