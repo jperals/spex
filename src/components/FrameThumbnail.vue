@@ -1,6 +1,8 @@
 <template>
   <div class="frame-thumbnail">
-    <div class="picture"></div>
+    <router-link :to="'/frame/' + frame.id">
+      <div class="picture"></div>
+    </router-link>
     <textarea class="title" v-model="frame.title" placeholder="Frame Title" rows="2" maxlength="32"></textarea>
   </div>
 </template>
@@ -45,24 +47,24 @@
   &:focus-within .picture {
     border-color: #56a8d1;
   }
-}
 
-textarea:focus,
-input:focus {
-  outline: none;
+  textarea:focus,
+  input:focus {
+    outline: none;
+  }
 }
 </style>
 
 <script>
-export default {
-  name: "frame-thumbnail",
-  props: {
-    frame: {
-      type: Object,
-      default: () => {
-        return {};
+  export default {
+    name: "frame-thumbnail",
+    props: {
+      frame: {
+        type: Object,
+        default: () => {
+          return {};
+        }
       }
     }
-  }
-};
+  };
 </script>

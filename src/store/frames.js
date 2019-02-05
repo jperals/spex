@@ -6,7 +6,8 @@ const frames = {
   },
   getters: {
     frameById: state => id => state.frames.find(frame => frame.id === id),
-    frames: state => state.frames
+    frames: state => state.frames,
+    framesFromSameStory: state => ourFrame => state.frames.filter(anotherFrame => anotherFrame.storyId === ourFrame.storyId)
   },
   mutations: {
     addFrame(state, {frame}) {

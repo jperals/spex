@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Frame from './views/Frame.vue'
 import Home from './views/Home.vue'
 import Story from './views/Story.vue'
 
@@ -26,6 +27,12 @@ export default new Router({
       component: Story,
       // See https://router.vuejs.org/guide/essentials/passing-props.html#boolean-mode
       // > When props is set to true, the route.params will be set as the component props.
+      props: true
+    },
+    {
+      path: '/frame/:frameId',
+      name: 'frame',
+      component: Frame,
       props: true
     }
   ]
