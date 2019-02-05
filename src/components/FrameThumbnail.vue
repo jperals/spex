@@ -1,7 +1,7 @@
 <template>
   <div class="frame-thumbnail">
     <router-link :to="'/frame/' + frame.id">
-      <div class="picture"></div>
+      <frame-image class="picture" :imageUrl="frame.imageUrl"></frame-image>
     </router-link>
     <textarea class="title" v-model="frame.title" placeholder="Frame Title" rows="2" maxlength="32"></textarea>
   </div>
@@ -19,13 +19,6 @@
   .picture {
     height: $frame-thumbnail-height;
     width: 100%;
-    border: 2px solid #979c9e;
-    background-image: url("../assets/icons/noImage.png");
-    background-size: 24px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: #f2f6f7;
-    border-radius: 2px;
     box-sizing: border-box;
   }
   .title {
@@ -56,6 +49,7 @@
 </style>
 
 <script>
+import FrameImage from '@/components/FrameImage.vue'
 export default {
   name: "frame-thumbnail",
   props: {
@@ -65,6 +59,9 @@ export default {
         return {};
       }
     }
+  },
+  components: {
+    FrameImage
   }
 };
 </script>

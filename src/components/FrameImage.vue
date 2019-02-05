@@ -1,5 +1,5 @@
 <template>
-  <div class="frame-image" :style="backgroundImageStyle"></div>
+  <div class="frame-image" :class="{empty: !imageUrl}" :style="backgroundImageStyle"></div>
 </template>
 
 <style lang="scss" scoped>
@@ -7,6 +7,14 @@
     background-size: cover;
     background-position: center;
     height: 100%;
+    border: 2px solid #979c9e;
+    &.empty {
+      background-image: url("../assets/icons/noImage.png");
+      background-size: 24px;
+      background-repeat: no-repeat;
+      background-color: #f2f6f7;
+      border-radius: 2px;
+    }
   }
 </style>
 
@@ -20,6 +28,9 @@
     },
     computed: {
       backgroundImageStyle() {
+        if(!(this.imageUrl)) {
+          return {}
+        }
         return {
           'background-image': 'url(' + this.imageUrl + ')'
         }
