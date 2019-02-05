@@ -13,6 +13,9 @@ const frames = {
     addFrame(state, {frame}) {
       state.frames.push(frame)
     },
+    addImage(state, {frame, image}) {
+      frame.addImage(image)
+    },
     removeFrame(state, frame) {
       const index = state.frames.findIndex(item => item.id);
       if (index === -1) {

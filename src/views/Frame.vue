@@ -1,8 +1,15 @@
 <template>
-  <div class="view frame-view">
+  <div class="view frame-view" v-if="frame">
     <top-bar :story="story"></top-bar>
     <div class="top" v-if="frame">
-      <div class="picture-frame"></div>
+      <div class="picture-frame" ref="dragAndDropArea">
+        <div v-if="frame.imageUrl">
+          <img src="frame.imageUrl">
+        </div>
+        <div v-else>
+          <input type="file" class="picture-input" @change="handleFileSelect" ref="fileInput">
+        </div>
+      </div>
       <input v-model="frame.title">
       <textarea v-model="frame.description"></textarea>
     </div>
@@ -18,6 +25,7 @@
   import store from '@/store.js'
   import FrameSelector from '@/components/FrameSelector.vue'
   import TopBar from "@/components/TopBar.vue";
+
   export default {
     name: 'frame',
     props: {
@@ -39,6 +47,42 @@
       storyFrames() {
         return store.getters.framesFromSameStory(this.frame)
       }
+    },
+    mounted() {
+      const dragAndDropArea = this.$refs.dragAndDropArea
+      if (!dragAndDropArea) {
+        console.warn('Drag and drop area not found')
+        return
+      }
+      dragAndDropArea.addEventListener('dragenter', dragenter, false)
+      dragAndDropArea.addEventListener('dragover', dragover, false)
+      dragAndDropArea.addEventListener('drop', this.drop, false)
+    },
+    methods: {
+      drop(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        const dt = event.dataTransfer;
+        const files = dt.files;
+        this.handleFiles(files);
+      },
+      handleFiles(files) {
+        console.log(files)
+      },
+      handleFileSelect(event) {
+        this.handleFiles(event.target.files);
+      }
     }
   }
+
+  function dragenter(e) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
+  function dragover(e) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
 </script>
+

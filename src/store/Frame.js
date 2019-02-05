@@ -8,4 +8,7 @@ export default class Frame {
     }
     Object.assign(this, props)
   }
+  addImage(image) {
+    this.image = image
+  }
 }
