@@ -4,7 +4,11 @@
     <div class="story" v-if="story">
       <div class="top">
         <input v-model="story.title" placeholder="Give your story a title">
-        <textarea v-model="story.description" placeholder="Write a short description"></textarea>
+        <textarea
+          v-model="story.description"
+          placeholder="Write a short description"
+          maxlength="95"
+        ></textarea>
       </div>
       <div class="thumbnails">
         <FrameThumbnails :story-id="storyId" :frames="frames"></FrameThumbnails>
@@ -22,6 +26,7 @@ input {
   color: #031b26;
   border: none;
   line-height: 40px;
+  text-overflow: ellipsis;
 }
 
 input::placeholder,
@@ -47,6 +52,7 @@ textarea {
   line-height: 38px;
   resize: none;
   position: relative;
+  overflow: hidden;
 }
 
 .thumbnails {

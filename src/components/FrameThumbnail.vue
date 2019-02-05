@@ -3,7 +3,7 @@
     <router-link :to="'/frame/' + frame.id">
       <frame-image class="picture" :imageUrl="frame.imageUrl"></frame-image>
     </router-link>
-    <textarea class="title" v-model="frame.title" placeholder="Frame Title" rows="2" maxlength="32"></textarea>
+    <textarea class="title" v-model="frame.title" placeholder="Frame Title" rows="2" maxlength="27"></textarea>
   </div>
 </template>
 
@@ -35,6 +35,7 @@
     line-height: 32px;
     height: 64px;
     max-width: 180px;
+    /* overflow: hidden; */
   }
   &:hover .picture,
   &:focus-within .picture {
@@ -44,6 +45,7 @@
   textarea:focus,
   input:focus {
     outline: none;
+    text-overflow: ellipsis;
   }
 }
 </style>

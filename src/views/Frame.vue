@@ -12,8 +12,9 @@
             v-model="frame.description"
             placeholder="Describe what happens in this frame"
             rows="4"
+            maxlength="295"
         ></textarea>
-    </div>
+      </div>
     </div>
     <frame-selector :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
   </div>
@@ -28,9 +29,10 @@
   color: #031b26;
   border: none;
   line-height: 40px;
+  text-overflow: ellipsis;
 }
 
-.image {
+.picture-frame {
   height: 333px;
   width: 600px;
   background-image: url("../assets/icons/noImage.png");
@@ -72,6 +74,8 @@ textarea {
   line-height: 28px;
   resize: none;
   position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .frame-selector {
@@ -92,92 +96,92 @@ textarea {
 </style>
 
 <script>
-  import store from '@/store.js'
-  import FrameImage from '@/components/FrameImage.vue'
-  import FrameSelector from '@/components/FrameSelector.vue'
-  import TopBar from "@/components/TopBar.vue";
+import store from '@/store.js'
+import FrameImage from '@/components/FrameImage.vue'
+import FrameSelector from '@/components/FrameSelector.vue'
+import TopBar from "@/components/TopBar.vue";
 
-  export default {
-    name: 'frame',
-    data() {
-      return {
-        imageUrl: null,
-        changeTrack: 1
-      }
+export default {
+  name: 'frame',
+  data() {
+    return {
+      imageUrl: null,
+      changeTrack: 1
+    }
+  },
+  props: {
+    frameId: {
+      type: String
+    }
+  },
+  components: {
+    FrameImage,
+    FrameSelector,
+    TopBar
+  },
+  computed: {
+    frame() {
+      return this.changeTrack && store.getters.frameById(this.frameId)
     },
-    props: {
-      frameId: {
-        type: String
-      }
+    story() {
+      return store.getters.storyFromFrame(this.frame)
     },
-    components: {
-      FrameImage,
-      FrameSelector,
-      TopBar
+    storyFrames() {
+      return this.changeTrack && store.getters.framesFromSameStory(this.frame)
+    }
+  },
+  mounted() {
+    this.updateImageUrl()
+    const dragAndDropArea = this.$refs.dragAndDropArea
+    if (!dragAndDropArea) {
+      console.warn('Drag and drop area not found')
+      return
+    }
+    dragAndDropArea.addEventListener('dragenter', dragenter, false)
+    dragAndDropArea.addEventListener('dragover', dragover, false)
+    dragAndDropArea.addEventListener('drop', this.drop, false)
+  },
+  methods: {
+    drop(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      const dt = event.dataTransfer;
+      const files = dt.files;
+      this.handleFiles(files);
     },
-    computed: {
-      frame() {
-        return this.changeTrack && store.getters.frameById(this.frameId)
-      },
-      story() {
-        return store.getters.storyFromFrame(this.frame)
-      },
-      storyFrames() {
-        return this.changeTrack && store.getters.framesFromSameStory(this.frame)
-      }
+    handleFile(file) {
+      store.dispatch('addImage', {
+        frame: this.frame,
+        imageFile: file
+      })
+        .then(this.updateImageUrl)
     },
-    mounted() {
+    handleFiles(files) {
+      this.handleFile(files[0])
+    },
+    handleFileSelect(event) {
+      this.handleFiles(event.target.files);
+    },
+    updateImageUrl() {
+      this.changeTrack += 1
+      this.imageUrl = this.frame.imageUrl
+    }
+  },
+  watch: {
+    '$route.params.frameId'() {
       this.updateImageUrl()
-      const dragAndDropArea = this.$refs.dragAndDropArea
-      if (!dragAndDropArea) {
-        console.warn('Drag and drop area not found')
-        return
-      }
-      dragAndDropArea.addEventListener('dragenter', dragenter, false)
-      dragAndDropArea.addEventListener('dragover', dragover, false)
-      dragAndDropArea.addEventListener('drop', this.drop, false)
-    },
-    methods: {
-      drop(event) {
-        event.stopPropagation();
-        event.preventDefault();
-        const dt = event.dataTransfer;
-        const files = dt.files;
-        this.handleFiles(files);
-      },
-      handleFile(file) {
-        store.dispatch('addImage', {
-          frame: this.frame,
-          imageFile: file
-        })
-          .then(this.updateImageUrl)
-      },
-      handleFiles(files) {
-        this.handleFile(files[0])
-      },
-      handleFileSelect(event) {
-        this.handleFiles(event.target.files);
-      },
-      updateImageUrl() {
-        this.changeTrack += 1
-        this.imageUrl = this.frame.imageUrl
-      }
-    },
-    watch: {
-      '$route.params.frameId'() {
-        this.updateImageUrl()
-      }
     }
   }
+}
 
-  function dragenter(e) {
-    e.stopPropagation();
-    e.preventDefault();
-  }
+function dragenter(e) {
+  e.stopPropagation();
+  e.preventDefault();
+}
 
-  function dragover(e) {
-    e.stopPropagation();
-    e.preventDefault();
-  }
+function dragover(e) {
+  e.stopPropagation();
+  e.preventDefault();
+}
 </script>
 
