@@ -39,7 +39,7 @@ const frames = {
     addImage(context, {frame, imageFile}) {
       context.commit('addImage', {frame, imageFile})
       const reader = new FileReader()
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         reader.onload = (e) => {
           const imageUrl = e.target.result
           context.commit('setImageUrl', {frame, imageUrl})
