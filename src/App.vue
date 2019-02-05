@@ -11,6 +11,10 @@ body {
   overflow-y: auto;
 }
 
+a {
+  text-decoration: none;
+}
+
 #app {
   font-family: Titillium Web;
   -webkit-font-smoothing: antialiased;

@@ -31,9 +31,10 @@
   }
   .frame-title {
     font-weight: 800;
-    font-size: 16pt;
+    font-size: 14pt;
     margin-left: 6px;
     margin-top: 6px;
+    max-width: 100px;
     line-height: 28px;
     color: white;
     display: none;
@@ -42,7 +43,8 @@
     /* border: 2px solid #56a8d1; */
     background-color: rgba(3, 27, 38, 0.8);
     .frame-title {
-      display: inline;
+      display: inline-block;
+      align: center;
     }
   }
 }

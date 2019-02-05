@@ -10,6 +10,7 @@
         v-model="frame.description"
         placeholder="Describe what happens in this frame"
         rows="4"
+        maxlength="295"
       ></textarea>
     </div>
     <frame-selector :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
@@ -25,9 +26,10 @@ input {
   color: #031b26;
   border: none;
   line-height: 40px;
+  text-overflow: ellipsis;
 }
 
-.image {
+.picture-frame {
   height: 333px;
   width: 600px;
   border: 2px solid #979c9e;
@@ -59,6 +61,8 @@ textarea {
   line-height: 28px;
   resize: none;
   position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .frame-selector {
