@@ -1,6 +1,6 @@
 <template>
   <div class="view frame-view">
-    <top-bar></top-bar>
+    <top-bar :story="story"></top-bar>
     <div class="top" v-if="frame">
       <div class="picture-frame"></div>
       <input v-model="frame.title">
@@ -32,6 +32,9 @@
     computed: {
       frame() {
         return store.getters.frameById(this.frameId)
+      },
+      story() {
+        return store.getters.storyFromFrame(this.frame)
       },
       storyFrames() {
         return store.getters.framesFromSameStory(this.frame)
