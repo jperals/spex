@@ -3,9 +3,7 @@
     <top-bar :story="story"></top-bar>
     <div class="top" v-if="frame">
       <div class="picture-frame image" ref="dragAndDropArea">
-        <div v-if="imageUrl">
-          <FrameImage :src="imageUrl"></FrameImage>
-        </div>
+        <FrameImage :image-url="imageUrl" v-if="imageUrl"></FrameImage>
         <div v-else>
           <input type="file" class="picture-input" @change="handleFileSelect" ref="fileInput">
         </div>
