@@ -10,7 +10,6 @@
   display: inline-block;
   flex-direction: row;
   max-width: 1066px;
-  max-height: 400px;
 }
 </style>
 

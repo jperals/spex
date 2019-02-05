@@ -2,7 +2,7 @@
   <div class="view frame-view" v-if="frame">
     <top-bar :story="story"></top-bar>
     <div class="top" v-if="frame">
-      <div class="picture-frame" ref="dragAndDropArea">
+      <div class="picture-frame image" ref="dragAndDropArea">
         <div v-if="imageUrl">
           <img ref="frameImage" :src="imageUrl">
         </div>
@@ -10,15 +10,79 @@
           <input type="file" class="picture-input" @change="handleFileSelect" ref="fileInput">
         </div>
       </div>
-      <input v-model="frame.title">
-      <textarea v-model="frame.description"></textarea>
+      <div class="text">
+        <input v-model="frame.title" placeholder="Frame Title">
+        <textarea
+            v-model="frame.description"
+            placeholder="Describe what happens in this frame"
+            rows="4"
+        ></textarea>
+    </div>
     </div>
     <frame-selector :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
   </div>
 </template>
 
-<style>
+<style scoped lang="scss">
+input {
+  font-weight: 800;
+  font-size: 40px;
+  width: 624px;
+  outline: none;
+  color: #031b26;
+  border: none;
+  line-height: 40px;
+}
 
+.image {
+  height: 333px;
+  width: 600px;
+  border: 2px solid #979c9e;
+  background-image: url("../assets/icons/noImage.png");
+  background-size: 24px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #f2f6f7;
+  border-radius: 2px;
+  box-sizing: border-box;
+  margin: auto;
+  margin-top: 48px;
+}
+
+.text {
+  max-width: 600px;
+  margin: auto;
+  margin-top: 24px;
+}
+
+textarea {
+  font-weight: 400;
+  font-size: 20px;
+  width: 590px;
+  outline: none;
+  color: #031b26;
+  border: none;
+  margin-top: 8px;
+  line-height: 28px;
+  resize: none;
+  position: relative;
+}
+
+.frame-selector {
+  height: 100px;
+  width: 100%;
+  background-color: #f2f6f7;
+  position: fixed;
+  bottom: 0;
+}
+
+.frame-selector.frames {
+  height: 100px;
+  width: 100%;
+  background-color: #f2f6f7;
+  position: fixed;
+  bottom: 0;
+}
 </style>
 
 <script>
