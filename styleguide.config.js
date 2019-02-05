@@ -2,7 +2,7 @@ module.exports = {
   // set your styleguidist configuration here
   title: 'Default Style Guide',
   components: 'src/components/**/[A-Z]*.vue',
-  defaultExample: true,
+  defaultExample: false,
   template: {
     head: {
       links: [
