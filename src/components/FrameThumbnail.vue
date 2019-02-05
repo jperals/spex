@@ -56,15 +56,15 @@
 </style>
 
 <script>
-  export default {
-    name: "frame-thumbnail",
-    props: {
-      frame: {
-        type: Object,
-        default: () => {
-          return {};
-        }
+export default {
+  name: "frame-thumbnail",
+  props: {
+    frame: {
+      type: Object,
+      default: () => {
+        return {};
       }
     }
-  };
+  }
+};
 </script>

@@ -30,9 +30,10 @@ textarea::placeholder {
 }
 
 .top {
+  margin: auto;
   margin-left: 422px;
   margin-top: 48px;
-  max-width: 590px;
+  max-width: 600px;
 }
 
 textarea {
