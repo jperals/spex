@@ -8,11 +8,12 @@
 @import "./frame-thumbnail-size.scss";
 
 .addNewFrame {
-  display: flex;
+  display: inline-block;
   align-items: center;
   width: $frame-thumbnail-width;
   height: $frame-thumbnail-height;
   cursor: pointer;
+  vertical-align: 120px;
 
   .newFrame {
     width: 2px;
@@ -22,6 +23,7 @@
     background-image: url("../assets/icons/newFrame.png");
     background-repeat: no-repeat;
     background-position: left;
+    margin-top: -16px;
   }
 }
 </style>

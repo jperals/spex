@@ -147,7 +147,7 @@
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: transparent transparent black transparent;
+    border-color: transparent transparent #707679 transparent;
   }
 }
 </style>

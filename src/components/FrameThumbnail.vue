@@ -1,13 +1,7 @@
 <template>
   <div class="frame-thumbnail">
     <div class="picture"></div>
-    <input
-      class="title"
-      v-model="frame.title"
-      placeholder="Frame Title"
-      onfocus="this.placeholder = ''"
-      onblur="this.placeholder = 'Frame Title'"
-    >
+    <textarea class="title" v-model="frame.title" placeholder="Frame Title" rows="2" maxlength="32"></textarea>
   </div>
 </template>
 
@@ -33,8 +27,10 @@
     box-sizing: border-box;
   }
   .title {
+    resize: none;
     display: block;
-    width: 100%;
+    /* width: 100%; */
+    margin-bottom: 48px;
     padding: 0;
     border: none;
     margin-top: 8px;
@@ -42,10 +38,12 @@
     font-weight: 400;
     color: #031b26;
     line-height: 32px;
+    height: 64px;
+    max-width: 180px;
   }
   &:hover .picture,
   &:focus-within .picture {
-    border-color: #56A8D1;
+    border-color: #56a8d1;
   }
 }
 

@@ -3,19 +3,8 @@
     <top-bar></top-bar>
     <div class="story" v-if="story">
       <div class="top">
-        <input
-          v-model="story.title"
-          placeholder="Give your story a title"
-          onfocus="this.placeholder = ''"
-          onblur="this.placeholder = 'Give your story a title'"
-        >
-        
-        <textarea
-          v-model="story.description"
-          placeholder="Write a short description"
-          onfocus="this.placeholder = ''"
-          onblur="this.placeholder = 'Write a short description'"
-        ></textarea>
+        <input v-model="story.title" placeholder="Give your story a title">
+        <textarea v-model="story.description" placeholder="Write a short description"></textarea>
       </div>
       <div class="thumbnails">
         <FrameThumbnails :story-id="storyId" :frames="frames"></FrameThumbnails>
@@ -42,24 +31,26 @@ textarea::placeholder {
 
 .top {
   margin-left: 422px;
-  margin-top: 80px;
+  margin-top: 48px;
+  max-width: 590px;
 }
 
 textarea {
   font-weight: 400;
   font-size: 28px;
-  width: 624px;
+  width: 590px;
   outline: none;
   color: #031b26;
   border: none;
   margin-top: 8px;
   line-height: 38px;
   resize: none;
+  position: relative;
 }
 
 .thumbnails {
   margin-left: 218px;
-  margin-top: 32px;
+  margin-top: 48px;
 }
 </style>
   
@@ -81,7 +72,7 @@ export default {
   },
   computed: {
     frames() {
-      return store.getters.framesFromStory(this.story)
+      return store.getters.framesFromStory(this.story);
     },
     story() {
       return store.getters.storyById(this.storyId);
