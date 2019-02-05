@@ -7,6 +7,7 @@
       :key="frame.id"
       :class="{active: isCurrent(frame)}"
     >
+      <frame-image :image-url="frame.imageUrl"></frame-image>
       <div class="frame-title" v-if="frame.title">{{ frame.title }}</div>
       <!-- <div class="frame-description">
             {{ frame.description }}
@@ -26,8 +27,15 @@
     margin-left: 24px;
     width: 120px;
     height: 68px;
+    position: relative;
+  }
+  .frame-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     border: 1px solid #979c9e;
-    border-radius: 2px;
   }
   .frame-title {
     font-weight: 800;
@@ -40,7 +48,9 @@
   }
   .frame:hover {
     /* border: 2px solid #56a8d1; */
-    background-color: rgba(3, 27, 38, 0.8);
+    .frame-image {
+      background-color: rgba(3, 27, 38, 0.8);
+    }
     .frame-title {
       display: inline;
     }
@@ -49,6 +59,7 @@
 </style>
 
 <script>
+import FrameImage from '@/components/FrameImage.vue'
 export default {
   name: "frame-selector",
   props: {
@@ -59,6 +70,9 @@ export default {
       type: Array,
       default: () => []
     }
+  },
+  components: {
+    FrameImage
   },
   methods: {
     isCurrent(frame) {
