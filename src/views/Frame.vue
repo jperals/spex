@@ -4,7 +4,7 @@
     <div class="top" v-if="frame">
       <div class="picture-frame image" ref="dragAndDropArea">
         <div v-if="imageUrl">
-          <img ref="frameImage" :src="imageUrl">
+          <FrameImage :src="imageUrl"></FrameImage>
         </div>
         <div v-else>
           <input type="file" class="picture-input" @change="handleFileSelect" ref="fileInput">
@@ -87,6 +87,7 @@ textarea {
 
 <script>
   import store from '@/store.js'
+  import FrameImage from '@/components/FrameImage.vue'
   import FrameSelector from '@/components/FrameSelector.vue'
   import TopBar from "@/components/TopBar.vue";
 
@@ -103,6 +104,7 @@ textarea {
       }
     },
     components: {
+      FrameImage,
       FrameSelector,
       TopBar
     },
