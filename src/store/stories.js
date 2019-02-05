@@ -23,7 +23,8 @@ const stories = {
       }
     },
     stories: state => state.stories,
-    storyById: (state, getters) => id => getters.stories.find(story => story.id === id)
+    storyById: (state, getters) => id => getters.stories.find(story => story.id === id),
+    storyFromFrame: (state, getters) => (frame) => getters.stories.find(story => story.id === frame.storyId)
   },
   mutations: {
     addFrame(state, { story, frame }) {

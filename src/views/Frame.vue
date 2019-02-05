@@ -1,7 +1,7 @@
 <template>
   <div class="view frame-view">
-    <top-bar></top-bar>
-    <div class="image" v-if="frame">
+    <top-bar :story="story"></top-bar>
+    <div class="top" v-if="frame">
       <div class="picture-frame"></div>
     </div>
     <div class="text">
@@ -68,6 +68,14 @@ textarea {
   position: fixed;
   bottom: 0;
 }
+
+.frame-selector.frames {
+  height: 100px;
+  width: 100%;
+  background-color: #f2f6f7;
+  position: fixed;
+  bottom: 0;
+}
 </style>
 
 <script>
@@ -88,6 +96,9 @@ export default {
   computed: {
     frame() {
       return store.getters.frameById(this.frameId);
+    },
+    story() {
+      return store.getters.storyFromFrame(this.frame);
     },
     storyFrames() {
       return store.getters.framesFromSameStory(this.frame);
