@@ -16,6 +16,14 @@ const frames = {
     addImage(state, {frame, imageFile}) {
       frame.addImage(imageFile)
     },
+    forceFrameUpdate(state, frame) {
+      const index = state.frames.indexOf(frame)
+      if(index === -1) {
+        console.warn('Frame not found:', frame)
+        return
+      }
+      state.frames[index] = Object.assign({}, frame)
+    },
     removeFrame(state, frame) {
       const index = state.frames.findIndex(item => item.id);
       if (index === -1) {
@@ -43,6 +51,7 @@ const frames = {
         reader.onload = (e) => {
           const imageUrl = e.target.result
           context.commit('setImageUrl', {frame, imageUrl})
+          context.commit('forceFrameUpdate', frame)
           resolve(imageUrl)
         }
         reader.readAsDataURL(imageFile)
