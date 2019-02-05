@@ -43,6 +43,7 @@
     color: #031b26;
     line-height: 32px;
   }
+  &:hover .picture,
   &:focus-within .picture {
     border-color: #56A8D1;
   }
