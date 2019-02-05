@@ -43,6 +43,9 @@
     color: #031b26;
     line-height: 32px;
   }
+  &:focus-within .picture {
+    border-color: #56A8D1;
+  }
 }
 
 textarea:focus,
@@ -58,9 +61,7 @@ export default {
     frame: {
       type: Object,
       default: () => {
-        return {
-          title: "Frame title"
-        };
+        return {};
       }
     }
   }
