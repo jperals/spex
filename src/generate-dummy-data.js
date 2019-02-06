@@ -41,12 +41,8 @@ store.commit('addFrame', {
   }
 )
 
-store.commit('addComponent', new Component({component: {name: 'AR Glasses'}}))
-
-store.commit('addComponent', new Component({component: {name: 'Components'}}))
-
-store.commit('addComponent', new Component({component: {name: 'Tray'}}))
-
-store.commit('addComponent', new Component({component: {name: 'Robot'}}))
-
-store.commit('addComponent', new Component({component: {name: 'MOTO MH-6'}}))
+store.commit('addComponent', {component: new Component({name: 'AR Glasses'})})
+store.commit('addComponent', {component: new Component({name: 'Components'})})
+store.commit('addComponent', {component: new Component({name: 'Tray'})})
+store.commit('addComponent', {component: new Component({name: 'Robot'})})
+store.commit('addComponent', {component: new Component({name: 'MOTO MH-6'})})

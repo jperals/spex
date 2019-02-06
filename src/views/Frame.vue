@@ -3,7 +3,7 @@
     <top-bar :story="story"></top-bar>
     <div class="top" v-if="frame">
       <div class="picture-frame image" ref="dragAndDropArea">
-        <FrameImage :image-url="imageUrl"></FrameImage>
+        <FrameImage :image-url="imageUrl" :placeholder="'Describe what happens in this frame'"></FrameImage>
         <input
           v-if="!imageUrl"
           type="file"
@@ -14,17 +14,11 @@
       </div>
       <div class="text">
         <input class="title" v-model="frame.title" placeholder="Frame Title">
-        <textarea
-          v-model="frame.description"
-          placeholder="Describe what happens in this frame"
-          rows="4"
-          maxlength="295"
-        ></textarea>
+        <smart-description v-model="frame.description"></smart-description>
       </div>
     </div>
     <frame-selector :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
-    <!-- <component-list v-if="showComponents" :components="components"></component-list> -->
-    <component-list :class="{active:showComponents}" :components="components"></component-list>
+    <component-list :class="{active:showComponents}" :components="components" :frame="frame"></component-list>
   </div>
 </template>
 
@@ -123,6 +117,8 @@ import ComponentList from "@/components/ComponentList.vue";
 import FrameImage from "@/components/FrameImage.vue";
 import FrameSelector from "@/components/FrameSelector.vue";
 import TopBar from "@/components/TopBar.vue";
+
+import SmartDescription from "@/components/SmartDescription.vue";
 import store from "@/store.js";
 
 export default {
@@ -142,6 +138,7 @@ export default {
     ComponentList,
     FrameImage,
     FrameSelector,
+    SmartDescription,
     TopBar
   },
   computed: {

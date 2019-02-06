@@ -1,6 +1,7 @@
 import components from '@/store/components'
 import frames from '@/store/frames'
 import projects from '@/store/projects'
+import semantics from '@/store/semantics'
 import stories from '@/store/stories'
 import ui from '@/store/ui'
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     components,
     frames,
     projects,
+    semantics,
     stories,
     ui
   }
