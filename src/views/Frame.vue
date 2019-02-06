@@ -17,6 +17,7 @@
       </div>
     </div>
     <frame-selector :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
+    <component-list v-if="showComponents" :components="components"></component-list>
   </div>
 </template>
 
@@ -96,10 +97,11 @@ textarea {
 </style>
 
 <script>
-import store from '@/store.js'
+import ComponentList from '@/components/ComponentList.vue'
 import FrameImage from '@/components/FrameImage.vue'
 import FrameSelector from '@/components/FrameSelector.vue'
 import TopBar from "@/components/TopBar.vue";
+import store from '@/store.js'
 
 export default {
   name: 'frame',
@@ -115,13 +117,22 @@ export default {
     }
   },
   components: {
+    ComponentList,
     FrameImage,
     FrameSelector,
     TopBar
   },
   computed: {
+    components() {
+      return {
+        list: store.getters.components
+      }
+    },
     frame() {
       return this.changeTrack && store.getters.frameById(this.frameId)
+    },
+    showComponents() {
+      return store.getters.showComponents
     },
     story() {
       return store.getters.storyFromFrame(this.frame)

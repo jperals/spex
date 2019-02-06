@@ -1,3 +1,4 @@
+import {Component} from '@/store/components'
 import Frame from '@/store/Frame'
 import store from '@/store.js'
 import {Story} from '@/store/stories.js'
@@ -39,3 +40,13 @@ store.commit('addFrame', {
   })
   }
 )
+
+store.commit('addComponent', new Component({component: {name: 'AR Glasses'}}))
+
+store.commit('addComponent', new Component({component: {name: 'Components'}}))
+
+store.commit('addComponent', new Component({component: {name: 'Tray'}}))
+
+store.commit('addComponent', new Component({component: {name: 'Robot'}}))
+
+store.commit('addComponent', new Component({component: {name: 'MOTO MH-6'}}))

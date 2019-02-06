@@ -6,7 +6,7 @@
     </router-link>
     <SuggestionsIndicator :number-of-suggestions="numberOfSuggestions"></SuggestionsIndicator>
     <div class="tooltip">
-      <div class="Components"></div>
+      <div class="Components" @click="toggleComponents"></div>
       <span class="tooltiptext">Components</span>
     </div>
 
@@ -162,6 +162,7 @@
 </style>
 
 <script>
+import store from '@/store';
 import SuggestionsIndicator from "@/components/SuggestionsIndicator";
 
 export default {
@@ -182,6 +183,11 @@ export default {
         '/story/' + this.story.id
         :
         this.$route.fullPath
+    }
+  },
+  methods: {
+    toggleComponents() {
+      store.commit('toggleComponents')
     }
   }
 };
