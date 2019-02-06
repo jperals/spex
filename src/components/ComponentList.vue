@@ -121,7 +121,6 @@ export default {
     isSelected(component) {
       const {start, end} = store.getters.selection
       const relatedComponentId = store.getters.relationship({frame: this.frame, start, end})
-      console.log(this.frame, start, end, relatedComponentId)
       return relatedComponentId === component.id
     },
     select(component) {
