@@ -31,7 +31,7 @@
 <script>
 import store from "@/store";
 export default {
-  name: "frame-thumbnail-placeholder",
+  name: "frame-thumbnail-add",
   props: {
     story: {
       type: Object
@@ -44,3 +44,9 @@ export default {
   }
 };
 </script>
+
+<docs>
+  ```js
+  <frame-thumbnail-add/>
+  ```
+</docs>

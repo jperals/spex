@@ -41,7 +41,7 @@
 
 <docs>
   ```jsx
-  <frame-image></frame-image>
+  <frame-image :image-url="'https://www.ixds.com/system/files/styles/image_in_content/private/media-images/_mg_9342.jpg?itok=q3uo0o-H'" style="height: 500px"></frame-image>
   ```
 </docs>
 

@@ -39,3 +39,9 @@ export default {
   }
 };
 </script>
+
+<docs>
+  ```jsx
+  <frame-thumbnails :frames="[{title: 'Frame title', 'description': 'Frame description', 'imageUrl': 'https://www.ixds.com/system/files/styles/image_in_content/private/media-images/_mg_9342.jpg?itok=q3uo0o-H'}, {'title': 'Frame title', 'description': 'Frame description'}, {'title': 'Frame title', 'description': 'Frame description'}]"/>
+  ```
+</docs>
