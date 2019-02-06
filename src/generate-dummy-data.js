@@ -12,8 +12,8 @@ store.commit('updateStories', [
   new Story({
     id: '0',
     projectId: '0',
-    title: 'Home Lighting',
-    description: 'When I come home, I want my home to welcome me with a warm atmosphere.'
+    title: 'Assembly Line',
+    description: 'Technicians can assemble units, and use industrial machinery, assisted by Augmented Reality'
   })
 ])
 
@@ -24,7 +24,8 @@ store.commit('addFrame', {
   ,
   frame: new Frame({
     story,
-    title: 'Coming home'
+    title: 'Arrive at Machine',
+    description: 'A factory technician arrrives at the MOTO MH-6, puts on AR glasses and choses ‘Begin’ from the controls he sees in AR.'
   })
   }
 )
@@ -33,7 +34,8 @@ store.commit('addFrame', {
   story,
   frame: new Frame({
     story,
-    title: 'Lights on'
+    title: 'Collect Components',
+    description: 'He sees a list of the components he has to collect. The glasses show him which shelves to find the components in.'
   })
   }
 )
