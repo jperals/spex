@@ -12,7 +12,7 @@
       </div>
     </div>
     <frame-selector :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
-    <component-list v-if="showComponents" :components="components"></component-list>
+    <component-list v-if="showComponents" :components="components" :frame="frame"></component-list>
   </div>
 </template>
 

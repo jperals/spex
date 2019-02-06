@@ -2,8 +2,8 @@
   <div class="component-list">
     <div class="header">COMPONENTS</div>
     <div class="component" v-for="component in components.list" :key="component.id">
-      <label class="container">
-        <input type="radio" :value="component.id" v-model="components.selected">
+      <label class="container" @click="select(component)">
+        <input type="radio" :checked="isSelected(component)" :class="{checked: isSelected(component) }">
         <span class="component-name">{{component.name}}</span>
         <span class="checkmark"></span>
       </label>
@@ -12,6 +12,9 @@
 </template>
 
 <style scoped lang="scss">
+input:checked {
+  background-color: pink
+}
 .header {
   font-weight: 800;
   margin-bottom: 8px;
@@ -103,11 +106,32 @@
 
 
 <script>
+import store from '@/store'
 export default {
   name: "component-list",
   props: {
     components: {
       type: Object
+    },
+    frame: {
+      type: Object
+    }
+  },
+  methods: {
+    isSelected(component) {
+      const {start, end} = store.getters.selection
+      const relatedComponentId = store.getters.relationship({frame: this.frame, start, end})
+      console.log(this.frame, start, end, relatedComponentId)
+      return relatedComponentId === component.id
+    },
+    select(component) {
+      const {start, end} = store.getters.selection
+      store.commit('setRelationship', {
+        frame: this.frame,
+        start,
+        end,
+        component
+      })
     }
   }
 };
