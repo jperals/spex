@@ -5,8 +5,8 @@
       <span class="PageTitle" v-if="story">{{ story.title }}</span>
     </router-link>
     <SuggestionsIndicator :number-of-suggestions="numberOfSuggestions"></SuggestionsIndicator>
-    <div class="tooltip">
-      <div class="Components" @click="toggleComponents"></div>
+    <div class="tooltip" @click="toggleComponents" :class="{active: showComponents}">
+      <div class="Components"></div>
       <span class="tooltiptext">Components</span>
     </div>
 
@@ -116,6 +116,9 @@
   .tooltip {
     position: relative;
     display: inline-block;
+    &.active {
+      background-color: lightgray;
+    }
   }
 
   /* Tooltip text */
@@ -183,6 +186,9 @@ export default {
         '/story/' + this.story.id
         :
         this.$route.fullPath
+    },
+    showComponents() {
+      return store.getters.showComponents
     }
   },
   methods: {
