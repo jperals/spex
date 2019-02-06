@@ -29,15 +29,26 @@ export class SemanticMapping {
 const semantics = {
   state: {
     nextId: 0,
-    semanticMappings: []
+    semanticMappings: {}
   },
   getters: {
-
+    frameMappings: (state) => (frame) => state.semanticMappings[frame.id],
+    relationship: (state, getters) => ({frame, start, end}) => {
+      const frameMappings = getters.frameMappings(frame)
+      if(frameMappings) {
+        return frameMappings.relationships[start + '-' + end]
+      }
+      return
+    }
   },
   mutations: {
     setRelationship(state, {frame, start, end, component}) {
-      const frameMappings = state.semanticMappings.find(({frameId}) => frameId === frame.id) || new SemanticMapping({frame})
-      frameMappings.setRelationship({start, end, component})
+      let frameMappings = state.semanticMappings[frame.id]
+      if(frameMappings) {
+        frameMappings.setRelationship({start, end, component})
+      } else {
+        state.semanticMappings[frame.id] = new SemanticMapping({frame, start, end, component})
+      }
     }
   }
 }
