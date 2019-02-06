@@ -60,6 +60,10 @@
     background-position: center;
   }
 
+  .tooltip.active .Components {
+    background-image: url("../assets/icons/components_active.png");
+  }
+
   .PageTitle {
     font-size: 20px;
     color: #031b26;
@@ -116,9 +120,6 @@
   .tooltip {
     position: relative;
     display: inline-block;
-    &.active {
-      background-color: lightgray;
-    }
   }
 
   /* Tooltip text */
@@ -139,7 +140,7 @@
   }
 
   /* Show the tooltip text when you mouse over the tooltip container */
-  .tooltip:hover .tooltiptext {
+  .tooltip:not(.active):hover .tooltiptext {
     visibility: visible;
   }
 
@@ -165,12 +166,12 @@
 </style>
 
 <script>
-import store from '@/store';
+import store from "@/store";
 import SuggestionsIndicator from "@/components/SuggestionsIndicator";
 
 export default {
   name: "top-bar",
-  components: {SuggestionsIndicator},
+  components: { SuggestionsIndicator },
   props: {
     numberOfSuggestions: {
       type: Number,
@@ -182,18 +183,15 @@ export default {
   },
   computed: {
     backUrl() {
-      return this.story ?
-        '/story/' + this.story.id
-        :
-        this.$route.fullPath
+      return this.story ? "/story/" + this.story.id : this.$route.fullPath;
     },
     showComponents() {
-      return store.getters.showComponents
+      return store.getters.showComponents;
     }
   },
   methods: {
     toggleComponents() {
-      store.commit('toggleComponents')
+      store.commit("toggleComponents");
     }
   }
 };
