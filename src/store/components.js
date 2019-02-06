@@ -3,7 +3,8 @@
 
 export class Component {
   constructor(props) {
-    this.id = components.state.components.length.toString()
+    this.id = components.state.nextId.toString()
+    components.state.nextId += 1
     if(props && props.story) {
       this.storyId = props.story.id
     }
@@ -13,7 +14,8 @@ export class Component {
 
 const components = {
   state: {
-    components: []
+    components: [],
+    nextId: 0
   },
   getters: {
     components: state => state.components
