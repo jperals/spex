@@ -3,12 +3,12 @@
     <top-bar :story="story"></top-bar>
     <div class="top" v-if="frame">
       <div class="picture-frame image" ref="dragAndDropArea">
-        <FrameImage :image-url="imageUrl" :placeholder="'Describe what happens in this frame'"></FrameImage>
+        <FrameImage :image-url="imageUrl"></FrameImage>
         <input v-if="!imageUrl" type="file" class="picture-input" @change="handleFileSelect" ref="fileInput">
       </div>
       <div class="text">
         <input class="title" v-model="frame.title" placeholder="Frame Title">
-        <smart-description v-model="frame.description"></smart-description>
+        <smart-description v-model="frame.description" :placeholder="'Describe what happens in this frame'"></smart-description>
       </div>
     </div>
     <frame-selector :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
