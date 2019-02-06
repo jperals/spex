@@ -4,7 +4,13 @@
     <div class="top" v-if="frame">
       <div class="picture-frame image" ref="dragAndDropArea">
         <FrameImage :image-url="imageUrl"></FrameImage>
-        <input v-if="!imageUrl" type="file" class="picture-input" @change="handleFileSelect" ref="fileInput">
+        <input
+          v-if="!imageUrl"
+          type="file"
+          class="picture-input"
+          @change="handleFileSelect"
+          ref="fileInput"
+        >
       </div>
       <div class="text">
         <input class="title" v-model="frame.title" placeholder="Frame Title">
@@ -12,7 +18,7 @@
       </div>
     </div>
     <frame-selector :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
-    <component-list v-if="showComponents" :components="components" :frame="frame"></component-list>
+    <component-list :class="{active:showComponents}" :components="components" :frame="frame"></component-list>
   </div>
 </template>
 
@@ -89,23 +95,39 @@ textarea {
   position: fixed;
   bottom: 0;
 }
+
+.component-list {
+  float: right;
+  position: fixed;
+  top: 65px;
+  right: 0;
+  -webkit-­transition: all 0.3s ease;
+  -moz-­transition: all 0.3s ease;
+  ­-o-­transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.component-list:not(.active) {
+  transform: translateX(100%);
+}
 </style>
 
 <script>
-import ComponentList from '@/components/ComponentList.vue'
-import FrameImage from '@/components/FrameImage.vue'
-import FrameSelector from '@/components/FrameSelector.vue'
+import ComponentList from "@/components/ComponentList.vue";
+import FrameImage from "@/components/FrameImage.vue";
+import FrameSelector from "@/components/FrameSelector.vue";
 import TopBar from "@/components/TopBar.vue";
-import SmartDescription from '@/components/SmartDescription.vue'
-import store from '@/store.js'
+
+import SmartDescription from "@/components/SmartDescription.vue";
+import store from "@/store.js";
 
 export default {
-  name: 'frame',
+  name: "frame",
   data() {
     return {
       imageUrl: null,
       changeTrack: 1
-    }
+    };
   },
   props: {
     frameId: {
@@ -123,31 +145,31 @@ export default {
     components() {
       return {
         list: store.getters.components
-      }
+      };
     },
     frame() {
-      return this.changeTrack && store.getters.frameById(this.frameId)
+      return this.changeTrack && store.getters.frameById(this.frameId);
     },
     showComponents() {
-      return store.getters.showComponents
+      return store.getters.showComponents;
     },
     story() {
-      return store.getters.storyFromFrame(this.frame)
+      return store.getters.storyFromFrame(this.frame);
     },
     storyFrames() {
-      return this.changeTrack && store.getters.framesFromSameStory(this.frame)
+      return this.changeTrack && store.getters.framesFromSameStory(this.frame);
     }
   },
   mounted() {
-    this.updateImageUrl()
-    const dragAndDropArea = this.$refs.dragAndDropArea
+    this.updateImageUrl();
+    const dragAndDropArea = this.$refs.dragAndDropArea;
     if (!dragAndDropArea) {
-      console.warn('Drag and drop area not found')
-      return
+      console.warn("Drag and drop area not found");
+      return;
     }
-    dragAndDropArea.addEventListener('dragenter', dragenter, false)
-    dragAndDropArea.addEventListener('dragover', dragover, false)
-    dragAndDropArea.addEventListener('drop', this.drop, false)
+    dragAndDropArea.addEventListener("dragenter", dragenter, false);
+    dragAndDropArea.addEventListener("dragover", dragover, false);
+    dragAndDropArea.addEventListener("drop", this.drop, false);
   },
   methods: {
     drop(event) {
@@ -158,29 +180,30 @@ export default {
       this.handleFiles(files);
     },
     handleFile(file) {
-      store.dispatch('addImage', {
-        frame: this.frame,
-        imageFile: file
-      })
-        .then(this.updateImageUrl)
+      store
+        .dispatch("addImage", {
+          frame: this.frame,
+          imageFile: file
+        })
+        .then(this.updateImageUrl);
     },
     handleFiles(files) {
-      this.handleFile(files[0])
+      this.handleFile(files[0]);
     },
     handleFileSelect(event) {
       this.handleFiles(event.target.files);
     },
     updateImageUrl() {
-      this.changeTrack += 1
-      this.imageUrl = this.frame.imageUrl
+      this.changeTrack += 1;
+      this.imageUrl = this.frame.imageUrl;
     }
   },
   watch: {
-    '$route.params.frameId'() {
-      this.updateImageUrl()
+    "$route.params.frameId"() {
+      this.updateImageUrl();
     }
   }
-}
+};
 
 function dragenter(e) {
   e.stopPropagation();
