@@ -40,7 +40,6 @@ export default {
 
 <docs>
   ```jsx
-  <smart-description
-      v-model="'This is a smart description where text fragments can be related to components in the system'"></smart-description>
+  <smart-description v-model="'This is a smart description where text fragments can be related to components in the system'" :placeholder="'Placeholder'" />
   ```
 </docs>
