@@ -29,14 +29,14 @@
     height: 68px;
     position: relative;
     &.active:after {
-      content: ' ';
+      content: " ";
       display: block;
       position: absolute;
       top: 0;
       bottom: 0;
       left: 0;
       right: 0;
-      background-color: rgba(120, 120, 200, 0.3);
+      background-color: rgba(165, 136, 223, 0.3);
       cursor: default;
     }
   }
@@ -73,7 +73,7 @@
 </style>
 
 <script>
-import FrameImage from '@/components/FrameImage.vue'
+import FrameImage from "@/components/FrameImage.vue";
 export default {
   name: "frame-selector",
   props: {
