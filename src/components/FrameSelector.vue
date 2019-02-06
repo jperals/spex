@@ -28,6 +28,17 @@
     width: 120px;
     height: 68px;
     position: relative;
+    &.active:after {
+      content: ' ';
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(120, 120, 200, 0.3);
+      cursor: default;
+    }
   }
   .frame-image {
     position: absolute;
@@ -36,6 +47,7 @@
     right: 0;
     bottom: 0;
     border: 1px solid #979c9e;
+    box-sizing: border-box;
   }
   .frame-title {
     font-weight: 800;
@@ -47,7 +59,7 @@
     color: white;
     display: none;
   }
-  .frame:hover {
+  .frame:not(.active):hover {
     /* border: 2px solid #56a8d1; */
     .frame-image {
       background-color: rgba(3, 27, 38, 0.8);
