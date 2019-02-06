@@ -8,12 +8,7 @@
       </div>
       <div class="text">
         <input class="title" v-model="frame.title" placeholder="Frame Title">
-        <textarea
-            v-model="frame.description"
-            placeholder="Describe what happens in this frame"
-            rows="4"
-            maxlength="295"
-        ></textarea>
+        <smart-description v-model="frame.description"></smart-description>
       </div>
     </div>
     <frame-selector :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
@@ -101,6 +96,7 @@ import ComponentList from '@/components/ComponentList.vue'
 import FrameImage from '@/components/FrameImage.vue'
 import FrameSelector from '@/components/FrameSelector.vue'
 import TopBar from "@/components/TopBar.vue";
+import SmartDescription from '@/components/SmartDescription.vue'
 import store from '@/store.js'
 
 export default {
@@ -120,6 +116,7 @@ export default {
     ComponentList,
     FrameImage,
     FrameSelector,
+    SmartDescription,
     TopBar
   },
   computed: {
