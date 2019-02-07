@@ -19,11 +19,50 @@ export class SemanticMapping {
     this.reset()
   }
 
+  // `start` and `end` define a forbidden range.
+  // Modify (or remove) all other ranges so as to not fall within it.
+  fixOverlaps(forbiddenRangeStart, forbiddenRangeEnd) {
+    for (const rangeStr in this.relationships) {
+      const relationship = this.relationships[rangeStr]
+      const [thisStart, thisEnd] = rangeStr.split('-').map(s => Number(s))
+      let newStart = thisStart
+      let newEnd = thisEnd
+      console.log(forbiddenRangeStart, forbiddenRangeEnd, thisStart, thisEnd)
+      // Delete ranges that fall fully inside of the forbidden range,
+      // or if they fully contain the forbidden range.
+      if (forbiddenRangeStart <= thisStart && thisEnd <= forbiddenRangeEnd
+        || thisStart <= forbiddenRangeStart && forbiddenRangeEnd <= thisEnd) {
+        delete this.relationships[rangeStr]
+        continue
+      }
+      // This range starts at the left of the forbidden range;
+      // make sure it also ends at the left.
+      if (thisStart <= forbiddenRangeStart) {
+        newEnd = Math.min(thisEnd, forbiddenRangeStart)
+      }
+      // This range ends at the right of the forbidden range;
+      // make sure it also starts at the right.
+      if (forbiddenRangeEnd <= thisEnd) {
+        newStart = Math.max(thisStart, forbiddenRangeEnd)
+      }
+      // Unless nothing changed ...
+      if (newStart === thisStart && newEnd === thisEnd) {
+        continue
+      }
+      // ... delete the old key ...
+      delete this.relationships[rangeStr]
+      // .. to insert the old object in the new key.
+      const newKey = [newStart, newEnd].join('-')
+      this.relationships[newKey] = relationship
+    }
+  }
+
   reset() {
     this.relationships = {}
   }
 
   setRelationship({start, end, component}) {
+    this.fixOverlaps(start, end)
     this.relationships[start + '-' + end] = component.id
   }
 
@@ -43,7 +82,7 @@ const semantics = {
   getters: {
     semanticsChangeTracker: (state) => state.changeTracker,
     frameMappings: (state) => (frame) => {
-      if(frame) {
+      if (frame) {
         return state.semanticMappings[frame.id]
       } else {
         return state.semanticMappings
@@ -62,7 +101,6 @@ const semantics = {
         const relationships = []
         for (const key in frameMappings.relationships) {
           const [start, end] = key.split('-').map(n => Number(n))
-          console.log(start, end)
           relationships.push({
             start,
             end,
