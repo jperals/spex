@@ -15,10 +15,14 @@
 </style>
 
 <script>
+import {smartDiff} from "@/text-utils";
 import store from '@/store'
 export default {
   name: 'smart-description',
   props: {
+    frame: {
+      type: Object
+    },
     value: {
       type: String
     },
@@ -33,6 +37,12 @@ export default {
         start: textarea.selectionStart,
         end: textarea.selectionEnd
       })
+    }
+  },
+  watch: {
+    value(newText, oldText) {
+      const {start, end, shiftAmount} = smartDiff(oldText, newText)
+      store.commit('offsetMappings', {frame: this.frame, start, end, shiftAmount})
     }
   }
 }

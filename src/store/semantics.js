@@ -14,15 +14,23 @@
 // text fragment.
 
 export class SemanticMapping {
-  constructor({frame, start, end, component}) {
+  constructor({frame}) {
     this.frameId = frame.id
-    this.relationships = {}
-    if(typeof start === 'number' && typeof end === 'number' && typeof component === 'object') {
-      this.setRelationship({start, end, component})
-    }
+    this.reset()
   }
+
+  reset() {
+    this.relationships = {}
+  }
+
   setRelationship({start, end, component}) {
     this.relationships[start + '-' + end] = component.id
+  }
+
+  setRelationships(relationships) {
+    for (const relationship of relationships) {
+      this.setRelationship(relationship)
+    }
   }
 }
 
@@ -35,20 +43,50 @@ const semantics = {
     frameMappings: (state) => (frame) => state.semanticMappings[frame.id],
     relationship: (state, getters) => ({frame, start, end}) => {
       const frameMappings = getters.frameMappings(frame)
-      if(frameMappings) {
+      if (frameMappings) {
         return frameMappings.relationships[start + '-' + end]
       }
       return
     }
   },
   mutations: {
+    offsetMappings(state, {frame, start, shiftAmount}) {
+      let frameMappings = state.semanticMappings[frame.id]
+      if (!frameMappings) return
+      const newMappings = []
+      for (const rangeStr in frameMappings.relationships) {
+        const range = rangeStr.split('-').map(str => Number(str))
+        for (let index in range) {
+          let location = range[index]
+          if (location > start) {
+            location += shiftAmount
+          }
+          if (location < start + shiftAmount) {
+            location = start + shiftAmount
+          }
+          location = Math.max(0, location)
+          range[index] = location
+        }
+        const [rangeStart, rangeEnd] = range
+        if (rangeStart < rangeEnd) {
+          newMappings.push({
+            frame,
+            start: rangeStart,
+            end: rangeEnd,
+            component: {id: frameMappings.relationships[rangeStr]}
+          })
+        }
+      }
+      frameMappings.reset()
+      frameMappings.setRelationships(newMappings)
+    },
     setRelationship(state, {frame, start, end, component}) {
       let frameMappings = state.semanticMappings[frame.id]
-      if(frameMappings) {
-        frameMappings.setRelationship({start, end, component})
-      } else {
-        state.semanticMappings[frame.id] = new SemanticMapping({frame, start, end, component})
+      if (!frameMappings) {
+        state.semanticMappings[frame.id] = new SemanticMapping({frame})
+        frameMappings = state.semanticMappings[frame.id]
       }
+      frameMappings.setRelationship({start, end, component})
     }
   }
 }
