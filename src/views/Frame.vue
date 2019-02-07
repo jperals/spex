@@ -9,7 +9,10 @@
       </div>
       <div class="text">
         <input class="title" v-model="frame.title" placeholder="Frame Title">
-        <smart-description v-model="frame.description" :placeholder="'Describe what happens in this frame'"></smart-description>
+        <smart-description
+          v-model="frame.description"
+          :placeholder="'Describe what happens in this frame'"
+        ></smart-description>
       </div>
     </div>
     <frame-selector :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
