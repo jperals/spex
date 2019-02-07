@@ -69,21 +69,6 @@
   margin-top: 24px;
 }
 
-textarea {
-  font-weight: 400;
-  font-size: 20px;
-  width: 590px;
-  outline: none;
-  color: #031b26;
-  border: none;
-  margin-top: 8px;
-  line-height: 28px;
-  resize: none;
-  position: relative;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .frame-selector {
   height: 100px;
   width: 100%;
@@ -113,6 +98,10 @@ textarea {
 
 .component-list:not(.active) {
   transform: translateX(100%);
+
+}
+.frame-image {
+  background-color: black;
 }
 </style>
 

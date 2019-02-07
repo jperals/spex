@@ -47,6 +47,27 @@ const semantics = {
         return frameMappings.relationships[start + '-' + end]
       }
       return
+    },
+    relationships: (state, getters) => (frame) => {
+      const frameMappings = getters.frameMappings(frame)
+      if (frameMappings && frameMappings.relationships) {
+        console.log(frameMappings.relationships)
+        const relationships = []
+        for (const key in frameMappings.relationships) {
+          const [start, end] = key.split('-').map(n => Number(n))
+          console.log(start, end)
+          relationships.push({
+            start,
+            end,
+            element: frameMappings.relationships[key]
+          })
+        }
+        console.log(relationships)
+        relationships.sort((a, b) => a.start - b.start)
+        console.log(relationships)
+        return relationships
+      }
+      return
     }
   },
   mutations: {
