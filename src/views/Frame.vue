@@ -2,15 +2,10 @@
   <div class="view frame-view" v-if="frame">
     <top-bar :story="story"></top-bar>
     <div class="top" v-if="frame">
-      <div class="picture-frame image" ref="dragAndDropArea">
-        <FrameImage :image-url="imageUrl"></FrameImage>
-        <input
-          v-if="!imageUrl"
-          type="file"
-          class="picture-input"
-          @change="handleFileSelect"
-          ref="fileInput"
-        >
+      <div class="picture-frame image" ref="dragAndDropArea" :class="{empty: !imageUrl}">
+        <input type="file" class="picture-input" @change="handleFileSelect" ref="fileInput">
+        <FrameImage :image-url="imageUrl" v-if="imageUrl"></FrameImage>
+        <label>Choose a File</label>
       </div>
       <div class="text">
         <input class="title" v-model="frame.title" placeholder="Frame Title">
@@ -38,13 +33,22 @@
   text-overflow: ellipsis;
 }
 
+.frame-image {
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  position: absolute;
+  pointer-events: none;
+}
+
+.picture-frame:not(.empty):not(:hover) label {
+  display: none;
+}
+
 .picture-frame {
   height: 333px;
   width: 600px;
-  background-image: url("../assets/icons/noImage.png");
-  background-size: 24px;
-  background-repeat: no-repeat;
-  background-position: center;
   background-color: #f2f6f7;
   border-radius: 2px;
   box-sizing: border-box;
@@ -59,7 +63,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  display: block;
+  display: table;
+  margin: 0 auto;
   width: 100%;
 }
 
@@ -102,6 +107,75 @@
 }
 .frame-image {
   background-color: black;
+}
+
+.picture-input {
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  /* opacity: 0; */
+  /* overflow: hidden; */
+  position: absolute;
+  /* z-index: -1; */
+}
+
+.picture-input:after {
+  content: "";
+  display: block;
+  background-size: 160px;
+  margin: auto;
+  object-fit: scale-down;
+  background-color: #f3f6f7;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  position: absolute;
+  background-image: url("../assets/icons/noImageEmptyState.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 2px solid #56a8d1;
+  border-radius: 2px;
+}
+
+label {
+  font-size: 16px;
+  font-weight: 800;
+  padding-top: 4px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 4px;
+  letter-spacing: 0.5px;
+  color: white;
+  background-color: #56a8d1;
+  display: block;
+  position: relative;
+  margin: auto;
+  top: 263px;
+  text-align: center;
+  width: 100px;
+  pointer-events: none;
+  border-radius: 2px;
+  cursor: pointer; /* "hand" cursor */
+}
+
+.picture-input:focus {
+  outline: none;
+}
+
+.picture-input:hover {
+  cursor: pointer;
+}
+
+.picture-input:focus ~ label,
+.picture-input ~ label:hover {
+  background-color: #417f9e;
+  outline: none;
+}
+
+.picture-input ~ label {
+  cursor: pointer; /* "hand" cursor */
 }
 </style>
 
