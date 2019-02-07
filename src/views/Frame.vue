@@ -2,7 +2,7 @@
   <div class="view frame-view" v-if="frame">
     <top-bar :story="story"></top-bar>
     <div class="top" v-if="frame">
-      <div class="picture-frame image" ref="dragAndDropArea">
+      <div class="picture-frame image" ref="dragAndDropArea" :class="{empty: !imageUrl}">
         <input type="file" class="picture-input" @change="handleFileSelect" ref="fileInput">
         <FrameImage :image-url="imageUrl" v-if="imageUrl"></FrameImage>
         <label>Choose a File</label>
@@ -38,7 +38,7 @@
   pointer-events: none;
 }
 
-.picture-frame:not(:hover) label {
+.picture-frame:not(.empty):not(:hover) label {
   display: none;
 }
 
