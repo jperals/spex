@@ -38,7 +38,7 @@
   pointer-events: none;
 }
 
-.frame-image:not(:hover) label {
+.picture-frame:not(:hover) label {
   display: none;
 }
 
