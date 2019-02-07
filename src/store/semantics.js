@@ -36,11 +36,19 @@ export class SemanticMapping {
 
 const semantics = {
   state: {
+    changeTracker: 1,
     nextId: 0,
     semanticMappings: {}
   },
   getters: {
-    frameMappings: (state) => (frame) => state.semanticMappings[frame.id],
+    semanticsChangeTracker: (state) => state.changeTracker,
+    frameMappings: (state) => (frame) => {
+      if(frame) {
+        return state.semanticMappings[frame.id]
+      } else {
+        return state.semanticMappings
+      }
+    },
     relationship: (state, getters) => ({frame, start, end}) => {
       const frameMappings = getters.frameMappings(frame)
       if (frameMappings) {
@@ -51,7 +59,6 @@ const semantics = {
     relationships: (state, getters) => (frame) => {
       const frameMappings = getters.frameMappings(frame)
       if (frameMappings && frameMappings.relationships) {
-        console.log(frameMappings.relationships)
         const relationships = []
         for (const key in frameMappings.relationships) {
           const [start, end] = key.split('-').map(n => Number(n))
@@ -62,9 +69,7 @@ const semantics = {
             element: frameMappings.relationships[key]
           })
         }
-        console.log(relationships)
         relationships.sort((a, b) => a.start - b.start)
-        console.log(relationships)
         return relationships
       }
       return
@@ -108,6 +113,7 @@ const semantics = {
         frameMappings = state.semanticMappings[frame.id]
       }
       frameMappings.setRelationship({start, end, component})
+      state.changeTracker += 1
     }
   }
 }

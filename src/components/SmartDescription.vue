@@ -107,7 +107,7 @@ export default {
           text: this.value.substring(currentIndex)
         })
       }
-      return this.changeTracker && chunks
+      return this.changeTracker && store.getters.semanticsChangeTracker && chunks
     }
   },
   methods: {
