@@ -17,14 +17,19 @@ export function smartDiff(oldText, newText) {
     fromTheStart += 1
   }
   let fromTheEnd = 0
-  for(let j = 0; j < newText.length && j < oldText.length; j++) {
+  for(let j = 0; j < newText.length - fromTheStart && j < oldText.length - fromTheStart; j++) {
     if(newText[newText.length - 1 - j] !== oldText[oldText.length - 1 - j]) {
       break
     }
     fromTheEnd += 1
   }
   const start = fromTheStart
-  const end = newText.length - fromTheEnd
+  let end = newText.length - fromTheEnd
+  // // Special case: the character on both sides of the break is the same.
+  // // Separate start and end.
+  // if(start !== end && newText[start] === newText[end]) {
+  //   end += 1
+  // }
   let shiftAmount
   if (end < start) {
     shiftAmount = end - start + Math.min(0, newText.length - oldText.length)
@@ -32,8 +37,9 @@ export function smartDiff(oldText, newText) {
   else {
     shiftAmount = newText.length - oldText.length
   }
-  console.log(oldText)
-  console.log(newText)
-  console.log(start, fromTheEnd, shiftAmount)
+  // console.log(oldText)
+  // console.log(newText)
+  // console.log(start, fromTheEnd, shiftAmount)
+  end = Math.max(start, end)
   return {start, end, shiftAmount}
 }

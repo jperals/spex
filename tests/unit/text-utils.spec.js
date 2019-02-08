@@ -84,4 +84,68 @@ describe('smartDiff', () => {
     expect(end).toBe(3)
     expect(shiftAmount).toBe(1)
   })
+  it('with repeated elements added at the beginning', () => {
+    const oldText = 'Hello'
+    const newText = '1111Hello'
+    const {start, end, shiftAmount} = smartDiff(oldText, newText)
+    expect(start).toBe(0)
+    expect(end).toBe(4)
+    expect(shiftAmount).toBe(4)
+  })
+  it('with repeated elements removed at the beginning', () => {
+    const oldText = '1111Hello'
+    const newText = 'Hello'
+    const {start, end, shiftAmount} = smartDiff(oldText, newText)
+    expect(start).toBe(0)
+    expect(end).toBe(0)
+    expect(shiftAmount).toBe(-4)
+  })
+  it('with repeated elements added at the end', () => {
+    const oldText = 'Hello'
+    const newText = 'Hello1111'
+    const {start, end, shiftAmount} = smartDiff(oldText, newText)
+    expect(start).toBe(5)
+    expect(end).toBe(9)
+    expect(shiftAmount).toBe(4)
+  })
+  it('with repeated existing elements added at the beginning', () => {
+    const oldText = 'Hello'
+    const newText = 'HHHHHello'
+    const {start, end, shiftAmount} = smartDiff(oldText, newText)
+    expect(start).toBe(1)
+    expect(end).toBe(5)
+    expect(shiftAmount).toBe(4)
+  })
+  it('with repeated existing elements removed at the beginning', () => {
+    const oldText = 'HHHHHello'
+    const newText = 'Hello'
+    const {start, end, shiftAmount} = smartDiff(oldText, newText)
+    expect(start).toBe(1)
+    expect(end).toBe(1)
+    expect(shiftAmount).toBe(-4)
+  })
+  it('with repeated existing elements replacing a fragment of equal length in between', () => {
+    const oldText = 'Hello'
+    const newText = 'H111o'
+    const {start, end, shiftAmount} = smartDiff(oldText, newText)
+    expect(start).toBe(1)
+    expect(end).toBe(4)
+    expect(shiftAmount).toBe(0)
+  })
+  it('with repeated existing elements replacing a fragment of smaller length in between', () => {
+    const oldText = 'Hello'
+    const newText = 'H111111o'
+    const {start, end, shiftAmount} = smartDiff(oldText, newText)
+    expect(start).toBe(1)
+    expect(end).toBe(7)
+    expect(shiftAmount).toBe(3)
+  })
+  it('with repeated existing elements being replaced by a fragment of smaller length in between', () => {
+    const oldText = 'H111111o'
+    const newText = 'Hello'
+    const {start, end, shiftAmount} = smartDiff(oldText, newText)
+    expect(start).toBe(1)
+    expect(end).toBe(4)
+    expect(shiftAmount).toBe(-3)
+  })
 })

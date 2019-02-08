@@ -27,7 +27,6 @@ export class SemanticMapping {
       const [thisStart, thisEnd] = rangeStr.split('-').map(s => Number(s))
       let newStart = thisStart
       let newEnd = thisEnd
-      console.log(forbiddenRangeStart, forbiddenRangeEnd, thisStart, thisEnd)
       // Delete ranges that fall fully inside of the forbidden range,
       // or if they fully contain the forbidden range.
       if (forbiddenRangeStart <= thisStart && thisEnd <= forbiddenRangeEnd
@@ -122,11 +121,8 @@ const semantics = {
         const range = rangeStr.split('-').map(str => Number(str))
         for (let index in range) {
           let location = range[index]
-          if (location > start) {
+          if (start <= location) {
             location += shiftAmount
-          }
-          if (location < start + shiftAmount) {
-            location = start + shiftAmount
           }
           location = Math.max(0, location)
           range[index] = location
