@@ -1,6 +1,3 @@
-// Note:
-// Components are not story-specific.
-
 export class Component {
   constructor(props) {
     this.id = components.state.nextId.toString()
@@ -11,6 +8,9 @@ export class Component {
     Object.assign(this, props)
   }
 }
+
+// Note:
+// We are not using Components as being story-specific for now.
 
 const components = {
   state: {
