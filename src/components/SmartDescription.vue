@@ -43,7 +43,6 @@ $fontSize: 20px;
 
 <script>
 import store from "@/store";
-import objectHash from 'object-hash'
 
 export default {
   name: "smart-description",
