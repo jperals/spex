@@ -69,7 +69,6 @@ export default {
   methods: {
     onInput() {
       this.$emit('input', this.$refs.textarea.innerHTML)
-      console.log('onInput')
     },
     updateContent() {
       const textarea = this.$refs.textarea
@@ -79,21 +78,25 @@ export default {
     toggleSelection(value) {
       console.log(value)
     },
-    updateSelection(event) {
+    async updateSelection(event) {
       event.stopPropagation()
       this.changeTracker += 1;
       const selection = document.getSelection()
-      if(!selection) {
+      if (!selection) {
         store.commit('toggleSelection', false)
         return
       }
       const currentText = selection.toString()
-      if(!currentText || !currentText.length) return
-      // Passing in the selection object directly like makes objectHash crash:
-      // const id = objectHash(selection)
-      // because objectHash expects objects of a predefined set of types.
-      // See https://github.com/puleos/object-hash/issues/67
-      const id = objectHash(Object.assign({}, selection))
+      if (!currentText || !currentText.length) {
+        store.commit('toggleSelection', false)
+        return
+      }
+      let id
+      if (selection.anchorNode && selection.anchorNode.parentElement && selection.anchorNode.parentElement.attributes && selection.anchorNode.parentElement.attributes['link-id']) {
+        id = selection.anchorNode.parentElement.attributes['link-id'].value
+      } else {
+        id = await store.dispatch('addSemanticRelationship')
+      }
       const html = `<span class="smart-link" link-id="${id}">${currentText}</span>`
       document.execCommand('insertHTML', false, html)
       store.commit("setSelection", {id});

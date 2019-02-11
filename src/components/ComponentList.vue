@@ -139,9 +139,9 @@ export default {
       const relatedComponentId = store.getters.relationship(selection)
       return relatedComponentId === component.id
     },
-    select(component) {
-      const selection = store.getters.selection
+    select(component, event) {
       event.stopPropagation()
+      const selection = store.getters.selection
       store.commit('setFocus', 'componentList')
       store.commit('toggleSelection', true)
       store.commit('setRelationship', {

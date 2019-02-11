@@ -29,7 +29,6 @@ const ui = {
       state.focusedElement = elementId
     },
     setSelection(state, selection) {
-      console.log(selection)
       state.textSelection = selection
     },
     toggleComponents(state) {
@@ -39,8 +38,7 @@ const ui = {
       state.selecting = typeof value === 'undefined' ? !state.selecting : value
     },
     unsetSelection(state) {
-      state.textSelectionStart = null
-      state.textSelectionEnd = null
+      state.textSelection = null
     }
   }
 }
