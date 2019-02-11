@@ -95,9 +95,9 @@ export default {
         id = selection.anchorNode.parentElement.attributes['link-id'].value
       } else {
         id = await store.dispatch('addSemanticRelationship')
+        const html = `<span class="smart-link" link-id="${id}">${currentText}</span>`
+        document.execCommand('insertHTML', false, html)
       }
-      const html = `<span class="smart-link" link-id="${id}">${currentText}</span>`
-      document.execCommand('insertHTML', false, html)
       store.commit("setSelection", {id});
       store.commit('setFocus', 'smartText')
       store.commit('toggleSelection', true)
