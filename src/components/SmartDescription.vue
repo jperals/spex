@@ -75,7 +75,11 @@ export default {
       textarea.innerHTML = this.value
       this.changeTracker += 1;
     },
-    updateSelection() {
+    toggleSelection(value) {
+      console.log(value)
+    },
+    updateSelection(event) {
+      event.stopPropagation()
       this.changeTracker += 1;
       const selection = document.getSelection()
       const currentText = selection.toString()
@@ -85,6 +89,7 @@ export default {
       const result = document.execCommand('insertHTML', false, html)
       store.commit("setSelection", {id});
       console.log(result)
+      store.commit('toggleSelection', true)
     }
   },
   watch: {
@@ -98,7 +103,7 @@ export default {
 <docs>
   ```jsx
   <smart-description
-      v-model="'This is a smart description where text fragments can be related to components in the system'"
+      :value="'This is a smart description where text fragments can be related to components in the system'"
       :placeholder="'Placeholder'"/>
   ```
 </docs>

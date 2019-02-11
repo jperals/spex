@@ -1,6 +1,3 @@
-// Note:
-// Components are not story-specific.
-
 export class Component {
   constructor(props) {
     this.id = components.state.nextId.toString()
@@ -12,17 +9,32 @@ export class Component {
   }
 }
 
+// Note:
+// We are not using Components as being story-specific for now.
+
 const components = {
   state: {
     components: [],
     nextId: 0
   },
   getters: {
-    components: state => state.components
+    components: state => state.components,
+    newComponent: () => () => {
+      return {
+        title: '',
+        description: '',
+        aliases: ''
+      }
+    }
   },
   mutations: {
     addComponent(state, {component}) {
-      state.components.push(component)
+      state.components.push(new Component(component))
+    }
+  },
+  actions: {
+    addComponent(context, component) {
+      context.commit('addComponent', {component})
     }
   }
 }

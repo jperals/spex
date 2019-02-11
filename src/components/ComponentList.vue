@@ -2,12 +2,17 @@
   <div class="component-list">
     <div class="header">COMPONENTS</div>
     <div class="component" v-for="component in components.list" :key="component.id">
-      <label class="container" @click="select(component)">
+      <label v-if="selecting" class="container" @click="select(component, $event)">
         <input type="radio" :checked="isSelected(component)" :class="{checked: isSelected(component) }">
-        <span class="component-name">{{component.name}}</span>
         <span class="checkmark"></span>
+        <span class="component-name">{{component.name}}</span>
       </label>
+      <div v-else>
+        <span class="component-name">{{component.name}}</span><button @click="editComponent(component)">Edit</button>
+      </div>
     </div>
+    <button @click="createNewComponent">New</button>
+    <component-modal v-if="editingComponent" :component="editingComponent"></component-modal>
   </div>
 </template>
 
@@ -15,6 +20,7 @@
 input:checked {
   background-color: pink
 }
+
 .header {
   font-weight: 800;
   margin-bottom: 8px;
@@ -103,10 +109,10 @@ input:checked {
 </style>
 
 
-
-
 <script>
+import ComponentModal from './ComponentModal'
 import store from '@/store'
+
 export default {
   name: "component-list",
   props: {
@@ -117,7 +123,17 @@ export default {
       type: Object
     }
   },
+  components: {
+    ComponentModal
+  },
   methods: {
+    createNewComponent() {
+      const component = store.getters.newComponent()
+      this.editComponent(component)
+    },
+    editComponent(component) {
+      store.commit('editComponent', component)
+    },
     isSelected(component) {
       const selection = store.getters.selection
       const relatedComponentId = store.getters.relationship(selection)
@@ -125,10 +141,21 @@ export default {
     },
     select(component) {
       const selection = store.getters.selection
+      event.stopPropagation()
+      store.commit('setFocus', 'componentList')
+      store.commit('toggleSelection', true)
       store.commit('setRelationship', {
         textFragment: selection,
         component
       })
+    }
+  },
+  computed: {
+    editingComponent() {
+      return store.getters.editingComponent
+    },
+    selecting() {
+      return store.getters.selecting
     }
   }
 };
@@ -136,5 +163,6 @@ export default {
 
 <docs>
   ```jsx
-  <component-list :components="{list: [{id: '0', name: 'VR goggles'}, {id: '1', name: 'AR glasses'}, {id: '2', name: 'Tray'}, {id: '3', name: 'Robot'}, {id: '4', name: 'MOTO MH-6'}], selected: '2'}"/>
+  <component-list
+      :components="{list: [{id: '0', name: 'VR goggles'}, {id: '1', name: 'AR glasses'}, {id: '2', name: 'Tray'}, {id: '3', name: 'Robot'}, {id: '4', name: 'MOTO MH-6'}], selected: '2'}"/>
 </docs>

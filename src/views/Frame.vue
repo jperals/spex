@@ -1,5 +1,5 @@
 <template>
-  <div class="view frame-view" v-if="frame">
+  <div class="view frame-view" v-if="frame" @click="toggleSelection(false)">
     <top-bar :story="story"></top-bar>
     <div class="top" v-if="frame">
       <div class="picture-frame image" ref="dragAndDropArea" :class="{empty: !imageUrl}">
@@ -22,6 +22,11 @@
 </template>
 
 <style scoped lang="scss">
+
+.view {
+  height: 100vh;
+}
+
 .title {
   font-weight: 800;
   font-size: 40px;
@@ -259,6 +264,9 @@ export default {
     },
     handleFileSelect(event) {
       this.handleFiles(event.target.files);
+    },
+    toggleSelection(value) {
+      store.commit('toggleSelection', value)
     },
     updateImageUrl() {
       this.changeTrack += 1;
