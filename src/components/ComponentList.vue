@@ -3,22 +3,31 @@
     <div class="header">COMPONENTS</div>
     <div class="component" v-for="component in components.list" :key="component.id">
       <label v-if="selecting" class="container" @click="select(component, $event)">
-        <input type="radio" :checked="isSelected(component)" :class="{checked: isSelected(component) }">
+        <input
+          type="radio"
+          :checked="isSelected(component)"
+          :class="{checked: isSelected(component) }"
+        >
         <span class="checkmark"></span>
         <span class="component-name">{{component.name}}</span>
       </label>
       <div v-else>
-        <span class="component-name">{{component.name}}</span><button @click="editComponent(component)">Edit</button>
+        <span class="component-name" @click="editComponent(component)">
+          {{component.name}}
+          <div class="edit"></div>
+        </span>
+
+        <!-- <button @click="editComponent(component)" class="editButton">Edit</button> -->
       </div>
     </div>
-    <button @click="createNewComponent">New</button>
+    <button @click="createNewComponent" class="newButton">NEW</button>
     <component-modal v-if="editingComponent" :component="editingComponent"></component-modal>
   </div>
 </template>
 
 <style scoped lang="scss">
 input:checked {
-  background-color: pink
+  background-color: pink;
 }
 
 .header {
@@ -37,7 +46,7 @@ input:checked {
 .container {
   display: block;
   position: relative;
-  padding-left: 60px;
+  padding-left: 40px;
   margin-bottom: 16px;
   cursor: pointer;
   font-size: 20px;
@@ -106,12 +115,65 @@ input:checked {
   width: 250px;
   height: 100%;
 }
+
+.newButton {
+  background-color: #56a8d1;
+  border: none;
+  color: white;
+  padding: 8px 24px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  float: left;
+  margin-right: 24px;
+  transition: all 0.3s;
+  outline: none;
+  border-radius: 2px;
+  margin-left: 80px;
+}
+
+.newButton:hover {
+  background-color: #417f9e;
+}
+
+.component-name {
+  margin-left: 16px;
+  display: block;
+  position: relative;
+  margin-bottom: 16px;
+  cursor: pointer;
+  font-size: 20px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.component-name:hover .edit {
+  display: block;
+}
+
+.edit {
+  background-image: url("../assets/icons/edit.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  margin-right: 24px;
+  right: 0;
+  top: 0;
+  display: none;
+}
 </style>
 
 
 <script>
-import ComponentModal from './ComponentModal'
-import store from '@/store'
+import ComponentModal from "./ComponentModal";
+import store from "@/store";
 
 export default {
   name: "component-list",
@@ -128,39 +190,43 @@ export default {
   },
   methods: {
     createNewComponent() {
-      const component = store.getters.newComponent()
-      this.editComponent(component)
+      const component = store.getters.newComponent();
+      this.editComponent(component);
     },
     editComponent(component) {
-      store.commit('editComponent', component)
+      store.commit("editComponent", component);
     },
     isSelected(component) {
-      if (!this.frame) return
-      const selection = store.getters.selection
-      if (!selection) return false
-      const {start, end} = selection
-      const relatedComponentId = store.getters.relationship({frame: this.frame, start, end})
-      return relatedComponentId === component.id
+      if (!this.frame) return;
+      const selection = store.getters.selection;
+      if (!selection) return false;
+      const { start, end } = selection;
+      const relatedComponentId = store.getters.relationship({
+        frame: this.frame,
+        start,
+        end
+      });
+      return relatedComponentId === component.id;
     },
     select(component, event) {
-      event.stopPropagation()
-      const {start, end} = store.getters.selection
-      store.commit('setFocus', 'componentList')
-      store.commit('toggleSelection', true)
-      store.commit('setRelationship', {
+      event.stopPropagation();
+      const { start, end } = store.getters.selection;
+      store.commit("setFocus", "componentList");
+      store.commit("toggleSelection", true);
+      store.commit("setRelationship", {
         frame: this.frame,
         start,
         end,
         component
-      })
+      });
     }
   },
   computed: {
     editingComponent() {
-      return store.getters.editingComponent
+      return store.getters.editingComponent;
     },
     selecting() {
-      return store.getters.selecting
+      return store.getters.selecting;
     }
   }
 };
