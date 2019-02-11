@@ -22,6 +22,11 @@
 </template>
 
 <style scoped lang="scss">
+
+.view {
+  height: 100vh;
+}
+
 .title {
   font-weight: 800;
   font-size: 40px;

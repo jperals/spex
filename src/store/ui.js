@@ -12,12 +12,11 @@ const ui = {
       return state.editingComponent
     },
     focusedElement: (state) => state.focusedElement,
-    selecting(state) {
-      return state.selecting
+    selecting(state, getters) {
+      return state.selecting && getters.selectionSet && getters.selection.start < getters.selection.end
     },
-    selection(state) {
-      if (typeof state.textSelectionStart === 'number'
-        && typeof state.textSelectionEnd === 'number') {
+    selection(state, getters) {
+      if (getters.selectionSet) {
         return {
           start: state.textSelectionStart,
           end: state.textSelectionEnd
@@ -25,6 +24,8 @@ const ui = {
       }
       return null
     },
+    selectionSet: (state) => typeof state.textSelectionStart === 'number'
+      && typeof state.textSelectionEnd === 'number',
     showComponents(state) {
       return state.showComponents
     }
