@@ -86,9 +86,9 @@ export default {
       if(!currentText || !currentText.length) return
       const id = new Date().getTime()
       const html = `<span class="smart-link" link-id="${id}">${currentText}</span>`
-      const result = document.execCommand('insertHTML', false, html)
+      document.execCommand('insertHTML', false, html)
       store.commit("setSelection", {id});
-      console.log(result)
+      store.commit('setFocus', 'smartText')
       store.commit('toggleSelection', true)
     }
   },

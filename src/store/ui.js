@@ -12,13 +12,11 @@ const ui = {
     },
     focusedElement: (state) => state.focusedElement,
     selecting(state, getters) {
-      return state.selecting && getters.selectionSet && getters.selection.start < getters.selection.end
+      return state.selecting && getters.focusedElement === 'smartText' || getters.focusedElement === 'componentList'
     },
     selection(state) {
         return state.textSelection
     },
-    selectionSet: (state) => typeof state.textSelectionStart === 'number'
-      && typeof state.textSelectionEnd === 'number',
     showComponents(state) {
       return state.showComponents
     }
@@ -28,7 +26,7 @@ const ui = {
       state.editingComponent = component
     },
     setFocus(state, elementId) {
-      state.focussedElement = elementId
+      state.focusedElement = elementId
     },
     setSelection(state, selection) {
       console.log(selection)
