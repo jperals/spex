@@ -20,7 +20,14 @@
         <textarea class="aliases-text" v-model="component.aliases"></textarea>
       </label>
     </div>
-
+    <div class="row buttons">
+      <button @click="save">
+        Save
+      </button>
+      <button @click="cancel">
+        Cancel
+      </button>
+    </div>
   </div>
 </template>
 
@@ -28,11 +35,21 @@
 </style>
 
 <script>
+import store from '@/store'
 export default {
   name: 'component-form',
   props: {
     component: {
       type: Object
+    }
+  },
+  methods: {
+    save() {
+      store.dispatch('addComponent', this.component)
+      store.commit('editComponent')
+    },
+    cancel() {
+      store.commit('editComponent')
     }
   }
 }

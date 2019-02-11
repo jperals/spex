@@ -18,11 +18,23 @@ const components = {
     nextId: 0
   },
   getters: {
-    components: state => state.components
+    components: state => state.components,
+    newComponent: () => () => {
+      return {
+        title: '',
+        description: '',
+        aliases: ''
+      }
+    }
   },
   mutations: {
     addComponent(state, {component}) {
-      state.components.push(component)
+      state.components.push(new Component(component))
+    }
+  },
+  actions: {
+    addComponent(context, component) {
+      context.commit('addComponent', {component})
     }
   }
 }

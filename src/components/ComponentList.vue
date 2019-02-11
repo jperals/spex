@@ -8,6 +8,8 @@
         <span class="checkmark"></span>
       </label>
     </div>
+    <button @click="createNewComponent">New</button>
+    <component-modal v-if="editingComponent" :component="editingComponent"></component-modal>
   </div>
 </template>
 
@@ -106,6 +108,7 @@ input:checked {
 
 
 <script>
+import ComponentModal from './ComponentModal'
 import store from '@/store'
 export default {
   name: "component-list",
@@ -117,7 +120,17 @@ export default {
       type: Object
     }
   },
+  components: {
+    ComponentModal
+  },
   methods: {
+    createNewComponent() {
+      const component = store.getters.newComponent()
+      this.editComponent(component)
+    },
+    editComponent(component) {
+      store.commit('editComponent', component)
+    },
     isSelected(component) {
       if(!this.frame) return
       const {start, end} = store.getters.selection
@@ -132,6 +145,11 @@ export default {
         end,
         component
       })
+    }
+  },
+  computed: {
+    editingComponent() {
+      return store.getters.editingComponent
     }
   }
 };
