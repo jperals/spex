@@ -119,16 +119,14 @@ export default {
   },
   methods: {
     isSelected(component) {
-      const {start, end} = store.getters.selection
-      const relatedComponentId = store.getters.relationship({frame: this.frame, start, end})
+      const selection = store.getters.selection
+      const relatedComponentId = store.getters.relationship(selection)
       return relatedComponentId === component.id
     },
     select(component) {
-      const {start, end} = store.getters.selection
+      const selection = store.getters.selection
       store.commit('setRelationship', {
-        frame: this.frame,
-        start,
-        end,
+        textFragment: selection,
         component
       })
     }

@@ -78,12 +78,12 @@ export default {
     updateSelection() {
       this.changeTracker += 1;
       const selection = document.getSelection()
-      store.commit("setSelection", selection);
       const currentText = selection.toString()
       if(!currentText || !currentText.length) return
       const id = new Date().getTime()
-      const html = `<span class="smart-link" link-to="${id}">${currentText}</span>`
+      const html = `<span class="smart-link" link-id="${id}">${currentText}</span>`
       const result = document.execCommand('insertHTML', false, html)
+      store.commit("setSelection", {id});
       console.log(result)
     }
   },
