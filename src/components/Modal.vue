@@ -1,0 +1,25 @@
+<template>
+  <div class="modal">
+    <slot></slot>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(100, 100, 100, 0.3);
+  padding: 30px;
+  display: flex;
+  align-items: center;
+}
+</style>
+
+<script>
+export default {
+  name: 'modal-dialog'
+}
+</script>

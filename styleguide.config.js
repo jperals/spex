@@ -2,7 +2,7 @@ const path = require('path')
 
 module.exports = {
   // set your styleguidist configuration here
-  title: 'Default Style Guide',
+  title: 'ProFi Style Guide',
   components: 'src/components/**/[A-Z]*.vue',
   defaultExample: false,
   require: [
