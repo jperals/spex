@@ -121,7 +121,7 @@ const semantics = {
         const range = rangeStr.split('-').map(str => Number(str))
         for (let index in range) {
           let location = range[index]
-          if (start <= location) {
+          if (start < location) {
             location += shiftAmount
           }
           location = Math.max(0, location)
