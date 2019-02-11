@@ -43,6 +43,7 @@ $fontSize: 20px;
 
 <script>
 import store from "@/store";
+import objectHash from 'object-hash'
 
 export default {
   name: "smart-description",
@@ -82,9 +83,17 @@ export default {
       event.stopPropagation()
       this.changeTracker += 1;
       const selection = document.getSelection()
+      if(!selection) {
+        store.commit('toggleSelection', false)
+        return
+      }
       const currentText = selection.toString()
       if(!currentText || !currentText.length) return
-      const id = new Date().getTime()
+      // Passing in the selection object directly like makes objectHash crash:
+      // const id = objectHash(selection)
+      // because objectHash expects objects of a predefined set of types.
+      // See https://github.com/puleos/object-hash/issues/67
+      const id = objectHash(Object.assign({}, selection))
       const html = `<span class="smart-link" link-id="${id}">${currentText}</span>`
       document.execCommand('insertHTML', false, html)
       store.commit("setSelection", {id});
