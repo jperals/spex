@@ -26,7 +26,7 @@ store.commit('addFrame', {
   frame: new Frame({
     story,
     title: 'Arrive at Machine',
-    description: 'A factory technician arrrives at the MOTO MH-6, puts on AR glasses and choses ‘Begin’ from the controls he sees in AR.'
+    description: 'A factory technician arrives at the MOTO MH-6, puts on AR glasses and chooses ‘Begin’ from the controls he sees in AR.'
   })
   }
 )

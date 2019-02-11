@@ -1,24 +1,20 @@
 const ui = {
   state: {
     showComponents: false,
-    textSelectionStart: null,
-    textSelectionEnd: null
+    textSelection: null
   },
   getters: {
     selection(state) {
-      return {
-        start: state.textSelectionStart,
-        end: state.textSelectionEnd
-      }
+      return state.textSelection
     },
     showComponents(state) {
       return state.showComponents
     }
   },
   mutations: {
-    setSelection(state, {start, end}) {
-      state.textSelectionStart = start
-      state.textSelectionEnd = end
+    setSelection(state, selection) {
+      console.log(selection)
+      state.textSelection = selection
     },
     toggleComponents(state) {
       state.showComponents = ! state.showComponents
