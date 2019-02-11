@@ -120,9 +120,14 @@ export default {
     formattedClass(chunk) {
       return chunk.link ? "linked" : undefined;
     },
-    updateSelection() {
+    toggleSelection(value) {
+      console.log(value)
+    },
+    updateSelection(event) {
+      event.stopPropagation()
       this.changeTracker += 1;
       const textarea = this.$refs.textarea;
+      store.commit('toggleSelection', true)
       store.commit("setSelection", {
         start: textarea.selectionStart,
         end: textarea.selectionEnd
