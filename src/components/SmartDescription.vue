@@ -1,17 +1,21 @@
 <template>
   <div class="smart-text">
     <div class="rich-text">
-      <span class="formatted-chunk" :class="formattedClass(chunk)" v-for="(chunk, index) in formattedChunks"
-            :key="index">{{chunk.text}}</span>
+      <span
+        class="formatted-chunk"
+        :class="formattedClass(chunk)"
+        v-for="(chunk, index) in formattedChunks"
+        :key="index"
+      >{{chunk.text}}</span>
     </div>
     <textarea
-        ref="textarea"
-        v-bind:value="value"
-        v-on:input="$emit('input', $event.target.value)"
-        @click="updateSelection"
-        :placeholder="placeholder"
-        rows="4"
-        maxlength="295"
+      ref="textarea"
+      v-bind:value="value"
+      v-on:input="$emit('input', $event.target.value)"
+      @click="updateSelection"
+      :placeholder="placeholder"
+      rows="4"
+      maxlength="295"
     ></textarea>
   </div>
 </template>
@@ -35,9 +39,9 @@ $fontSize: 20px;
     .formatted-chunk {
       font-size: $fontSize;
       &.linked {
-        background-color: pink;
+        background-color: #e3dfff;
         &:hover {
-          background-color: palegoldenrod;
+          background-color: #bfbbd6;
         }
       }
     }
@@ -57,19 +61,18 @@ $fontSize: 20px;
     width: 100%;
   }
 }
-
 </style>
 
 <script>
-import {smartDiff} from "@/text-utils";
-import store from '@/store'
+import { smartDiff } from "@/text-utils";
+import store from "@/store";
 
 export default {
-  name: 'smart-description',
+  name: "smart-description",
   data() {
     return {
       changeTracker: 1
-    }
+    };
   },
   props: {
     frame: {
@@ -84,53 +87,61 @@ export default {
   },
   computed: {
     formattedChunks() {
-      const chunks = []
-      let currentIndex = 0
-      const frameRelationships = this.changeTracker && store.getters.relationships(this.frame)
+      const chunks = [];
+      let currentIndex = 0;
+      const frameRelationships =
+        this.changeTracker && store.getters.relationships(this.frame);
       if (!frameRelationships) {
-        return
+        return;
       }
       for (const relationship of frameRelationships) {
         if (currentIndex < relationship.start) {
           chunks.push({
             text: this.value.substring(currentIndex, relationship.start)
-          })
+          });
         }
         chunks.push({
           link: relationship.element,
           text: this.value.substring(relationship.start, relationship.end)
-        })
-        currentIndex = relationship.end
+        });
+        currentIndex = relationship.end;
       }
       if (currentIndex < this.value.length) {
         chunks.push({
           text: this.value.substring(currentIndex)
-        })
+        });
       }
-      return this.changeTracker && store.getters.semanticsChangeTracker && chunks
+      return (
+        this.changeTracker && store.getters.semanticsChangeTracker && chunks
+      );
     }
   },
   methods: {
     formattedClass(chunk) {
-      return chunk.link ? 'linked' : undefined
+      return chunk.link ? "linked" : undefined;
     },
     updateSelection() {
-      this.changeTracker += 1
-      const textarea = this.$refs.textarea
-      store.commit('setSelection', {
+      this.changeTracker += 1;
+      const textarea = this.$refs.textarea;
+      store.commit("setSelection", {
         start: textarea.selectionStart,
         end: textarea.selectionEnd
-      })
+      });
     }
   },
   watch: {
     value(newText, oldText) {
-      this.changeTracker += 1
-      const {start, end, shiftAmount} = smartDiff(oldText, newText)
-      store.commit('offsetMappings', {frame: this.frame, start, end, shiftAmount})
+      this.changeTracker += 1;
+      const { start, end, shiftAmount } = smartDiff(oldText, newText);
+      store.commit("offsetMappings", {
+        frame: this.frame,
+        start,
+        end,
+        shiftAmount
+      });
     }
   }
-}
+};
 </script>
 
 <docs>
