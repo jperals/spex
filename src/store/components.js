@@ -50,8 +50,16 @@ const components = {
     loadComponents(context) {
       db.collection('components').get()
         .then(documents => {
+          const components = []
           documents.forEach(document => {
-            const component = document.data()
+            components.push(document.data())
+          })
+          components.sort((a, b) => {
+            if (a.name < b.name) return -1
+            if (b.name < a.name) return 1
+            return 0
+          })
+          components.forEach(component => {
             context.commit('addComponent', component)
           })
         })
