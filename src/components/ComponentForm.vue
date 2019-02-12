@@ -6,7 +6,7 @@
       <input
         type="text"
         class="name-text-box"
-        v-model="component.name"
+        v-model="componentCopy.name"
         placeholder="Give your component a name..."
       >
     </div>
@@ -14,7 +14,7 @@
       <label class="label">DESCRIPTION</label>
       <textarea
         class="description-text-box"
-        v-model="component.description"
+        v-model="componentCopy.description"
         placeholder="Describe your component..."
         style="height:144px;"
       ></textarea>
@@ -23,7 +23,7 @@
       <label class="label">ALIAS</label>
       <textarea
         class="alias-text-box"
-        v-model="component.aliases"
+        v-model="componentCopy.aliases"
         placeholder="What other words do people use to describe this component?"
       ></textarea>
     </div>
@@ -31,7 +31,7 @@
       <label class="label">STATUS</label>
       <div class="container">
         <label class="container">
-          <input type="checkbox" class="checkbox" v-model="component.mandatory">
+          <input type="checkbox" class="checkbox" v-model="componentCopy.mandatory">
           <span class="mandatory-text">This component is mandatory</span>
           <input type="checkbox">
           <span class="checkmark"></span>
@@ -276,9 +276,14 @@ export default {
       type: Object
     }
   },
+  data() {
+    return {
+      componentCopy: Object.assign({}, this.component)
+    }
+  },
   methods: {
     save() {
-      store.dispatch("saveComponent", this.component);
+      store.dispatch("saveComponent", this.componentCopy);
       store.dispatch("editComponent");
     },
     cancel() {
