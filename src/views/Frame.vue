@@ -15,15 +15,17 @@
           :placeholder="'Describe what happens in this frame'"
         ></smart-description>
       </div>
+      <component-list :class="{active:showComponents}" :components="components" :frame="frame"></component-list>
     </div>
     <frame-selector :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
-    <component-list :class="{active:showComponents}" :components="components" :frame="frame"></component-list>
   </div>
 </template>
 
 <style scoped lang="scss">
 .view {
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
@@ -80,10 +82,7 @@
 
 .frame-selector {
   height: 100px;
-  width: 100%;
   background-color: #f2f6f7;
-  position: fixed;
-  bottom: 0;
 }
 
 .frame-selector.frames {
@@ -95,10 +94,11 @@
 }
 
 .component-list {
-  float: right;
-  position: fixed;
-  top: 65px;
-  right: 0;
+  /* float: right; */
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
   -webkit-­transition: all 0.3s ease;
   -moz-­transition: all 0.3s ease;
   ­-o-­transition: all 0.3s ease;
@@ -154,8 +154,9 @@
   background-color: #56a8d1;
   display: block;
   position: relative;
-  margin: auto;
-  top: 263px;
+  margin-left: auto;
+  margin-right: auto;
+  top: 270px;
   text-align: center;
   width: 100px;
   pointer-events: none;
@@ -173,6 +174,12 @@
 
 .picture-input:hover {
   cursor: pointer;
+}
+
+.top {
+  flex-grow: 1;
+  position: relative;
+  z-index: 20;
 }
 
 .picture-input:focus ~ label,
