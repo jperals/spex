@@ -13,7 +13,12 @@
     ></div>
     <div v-show="tooltipVisible" class="tooltip" ref="tooltip" :style="tooltipStyle" @mouseover="onMouseOverTooltip">
       <div class="tooltip-text">
-        {{tooltipText}}
+        <div class="tooltip-title">
+          {{tooltipTitle}}
+        </div>
+        <div class="tooltip-description">
+          {{tooltipText}}
+        </div>
       </div>
     </div>
   </div>
@@ -68,6 +73,9 @@ $fontSize: 20px;
       left: 0;
       transform: translateX(-50%);
       width: 100%;
+      .tooltip-title {
+        background-color: lightgrey;
+      }
     }
   }
 }
@@ -83,6 +91,7 @@ export default {
     return {
       tooltipPosition: {x: 0, y: 0},
       tooltipText: '',
+      tooltipTitle: '',
       tooltipVisible: false,
       changeTracker: 1
     };
@@ -124,17 +133,18 @@ export default {
           this.tooltipText = ''
           this.tooltipVisible = false
         } else {
-          const text = store.getters.componentDescription(linkedElementId)
-          if (typeof text === 'string') {
+          const linkedElement = store.getters.componentById(linkedElementId)
+          if (typeof linkedElement === 'object') {
             const elementBoundingBox = targetElement.getBoundingClientRect()
             const containerBoundingBox = this.$refs.textarea.getBoundingClientRect()
             this.tooltipPosition.x = elementBoundingBox.left - containerBoundingBox.left + elementBoundingBox.width / 2
             this.tooltipPosition.y = elementBoundingBox.top - containerBoundingBox.top
-            this.tooltipText = text
+            this.tooltipText = linkedElement.description
+            this.tooltipTitle = linkedElement.name
             this.tooltipVisible = true
           }
         }
-      } else if (!(targetElement.classList.contains('tooltip')) && !(targetElement.classList.contains('tooltip-text'))) {
+      } else if (!(targetElement.classList.contains('tooltip')) && !(targetElement.classList.contains('tooltip-text')) && !(targetElement.classList.contains('tooltip-title')) && !(targetElement.classList.contains('tooltip-description'))) {
         this.tooltipVisible = false
       }
     },
