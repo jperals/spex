@@ -40,9 +40,3 @@ store.commit('addFrame', {
   })
   }
 )
-
-store.dispatch('addComponent', new Component({name: 'AR Glasses', description: 'AR glasses let you see things beyond reality'}))
-store.dispatch('addComponent', new Component({name: 'Components'}))
-store.dispatch('addComponent', new Component({name: 'Tray'}))
-store.dispatch('addComponent', new Component({name: 'Robot'}))
-store.dispatch('addComponent', new Component({name: 'MOTO MH-6'}))
