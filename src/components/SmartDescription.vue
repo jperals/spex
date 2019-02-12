@@ -1,21 +1,20 @@
 <template>
   <div class="smart-text-container">
-    <div class="smart-text"
-         contenteditable
-         ref="textarea"
-         v-bind:value="value"
-         @click="updateSelection"
-         @input="onInput"
-         v-on:mousemove="onMouseMove($event)"
-         @mouseout="onMouseOut"
-         :placeholder="placeholder"
-         rows="4"
-         maxlength="295"
+    <div
+      class="smart-text"
+      contenteditable
+      ref="textarea"
+      v-bind:value="value"
+      @click="updateSelection"
+      @input="onInput"
+      v-on:mousemove="onMouseMove($event)"
+      @mouseout="onMouseOut"
+      :placeholder="placeholder"
+      rows="4"
+      maxlength="295"
     ></div>
     <div v-if="tooltipText" class="tooltip" ref="tooltip" :style="tooltipStyle">
-      <div class="tooltip-text">
-        {{tooltipText}}
-      </div>
+      <div class="tooltip-text">{{tooltipText}}</div>
     </div>
   </div>
 </template>
@@ -58,8 +57,8 @@ $fontSize: 20px;
     .tooltip-text {
       background-color: #ffdad1;
       text-align: center;
-      padding: .125em .5em;
-      border-radius: .25em;
+      padding: 0.125em 0.5em;
+      border-radius: 0.25em;
       position: absolute;
       bottom: 5px;
       left: 0;
@@ -68,7 +67,6 @@ $fontSize: 20px;
     }
   }
 }
-
 </style>
 
 <script>
@@ -78,8 +76,8 @@ export default {
   name: "smart-description",
   data() {
     return {
-      tooltipPosition: {x: 0, y: 0},
-      tooltipText: '',
+      tooltipPosition: { x: 0, y: 0 },
+      tooltipText: "",
       changeTracker: 1
     };
   },
@@ -95,87 +93,98 @@ export default {
     }
   },
   mounted() {
-    this.updateContent()
+    this.updateContent();
   },
   computed: {
     lastAddedRelationshipId() {
-      return store.getters.lastAddedRelationshipId
+      return store.getters.lastAddedRelationshipId;
     },
     tooltipStyle() {
-      const x = this.tooltipPosition.x
-      const y = this.tooltipPosition.y
-      return `transform: translate(${x}px,${y}px)`
+      const x = this.tooltipPosition.x;
+      const y = this.tooltipPosition.y;
+      return `transform: translate(${x}px,${y}px)`;
     }
   },
   methods: {
     onInput() {
-      this.$emit('input', this.$refs.textarea.innerHTML)
+      this.$emit("input", this.$refs.textarea.innerHTML);
     },
     onMouseMove(event) {
-      const targetElement = event && event.target
-      if (targetElement && typeof targetElement.getAttribute('link-id') === 'string') {
-        const linkId = targetElement.getAttribute('link-id')
-        const linkedElementId = store.getters.relationship({id: linkId})
-        if (typeof linkedElementId !== 'undefined') {
-          const text = store.getters.componentDescription(linkedElementId)
-          if (typeof text === 'string') {
-            const elementBoundingBox = targetElement.getBoundingClientRect()
-            const containerBoundingBox = this.$refs.textarea.getBoundingClientRect()
-            this.tooltipPosition.x = elementBoundingBox.left - containerBoundingBox.left + elementBoundingBox.width / 2
-            this.tooltipPosition.y = elementBoundingBox.top - containerBoundingBox.top
-            this.tooltipText = text
+      const targetElement = event && event.target;
+      if (
+        targetElement &&
+        typeof targetElement.getAttribute("link-id") === "string"
+      ) {
+        const linkId = targetElement.getAttribute("link-id");
+        const linkedElementId = store.getters.relationship({ id: linkId });
+        if (typeof linkedElementId !== "undefined") {
+          const text = store.getters.componentDescription(linkedElementId);
+          if (typeof text === "string") {
+            const elementBoundingBox = targetElement.getBoundingClientRect();
+            const containerBoundingBox = this.$refs.textarea.getBoundingClientRect();
+            this.tooltipPosition.x =
+              elementBoundingBox.left -
+              containerBoundingBox.left +
+              elementBoundingBox.width / 2;
+            this.tooltipPosition.y =
+              elementBoundingBox.top - containerBoundingBox.top;
+            this.tooltipText = text;
           }
         }
       }
     },
     onMouseOut() {
-      this.tooltipText = ''
+      this.tooltipText = "";
     },
     updateContent() {
-      const textarea = this.$refs.textarea
-      textarea.innerHTML = this.value
+      const textarea = this.$refs.textarea;
+      textarea.innerHTML = this.value;
       this.changeTracker += 1;
     },
     toggleSelection(value) {
-      console.log(value)
+      console.log(value);
     },
     async updateSelection(event) {
-      event.stopPropagation()
-      const selection = document.getSelection()
-      if (!selection || !(selection.toString()) || !(selection.toString().length)) {
-        store.commit('toggleSelection', false)
-        return
+      event.stopPropagation();
+      const selection = document.getSelection();
+      if (!selection || !selection.toString() || !selection.toString().length) {
+        store.commit("toggleSelection", false);
+        return;
       }
-      let id = selection.anchorNode && selection.anchorNode.parentElement && selection.anchorNode.parentElement.attributes && selection.anchorNode.parentElement.getAttribute('link-id')
-      if (id === null || typeof id === 'undefined') {
-        id = await store.dispatch('addSemanticRelationship')
+      let id =
+        selection.anchorNode &&
+        selection.anchorNode.parentElement &&
+        selection.anchorNode.parentElement.attributes &&
+        selection.anchorNode.parentElement.getAttribute("link-id");
+      if (id === null || typeof id === "undefined") {
+        id = await store.dispatch("addSemanticRelationship");
       }
-      store.commit("setSelection", {id});
-      store.commit('setFocus', 'smartText')
-      store.commit('toggleSelection', true)
+      store.commit("setSelection", { id });
+      store.commit("setFocus", "smartText");
+      store.commit("toggleSelection", true);
       this.changeTracker += 1;
     },
     setRelationship(relationshipId) {
-      const selection = document.getSelection()
-      if (!selection || !(selection.toString()) || !(selection.toString().length)) {
-        store.commit('toggleSelection', false)
-        return
+      const selection = document.getSelection();
+      if (!selection || !selection.toString() || !selection.toString().length) {
+        store.commit("toggleSelection", false);
+        return;
       }
-      const currentText = selection.toString()
-      const html = `<span class="smart-link" link-id="${relationshipId}">${currentText}</span>`
-      document.execCommand('insertHTML', false, html)
-      store.commit("setSelection", {id: relationshipId});
-      store.commit('setFocus', 'smartText')
-      store.commit('toggleSelection', true)
+      const currentText = selection.toString();
+      const html = `<span class="smart-link" link-id="${relationshipId}">${currentText}</span>`;
+      document.execCommand("insertHTML", false, html);
+      store.commit("setSelection", { id: relationshipId });
+      store.commit("setFocus", "smartText");
+      store.commit("toggleSelection", true);
       this.changeTracker += 1;
     }
   },
   watch: {
     lastAddedRelationshipId(value) {
-      this.setRelationship(value)
+      this.setRelationship(value);
     },
-    '$route'() {
-      this.updateContent()
+    $route() {
+      this.updateContent();
     }
   }
 };
