@@ -23,25 +23,24 @@
       <label class="label">ALIAS</label>
       <textarea
         class="alias-text-box"
-        v-model="component.description"
+        v-model="component.aliases"
         placeholder="What other words do people use to describe this component?"
       ></textarea>
     </div>
     <div class="row mandatory-field">
-      <label class="mandatory-label">
-        <label class="label">STATUS</label>
-        <div class="container">
+      <label class="label">STATUS</label>
+      <div class="container">
+        <label class="container">
           <input type="checkbox" class="checkbox" v-model="component.mandatory">
           <span class="mandatory-text">This component is mandatory</span>
           <input type="checkbox">
           <span class="checkmark"></span>
-        </div>
-        <!-- <span class="mandatory-text">Mandatory</span> -->
-      </label>
+        </label>
+      </div>
     </div>
     <div class="row buttons">
-      <button @click="save">Save</button>
-      <button @click="cancel">Cancel</button>
+      <button @click="save" class="primaryButton">SAVE</button>
+      <button @click="cancel" class="secondaryButton">CANCEL</button>
     </div>
   </div>
 </template>
@@ -67,11 +66,6 @@ textarea {
   padding-top: 8px;
 }
 
-/* .mandatory-checkbox {
-  width: 40px;
-  height: 40px;
-} */
-
 .title {
   font-size: 24px;
   color: #031b26;
@@ -84,14 +78,13 @@ textarea {
 .component-form {
   background-color: #f2f6f7;
   width: 800px;
-  height: 680px;
+  height: 634px;
+  border-radius: 2px;
 }
 
 .label {
   font-weight: 800;
-  margin-bottom: 8px;
   padding-top: 16px;
-  margin-left: 16px;
   font-family: TitilliumWeb-Bold;
   font-size: 14px;
   color: #707679;
@@ -99,7 +92,7 @@ textarea {
   line-height: 32px;
   margin-left: 32px;
   display: inline-block;
-  margin-right: 100px;
+  width: 100%;
 }
 
 .name-text-box {
@@ -137,30 +130,10 @@ textarea {
   line-height: 32px;
 }
 
-.categoryDropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.categoryDropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  padding: 12px 16px;
-  z-index: 1;
-}
-
-.categoryDropdown:hover .categoryDropdown-content {
-  display: block;
-}
-
 /* Customize the label (the container) */
 .container {
-  display: block;
+  display: inline-block;
   position: absolute;
-  padding-left: 32px;
   margin-bottom: 12px;
   cursor: pointer;
   font-size: 20px;
@@ -168,12 +141,14 @@ textarea {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  width: 700px;
 }
 
 .mandatory-text {
   position: relative;
-  left: 48px;
+  left: 80px;
   top: 8px;
+  width: 400px;
 }
 
 /* Hide the browser's default checkbox */
@@ -182,7 +157,6 @@ textarea {
   opacity: 0;
   cursor: pointer;
   height: 0;
-  width: 0;
 }
 
 /* Create a custom checkbox */
@@ -195,7 +169,7 @@ textarea {
   background-color: #fff;
   margin-left: 32px;
   margin-right: 32px;
-  display: block;
+  display: inline-block;
 }
 
 /* On mouse-over, add a grey background color */
@@ -236,12 +210,60 @@ textarea {
 input:focus {
   outline: none !important;
   border-color: #56a8d1;
-  box-shadow: 0 0 10px #56a8d1;
+  box-shadow: 0px 0px 10px #56a8d1;
 }
 textarea:focus {
   outline: none !important;
   border-color: #56a8d1;
   box-shadow: 0 0 10px #56a8d1;
+}
+
+.primaryButton {
+  background-color: #56a8d1;
+  border: none;
+  color: white;
+  padding: 8px 24px;
+  text-align: center;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  float: right;
+  margin-right: 24px;
+  transition: all 0.3s;
+  outline: none;
+  border-radius: 2px;
+}
+
+.primaryButton:hover {
+  background-color: #417f9e;
+}
+
+.primaryButton:active {
+  background-color: #366b85;
+}
+
+.secondaryButton {
+  background-color: transparent;
+  border: none;
+  color: #707679;
+  padding: 8px 24px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  float: right;
+  transition: all 0.3s;
+  outline: none;
+}
+
+.secondaryButton:hover {
+  color: #031b26;
+}
+
+.buttons {
+  margin-top: 68px;
 }
 </style>
 

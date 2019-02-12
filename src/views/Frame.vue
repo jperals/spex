@@ -5,14 +5,14 @@
       <div class="picture-frame image" ref="dragAndDropArea" :class="{empty: !imageUrl}">
         <input type="file" class="picture-input" @change="handleFileSelect" ref="fileInput">
         <FrameImage :image-url="imageUrl" v-if="imageUrl"></FrameImage>
-        <label>Choose a File</label>
+        <label class="chooseButton">CHOOSE FILE</label>
       </div>
       <div class="text">
         <input class="title" v-model="frame.title" placeholder="Frame Title">
         <smart-description
-            v-model="frame.description"
-            :frame="frame"
-            :placeholder="'Describe what happens in this frame'"
+          v-model="frame.description"
+          :frame="frame"
+          :placeholder="'Describe what happens in this frame'"
         ></smart-description>
       </div>
     </div>
@@ -22,7 +22,6 @@
 </template>
 
 <style scoped lang="scss">
-
 .view {
   height: 100vh;
 }
@@ -108,7 +107,6 @@
 
 .component-list:not(.active) {
   transform: translateX(100%);
-
 }
 .frame-image {
   background-color: black;
@@ -144,7 +142,7 @@
   border-radius: 2px;
 }
 
-label {
+.chooseButton {
   font-size: 16px;
   font-weight: 800;
   padding-top: 4px;
@@ -163,6 +161,10 @@ label {
   pointer-events: none;
   border-radius: 2px;
   cursor: pointer; /* "hand" cursor */
+}
+
+.chooseButton:hover {
+  background-color: #4b93b8;
 }
 
 .picture-input:focus {
@@ -266,7 +268,7 @@ export default {
       this.handleFiles(event.target.files);
     },
     toggleSelection(value) {
-      store.commit('toggleSelection', value)
+      store.commit("toggleSelection", value);
     },
     updateImageUrl() {
       this.changeTrack += 1;
