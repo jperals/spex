@@ -57,17 +57,19 @@ $fontSize: 20px;
   $blank-space: 8px;
   position: relative;
   .tooltip {
-    text-align: center;
+    text-align: left;
     position: absolute;
     top: -$blank-space;
     left: 0;
     width: 200px;
     padding-top: $blank-space;
     .tooltip-text {
-      background-color: #ffdad1;
-      text-align: center;
+      background-color: #979c9e;
+      color: #fff;
+      text-align: left;
+      font-size: 20px;
       padding: 0.125em 0.5em;
-      border-radius: 0.25em;
+      border-radius: 2px;
       position: absolute;
       bottom: $blank-space;
       left: 0;
