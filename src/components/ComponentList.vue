@@ -45,7 +45,7 @@ input:checked {
 /* Customize the label (the container) */
 .container {
   display: block;
-  position: absolute;
+  /* position: absolute; */
   padding-left: 40px;
   margin-bottom: 16px;
   cursor: pointer;
@@ -68,7 +68,6 @@ input:checked {
 /* Create a custom radio button */
 .checkmark {
   position: absolute;
-  top: 0;
   left: 0;
   height: 25px;
   width: 25px;
