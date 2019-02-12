@@ -7,9 +7,10 @@
 
 <style scoped>
 .frames {
-  display: inline-block;
   flex-direction: row;
   max-width: 1066px;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
 
