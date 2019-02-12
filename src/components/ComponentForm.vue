@@ -278,11 +278,11 @@ export default {
   },
   methods: {
     save() {
-      store.dispatch("addComponent", this.component);
-      store.commit("editComponent");
+      store.dispatch("saveComponent", this.component);
+      store.dispatch("editComponent");
     },
     cancel() {
-      store.commit("editComponent");
+      store.dispatch("editComponent");
     }
   }
 };

@@ -2,7 +2,7 @@ export class Component {
   constructor(props) {
     this.id = components.state.nextId.toString()
     components.state.nextId += 1
-    if(props && props.story) {
+    if (props && props.story) {
       this.storyId = props.story.id
     }
     Object.assign(this, props)
@@ -35,11 +35,27 @@ const components = {
   mutations: {
     addComponent(state, {component}) {
       state.components.push(new Component(component))
+    },
+    updateComponent(state, {newComponent, oldComponent}) {
+      Object.assign(oldComponent, newComponent)
     }
   },
   actions: {
     addComponent(context, component) {
       context.commit('addComponent', {component})
+    },
+    saveComponent(context, component) {
+      // Add to the components if it's not there;
+      // modify the corresponding component if we already have it
+      const matchingComponent = context.getters.componentById(component.id)
+      if (matchingComponent) {
+        context.commit('updateComponent', {
+          newComponent: component,
+          oldComponent: matchingComponent
+        })
+      } else {
+        context.commit('addComponent', {component})
+      }
     }
   }
 }

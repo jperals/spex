@@ -1,5 +1,5 @@
 <template>
-  <div class="smart-text-container">
+  <div class="smart-text-container" @mouseleave="onMouseLeave($event)">
     <div
       class="smart-text"
       contenteditable
@@ -8,12 +8,17 @@
       @click="updateSelection"
       @input="onInput"
       v-on:mousemove="onMouseMove($event)"
-      @mouseout="onMouseOut"
       :placeholder="placeholder"
       rows="4"
       maxlength="295"
     ></div>
-    <div v-if="tooltipText" class="tooltip" ref="tooltip" :style="tooltipStyle">
+    <div
+      v-show="tooltipVisible"
+      class="tooltip"
+      ref="tooltip"
+      :style="tooltipStyle"
+      @mouseover="onMouseOverTooltip"
+    >
       <div class="tooltip-text">{{tooltipText}}</div>
     </div>
   </div>
@@ -37,6 +42,7 @@ $fontSize: 20px;
   resize: none;
   text-overflow: ellipsis;
   .smart-link {
+    display: inline;
     background-color: #e3dfff;
     padding-left: 3px;
     padding-right: 3px;
@@ -48,22 +54,25 @@ $fontSize: 20px;
 }
 
 .smart-text-container {
+  $blank-space: 8px;
   position: relative;
   .tooltip {
     text-align: center;
     position: absolute;
-    top: 0;
+    top: -$blank-space;
     left: 0;
+    width: 200px;
+    padding-top: $blank-space;
     .tooltip-text {
       background-color: #ffdad1;
       text-align: center;
       padding: 0.125em 0.5em;
       border-radius: 0.25em;
       position: absolute;
-      bottom: 5px;
+      bottom: $blank-space;
       left: 0;
       transform: translateX(-50%);
-      width: 200px;
+      width: 100%;
     }
   }
 }
@@ -78,6 +87,7 @@ export default {
     return {
       tooltipPosition: { x: 0, y: 0 },
       tooltipText: "",
+      tooltipVisible: false,
       changeTracker: 1
     };
   },
@@ -117,7 +127,10 @@ export default {
       ) {
         const linkId = targetElement.getAttribute("link-id");
         const linkedElementId = store.getters.relationship({ id: linkId });
-        if (typeof linkedElementId !== "undefined") {
+        if (typeof linkedElementId === "undefined") {
+          this.tooltipText = "";
+          this.tooltipVisible = false;
+        } else {
           const text = store.getters.componentDescription(linkedElementId);
           if (typeof text === "string") {
             const elementBoundingBox = targetElement.getBoundingClientRect();
@@ -129,12 +142,21 @@ export default {
             this.tooltipPosition.y =
               elementBoundingBox.top - containerBoundingBox.top;
             this.tooltipText = text;
+            this.tooltipVisible = true;
           }
         }
+      } else if (
+        !targetElement.classList.contains("tooltip") &&
+        !targetElement.classList.contains("tooltip-text")
+      ) {
+        this.tooltipVisible = false;
       }
     },
-    onMouseOut() {
-      this.tooltipText = "";
+    onMouseLeave() {
+      this.tooltipVisible = false;
+    },
+    onMouseOverTooltip() {
+      this.tooltipVisible = true;
     },
     updateContent() {
       const textarea = this.$refs.textarea;
@@ -148,7 +170,7 @@ export default {
       event.stopPropagation();
       const selection = document.getSelection();
       if (!selection || !selection.toString() || !selection.toString().length) {
-        store.commit("toggleSelection", false);
+        store.dispatch("toggleSelection", false);
         return;
       }
       let id =
@@ -159,23 +181,24 @@ export default {
       if (id === null || typeof id === "undefined") {
         id = await store.dispatch("addSemanticRelationship");
       }
-      store.commit("setSelection", { id });
-      store.commit("setFocus", "smartText");
-      store.commit("toggleSelection", true);
+
+      store.dispatch("setSelection", { id });
+      store.dispatch("setFocus", "smartText");
+      store.dispatch("toggleSelection", true);
       this.changeTracker += 1;
     },
     setRelationship(relationshipId) {
       const selection = document.getSelection();
       if (!selection || !selection.toString() || !selection.toString().length) {
-        store.commit("toggleSelection", false);
+        store.dispatch("toggleSelection", false);
         return;
       }
       const currentText = selection.toString();
-      const html = `<span class="smart-link" link-id="${relationshipId}">${currentText}</span>`;
+      const html = `<div class="smart-link" link-id="${relationshipId}">${currentText}</div>`;
       document.execCommand("insertHTML", false, html);
-      store.commit("setSelection", { id: relationshipId });
-      store.commit("setFocus", "smartText");
-      store.commit("toggleSelection", true);
+      store.dispatch("setSelection", { id: relationshipId });
+      store.dispatch("setFocus", "smartText");
+      store.dispatch("toggleSelection", true);
       this.changeTracker += 1;
     }
   },

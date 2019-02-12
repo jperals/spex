@@ -194,7 +194,7 @@ export default {
       this.editComponent(component);
     },
     editComponent(component) {
-      store.commit("editComponent", component);
+      store.dispatch("editComponent", component);
     },
     isSelected(component) {
       const selection = store.getters.selection
@@ -204,9 +204,9 @@ export default {
     select(component, event) {
       event.stopPropagation()
       const selection = store.getters.selection
-      store.commit('setFocus', 'componentList')
-      store.commit('toggleSelection', true)
-      store.commit('setRelationship', {
+      store.dispatch('setFocus', 'componentList')
+      store.dispatch('toggleSelection', true)
+      store.dispatch('setRelationship', {
         textFragment: selection,
         component
       })

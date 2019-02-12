@@ -268,7 +268,7 @@ export default {
       this.handleFiles(event.target.files);
     },
     toggleSelection(value) {
-      store.commit("toggleSelection", value);
+      store.dispatch("toggleSelection", value);
     },
     updateImageUrl() {
       this.changeTrack += 1;

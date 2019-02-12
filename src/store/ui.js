@@ -31,8 +31,8 @@ const ui = {
     setSelection(state, selection) {
       state.textSelection = selection
     },
-    toggleComponents(state) {
-      state.showComponents = !state.showComponents
+    toggleComponents(state, value) {
+      state.showComponents = typeof value === 'undefined' ? !state.showComponents : value
     },
     toggleSelection(state, value) {
       state.selecting = typeof value === 'undefined' ? !state.selecting : value
@@ -40,6 +40,21 @@ const ui = {
     unsetSelection(state) {
       state.textSelection = null
     }
+  },
+  actions: {
+    editComponent(context, component) {
+      context.commit('editComponent', component)
+    },
+    setFocus(context, focusedElement) {
+      context.commit('setFocus', focusedElement)
+    },
+    setSelection(context, selection) {
+      context.commit('setSelection', selection)
+    },
+    toggleComponents(context, value) {
+      context.commit('toggleComponents', value)
+    },
+    toggleSelection: (context, value) => context.commit('toggleSelection', value)
   }
 }
 

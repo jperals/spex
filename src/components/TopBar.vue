@@ -191,7 +191,7 @@ export default {
   },
   methods: {
     toggleComponents() {
-      store.commit("toggleComponents");
+      store.dispatch("toggleComponents");
     }
   }
 };

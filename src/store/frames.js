@@ -51,7 +51,6 @@ const frames = {
         reader.onload = (e) => {
           const imageUrl = e.target.result
           context.commit('setImageUrl', {frame, imageUrl})
-          context.commit('forceFrameUpdate', frame)
           resolve(imageUrl)
         }
         reader.readAsDataURL(imageFile)

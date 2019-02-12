@@ -30,7 +30,10 @@ const semantics = {
       const id = context.state.nextId.toString()
       context.commit('addSemanticRelationship')
       return id
-    }
+    },
+    setRelationship(context, relationship) {
+      context.commit('setRelationship', relationship)
+    },
   }
 }
 
