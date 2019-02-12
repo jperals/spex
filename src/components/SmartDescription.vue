@@ -1,14 +1,21 @@
 <template>
-  <div class="smart-text"
-       contenteditable
-       ref="textarea"
-       v-bind:value="value"
-       @input="onInput"
-       @click="updateSelection"
-       :placeholder="placeholder"
-       rows="4"
-       maxlength="295"
-  ></div>
+  <div class="smart-text">
+    <div class="smart-text"
+         contenteditable
+         ref="textarea"
+         v-bind:value="value"
+         @click="updateSelection"
+         @input="onInput"
+         v-on:mousemove="onMouseMove($event)"
+         @mouseout="onMouseOut"
+         :placeholder="placeholder"
+         rows="4"
+         maxlength="295"
+    ></div>
+    <div class="tooltip" ref="tooltip" :style="tooltipStyle">
+      {{tooltipText}}
+    </div>
+  </div>
 </template>
 
 <style lang="scss">
@@ -48,6 +55,7 @@ export default {
   name: "smart-description",
   data() {
     return {
+      tooltipText: '',
       changeTracker: 1
     };
   },
@@ -65,9 +73,31 @@ export default {
   mounted() {
     this.updateContent()
   },
+  computed: {
+    tooltipStyle() {
+      const x = 0
+      const y = 0
+      return `transform: translate(${x},${y})`
+    }
+  },
   methods: {
     onInput() {
       this.$emit('input', this.$refs.textarea.innerHTML)
+    },
+    onMouseMove(event) {
+      if(event && event.target && typeof event.target.getAttribute('link-id') === 'string') {
+        const linkId = event.target.getAttribute('link-id')
+        const linkedElementId = store.getters.relationship({id: linkId})
+        if(typeof linkedElementId !== 'undefined') {
+          const text = store.getters.componentDescription(linkedElementId)
+          if(typeof text === 'string') {
+            this.tooltipText = text
+          }
+        }
+      }
+    },
+    onMouseOut() {
+      this.tooltipText = ''
     },
     updateContent() {
       const textarea = this.$refs.textarea
