@@ -36,7 +36,8 @@ textarea::placeholder {
 
 .top {
   margin: auto;
-  margin-left: 422px;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 48px;
   max-width: 600px;
 }
@@ -56,7 +57,8 @@ textarea {
 }
 
 .thumbnails {
-  margin-left: 218px;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 48px;
 }
 </style>
