@@ -45,7 +45,7 @@ input:checked {
 /* Customize the label (the container) */
 .container {
   display: block;
-  position: relative;
+  position: absolute;
   padding-left: 40px;
   margin-bottom: 16px;
   cursor: pointer;
@@ -132,6 +132,8 @@ input:checked {
   outline: none;
   border-radius: 2px;
   margin-left: 80px;
+  position: absolute;
+  bottom: 24px;
 }
 
 .newButton:hover {
@@ -165,7 +167,7 @@ input:checked {
   height: 24px;
   margin-right: 24px;
   right: 0;
-  top: 0;
+  bottom: 0px;
   display: none;
 }
 </style>
@@ -197,19 +199,19 @@ export default {
       store.dispatch("editComponent", component);
     },
     isSelected(component) {
-      const selection = store.getters.selection
-      const relatedComponentId = store.getters.relationship(selection)
-      return relatedComponentId === component.id
+      const selection = store.getters.selection;
+      const relatedComponentId = store.getters.relationship(selection);
+      return relatedComponentId === component.id;
     },
     select(component, event) {
-      event.stopPropagation()
-      const selection = store.getters.selection
-      store.dispatch('setFocus', 'componentList')
-      store.dispatch('toggleSelection', true)
-      store.dispatch('setRelationship', {
+      event.stopPropagation();
+      const selection = store.getters.selection;
+      store.dispatch("setFocus", "componentList");
+      store.dispatch("toggleSelection", true);
+      store.dispatch("setRelationship", {
         textFragment: selection,
         component
-      })
+      });
     }
   },
   computed: {
