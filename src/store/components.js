@@ -33,7 +33,7 @@ const components = {
     }
   },
   mutations: {
-    addComponent(state, {component}) {
+    addComponent(state, component) {
       state.components.push(new Component(component))
     },
     updateComponent(state, {component, newProperties}) {
@@ -43,7 +43,7 @@ const components = {
   actions: {
     // The component will be added
     addComponent(context, component) {
-      context.commit('addComponent', {component})
+      context.commit('addComponent', component)
     },
     // The component exists and will be modified
     updateComponent(context, {component, newProperties}) {
@@ -63,7 +63,7 @@ const components = {
           newProperties: properties
         })
       } else {
-        context.dispatch('addComponent', {properties})
+        context.dispatch('addComponent', properties)
       }
     }
   }
