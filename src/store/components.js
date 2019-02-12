@@ -36,25 +36,34 @@ const components = {
     addComponent(state, {component}) {
       state.components.push(new Component(component))
     },
-    updateComponent(state, {newComponent, oldComponent}) {
-      Object.assign(oldComponent, newComponent)
+    updateComponent(state, {component, newProperties}) {
+      Object.assign(component, newProperties)
     }
   },
   actions: {
+    // The component will be added
     addComponent(context, component) {
       context.commit('addComponent', {component})
     },
-    saveComponent(context, component) {
-      // Add to the components if it's not there;
-      // modify the corresponding component if we already have it
-      const matchingComponent = context.getters.componentById(component.id)
+    // The component exists and will be modified
+    updateComponent(context, {component, newProperties}) {
+      context.commit('updateComponent', {
+        component,
+        newProperties
+      })
+    },
+    // The component might exist or not.
+    // Add to the components if it's not there;
+    // modify the corresponding component if we already have it
+    saveComponent(context, properties) {
+      const matchingComponent = context.getters.componentById(properties.id)
       if (matchingComponent) {
-        context.commit('updateComponent', {
-          newComponent: component,
-          oldComponent: matchingComponent
+        context.dispatch('updateComponent', {
+          component: matchingComponent,
+          newProperties: properties
         })
       } else {
-        context.commit('addComponent', {component})
+        context.dispatch('addComponent', {properties})
       }
     }
   }
