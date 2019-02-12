@@ -1,8 +1,10 @@
 import db from "./firebase";
 
+const collection = db.collection('components')
+
 export class Component {
   constructor(props) {
-    this.id = components.state.nextId.toString()
+    this.id = typeof props.id === 'undefined' ? components.state.nextId.toString() : props.id
     components.state.nextId += 1
     if (props && props.story) {
       this.storyId = props.story.id
@@ -13,6 +15,10 @@ export class Component {
 
 // Note:
 // We are not using Components as being story-specific for now.
+
+// Firebase is our source of truth for data.
+// Please follow this data flow:
+// Views and components -> Dispatch actions -> Call Firebase -> Commit mutations -> Views and components will react
 
 const components = {
   state: {
@@ -36,7 +42,7 @@ const components = {
   },
   mutations: {
     addComponent(state, component) {
-      state.components.push(new Component(component))
+      state.components.push(component)
     },
     updateComponent(state, {component, newProperties}) {
       Object.assign(component, newProperties)
@@ -45,14 +51,22 @@ const components = {
   actions: {
     // The component will be added
     addComponent(context, component) {
-      context.commit('addComponent', component)
+      collection.add(component)
+        .then(docRef => {
+          context.commit('addComponent', Object.assign(component, {id: docRef.id}))
+        })
+        .catch(function (error) {
+          console.error("Error writing document: ", error);
+        });
     },
     loadComponents(context) {
-      db.collection('components').get()
+      collection.get()
         .then(documents => {
           const components = []
           documents.forEach(document => {
-            components.push(document.data())
+            const component = document.data()
+            component.id = document.id
+            components.push(component)
           })
           components.sort((a, b) => {
             if (a.name < b.name) return -1
@@ -64,12 +78,19 @@ const components = {
           })
         })
     },
-    // The component exists and will be modified
+    // The component exists and will be modified.
+    // The component needs to have an id
     updateComponent(context, {component, newProperties}) {
-      context.commit('updateComponent', {
-        component,
-        newProperties
-      })
+      collection.doc(component.id).set(newProperties)
+        .then(() => {
+          context.commit('updateComponent', {
+            component,
+            newProperties
+          })
+        })
+        .catch(function (error) {
+          console.error("Error writing document: ", error);
+        });
     },
     // The component might exist or not.
     // Add to the components if it's not there;
