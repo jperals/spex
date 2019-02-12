@@ -74,6 +74,9 @@ export default {
     this.updateContent()
   },
   computed: {
+    lastAddedRelationshipId() {
+      return store.getters.lastAddedRelationshipId
+    },
     tooltipStyle() {
       const x = 0
       const y = 0
@@ -85,12 +88,12 @@ export default {
       this.$emit('input', this.$refs.textarea.innerHTML)
     },
     onMouseMove(event) {
-      if(event && event.target && typeof event.target.getAttribute('link-id') === 'string') {
+      if (event && event.target && typeof event.target.getAttribute('link-id') === 'string') {
         const linkId = event.target.getAttribute('link-id')
         const linkedElementId = store.getters.relationship({id: linkId})
-        if(typeof linkedElementId !== 'undefined') {
+        if (typeof linkedElementId !== 'undefined') {
           const text = store.getters.componentDescription(linkedElementId)
-          if(typeof text === 'string') {
+          if (typeof text === 'string') {
             this.tooltipText = text
           }
         }
@@ -109,31 +112,40 @@ export default {
     },
     async updateSelection(event) {
       event.stopPropagation()
-      this.changeTracker += 1;
       const selection = document.getSelection()
-      if (!selection) {
+      if (!selection || !(selection.toString()) || !(selection.toString().length)) {
         store.commit('toggleSelection', false)
         return
       }
-      const currentText = selection.toString()
-      if (!currentText || !currentText.length) {
-        store.commit('toggleSelection', false)
-        return
-      }
-      let id
-      if (selection.anchorNode && selection.anchorNode.parentElement && selection.anchorNode.parentElement.attributes && selection.anchorNode.parentElement.attributes['link-id']) {
-        id = selection.anchorNode.parentElement.attributes['link-id'].value
-      } else {
+      let id = selection.anchorNode && selection.anchorNode.parentElement && selection.anchorNode.parentElement.attributes && selection.anchorNode.parentElement.getAttribute('link-id')
+      if (id === null || typeof id === 'undefined') {
         id = await store.dispatch('addSemanticRelationship')
-        const html = `<span class="smart-link" link-id="${id}">${currentText}</span>`
-        document.execCommand('insertHTML', false, html)
       }
       store.commit("setSelection", {id});
       store.commit('setFocus', 'smartText')
       store.commit('toggleSelection', true)
+      this.changeTracker += 1;
+    },
+    setRelationship(relationshipId) {
+      const selection = document.getSelection()
+      if (!selection || !(selection.toString()) || !(selection.toString().length)) {
+        store.commit('toggleSelection', false)
+        return
+      }
+      const currentText = selection.toString()
+      const html = `<span class="smart-link" link-id="${relationshipId}">${currentText}</span>`
+      document.execCommand('insertHTML', false, html)
+      store.commit("setSelection", {id: relationshipId});
+      store.commit('setFocus', 'smartText')
+      store.commit('toggleSelection', true)
+      this.changeTracker += 1;
     }
   },
   watch: {
+    lastAddedRelationshipId(value) {
+      console.log('relatinoshipTracker')
+      this.setRelationship(value)
+    },
     '$route'() {
       this.updateContent()
     }

@@ -1,11 +1,11 @@
 const semantics = {
   state: {
-    changeTracker: 1,
+    lastAddedRelationshipId: null,
     nextId: 0,
     relationships: {}
   },
   getters: {
-    semanticsChangeTracker: (state) => state.changeTracker,
+    lastAddedRelationshipId: (state) => state.lastAddedRelationshipId,
     relationship: (state) => (textFragment) => {
       if (textFragment && typeof textFragment.id !== 'undefined') {
         return state.relationships[textFragment.id]
@@ -22,7 +22,7 @@ const semantics = {
     },
     setRelationship(state, {textFragment, component}) {
       state.relationships[textFragment.id] = component.id
-      state.changeTracker += 1
+      state.lastAddedRelationshipId = textFragment.id
     }
   },
   actions: {
