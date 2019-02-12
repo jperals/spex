@@ -38,6 +38,7 @@ $fontSize: 20px;
   resize: none;
   text-overflow: ellipsis;
   .smart-link {
+    display: inline;
     background-color: #e3dfff;
     padding-left: 3px;
     padding-right: 3px;
@@ -162,7 +163,7 @@ export default {
         return
       }
       const currentText = selection.toString()
-      const html = `<span class="smart-link" link-id="${relationshipId}">${currentText}</span>`
+      const html = `<div class="smart-link" link-id="${relationshipId}">${currentText}</div>`
       document.execCommand('insertHTML', false, html)
       store.commit("setSelection", {id: relationshipId});
       store.commit('setFocus', 'smartText')
