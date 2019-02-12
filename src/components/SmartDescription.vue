@@ -1,5 +1,5 @@
 <template>
-  <div class="smart-text-container">
+  <div class="smart-text-container" @mouseleave="onMouseLeave($event)">
     <div class="smart-text"
          contenteditable
          ref="textarea"
@@ -7,12 +7,11 @@
          @click="updateSelection"
          @input="onInput"
          v-on:mousemove="onMouseMove($event)"
-         @mouseout="onMouseOut"
          :placeholder="placeholder"
          rows="4"
          maxlength="295"
     ></div>
-    <div v-if="tooltipText" class="tooltip" ref="tooltip" :style="tooltipStyle">
+    <div v-show="tooltipVisible" class="tooltip" ref="tooltip" :style="tooltipStyle" @mouseover="onMouseOverTooltip">
       <div class="tooltip-text">
         {{tooltipText}}
       </div>
@@ -50,22 +49,25 @@ $fontSize: 20px;
 }
 
 .smart-text-container {
+  $blank-space: 8px;
   position: relative;
   .tooltip {
     text-align: center;
     position: absolute;
-    top: 0;
+    top: - $blank-space;
     left: 0;
+    width: 200px;
+    padding-top: $blank-space;
     .tooltip-text {
       background-color: #ffdad1;
       text-align: center;
       padding: .125em .5em;
       border-radius: .25em;
       position: absolute;
-      bottom: 5px;
+      bottom: $blank-space;
       left: 0;
       transform: translateX(-50%);
-      width: 200px;
+      width: 100%;
     }
   }
 }
@@ -81,6 +83,7 @@ export default {
     return {
       tooltipPosition: {x: 0, y: 0},
       tooltipText: '',
+      tooltipVisible: false,
       changeTracker: 1
     };
   },
@@ -117,7 +120,10 @@ export default {
       if (targetElement && typeof targetElement.getAttribute('link-id') === 'string') {
         const linkId = targetElement.getAttribute('link-id')
         const linkedElementId = store.getters.relationship({id: linkId})
-        if (typeof linkedElementId !== 'undefined') {
+        if (typeof linkedElementId === 'undefined') {
+          this.tooltipText = ''
+          this.tooltipVisible = false
+        } else {
           const text = store.getters.componentDescription(linkedElementId)
           if (typeof text === 'string') {
             const elementBoundingBox = targetElement.getBoundingClientRect()
@@ -125,12 +131,18 @@ export default {
             this.tooltipPosition.x = elementBoundingBox.left - containerBoundingBox.left + elementBoundingBox.width / 2
             this.tooltipPosition.y = elementBoundingBox.top - containerBoundingBox.top
             this.tooltipText = text
+            this.tooltipVisible = true
           }
         }
+      } else if (!(targetElement.classList.contains('tooltip')) && !(targetElement.classList.contains('tooltip-text'))) {
+        this.tooltipVisible = false
       }
     },
-    onMouseOut() {
-      this.tooltipText = ''
+    onMouseLeave() {
+      this.tooltipVisible = false
+    },
+    onMouseOverTooltip() {
+      this.tooltipVisible = true
     },
     updateContent() {
       const textarea = this.$refs.textarea
