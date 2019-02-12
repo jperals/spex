@@ -1,5 +1,5 @@
 <template>
-  <div class="smart-text">
+  <div class="smart-text-container">
     <div class="smart-text"
          contenteditable
          ref="textarea"
@@ -12,8 +12,10 @@
          rows="4"
          maxlength="295"
     ></div>
-    <div class="tooltip" ref="tooltip" :style="tooltipStyle">
-      {{tooltipText}}
+    <div v-if="tooltipText" class="tooltip" ref="tooltip" :style="tooltipStyle">
+      <div class="tooltip-text">
+        {{tooltipText}}
+      </div>
     </div>
   </div>
 </template>
@@ -46,6 +48,27 @@ $fontSize: 20px;
   }
 }
 
+.smart-text-container {
+  position: relative;
+  .tooltip {
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    .tooltip-text {
+      background-color: #ffdad1;
+      text-align: center;
+      padding: .125em .5em;
+      border-radius: .25em;
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      transform: translateX(-50%);
+      width: 200px;
+    }
+  }
+}
+
 </style>
 
 <script>
@@ -55,6 +78,7 @@ export default {
   name: "smart-description",
   data() {
     return {
+      tooltipPosition: {x: 0, y: 0},
       tooltipText: '',
       changeTracker: 1
     };
@@ -78,9 +102,9 @@ export default {
       return store.getters.lastAddedRelationshipId
     },
     tooltipStyle() {
-      const x = 0
-      const y = 0
-      return `transform: translate(${x},${y})`
+      const x = this.tooltipPosition.x
+      const y = this.tooltipPosition.y
+      return `transform: translate(${x}px,${y}px)`
     }
   },
   methods: {
@@ -88,12 +112,17 @@ export default {
       this.$emit('input', this.$refs.textarea.innerHTML)
     },
     onMouseMove(event) {
-      if (event && event.target && typeof event.target.getAttribute('link-id') === 'string') {
-        const linkId = event.target.getAttribute('link-id')
+      const targetElement = event && event.target
+      if (targetElement && typeof targetElement.getAttribute('link-id') === 'string') {
+        const linkId = targetElement.getAttribute('link-id')
         const linkedElementId = store.getters.relationship({id: linkId})
         if (typeof linkedElementId !== 'undefined') {
           const text = store.getters.componentDescription(linkedElementId)
           if (typeof text === 'string') {
+            const elementBoundingBox = targetElement.getBoundingClientRect()
+            const containerBoundingBox = this.$refs.textarea.getBoundingClientRect()
+            this.tooltipPosition.x = elementBoundingBox.left - containerBoundingBox.left + elementBoundingBox.width / 2
+            this.tooltipPosition.y = elementBoundingBox.top - containerBoundingBox.top
             this.tooltipText = text
           }
         }
