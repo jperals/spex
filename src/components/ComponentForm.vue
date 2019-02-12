@@ -278,7 +278,7 @@ export default {
   },
   methods: {
     save() {
-      store.dispatch("addComponent", this.component);
+      store.dispatch("saveComponent", this.component);
       store.dispatch("editComponent");
     },
     cancel() {
