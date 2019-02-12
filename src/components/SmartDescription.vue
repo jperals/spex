@@ -156,30 +156,30 @@ export default {
       event.stopPropagation()
       const selection = document.getSelection()
       if (!selection || !(selection.toString()) || !(selection.toString().length)) {
-        store.commit('toggleSelection', false)
+        store.dispatch('toggleSelection', false)
         return
       }
       let id = selection.anchorNode && selection.anchorNode.parentElement && selection.anchorNode.parentElement.attributes && selection.anchorNode.parentElement.getAttribute('link-id')
       if (id === null || typeof id === 'undefined') {
         id = await store.dispatch('addSemanticRelationship')
       }
-      store.commit("setSelection", {id});
-      store.commit('setFocus', 'smartText')
-      store.commit('toggleSelection', true)
+      store.dispatch("setSelection", {id});
+      store.dispatch('setFocus', 'smartText')
+      store.dispatch('toggleSelection', true)
       this.changeTracker += 1;
     },
     setRelationship(relationshipId) {
       const selection = document.getSelection()
       if (!selection || !(selection.toString()) || !(selection.toString().length)) {
-        store.commit('toggleSelection', false)
+        store.dispatch('toggleSelection', false)
         return
       }
       const currentText = selection.toString()
       const html = `<div class="smart-link" link-id="${relationshipId}">${currentText}</div>`
       document.execCommand('insertHTML', false, html)
-      store.commit("setSelection", {id: relationshipId});
-      store.commit('setFocus', 'smartText')
-      store.commit('toggleSelection', true)
+      store.dispatch("setSelection", {id: relationshipId});
+      store.dispatch('setFocus', 'smartText')
+      store.dispatch('toggleSelection', true)
       this.changeTracker += 1;
     }
   },
