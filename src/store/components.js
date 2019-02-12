@@ -1,3 +1,5 @@
+import db from "./firebase";
+
 export class Component {
   constructor(props) {
     this.id = components.state.nextId.toString()
@@ -44,6 +46,15 @@ const components = {
     // The component will be added
     addComponent(context, component) {
       context.commit('addComponent', component)
+    },
+    loadComponents(context) {
+      db.collection('components').get()
+        .then(documents => {
+          documents.forEach(document => {
+            const component = document.data()
+            context.commit('addComponent', component)
+          })
+        })
     },
     // The component exists and will be modified
     updateComponent(context, {component, newProperties}) {
