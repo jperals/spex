@@ -143,7 +143,6 @@ export default {
   },
   watch: {
     lastAddedRelationshipId(value) {
-      console.log('relatinoshipTracker')
       this.setRelationship(value)
     },
     '$route'() {
