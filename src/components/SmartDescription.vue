@@ -178,7 +178,11 @@ export default {
     },
     updateContent() {
       const textarea = this.$refs.textarea;
-      textarea.innerHTML = this.value;
+      if (typeof this.value === 'string') {
+        textarea.innerHTML = this.value;
+      } else {
+        textarea.innerHTML = ''
+      }
       this.changeTracker += 1;
     },
     toggleSelection(value) {

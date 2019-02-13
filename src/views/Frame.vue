@@ -20,7 +20,7 @@
     <div v-else class="top not-found">
       <not-found></not-found>
     </div>
-    <frame-selector v-if="frame" :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
+    <frame-selector v-if="storyFrames" :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
   </div>
 </template>
 
