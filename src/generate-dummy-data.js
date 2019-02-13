@@ -1,4 +1,3 @@
-import {Component} from '@/store/components'
 import Frame from '@/store/Frame'
 import store from '@/store.js'
 import {Story} from '@/store/stories.js'
