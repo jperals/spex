@@ -39,11 +39,15 @@ $fontSize: 20px;
   border: none;
   font-family: "Titillium Web";
   font-size: $fontSize;
-  line-height: 28px;
   outline: none;
   padding: 0;
   resize: none;
   text-overflow: ellipsis;
+  cursor: text;
+  &:empty::before{
+    content:attr(placeholder);
+    opacity: 0.7;
+  }
   .smart-link {
     display: inline;
     background-color: #e3dfff;
