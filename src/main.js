@@ -6,12 +6,15 @@ import "./generate-dummy-data";
 
 Vue.config.productionTip = false;
 
-store.dispatch('loadComponents')
-store.dispatch('loadFrames')
-store.dispatch('loadStories')
-
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount("#app");
+Promise.all([
+  store.dispatch('loadComponents'),
+  store.dispatch('loadFrames'),
+  store.dispatch('loadStories')
+]).then(() => {
+    new Vue({
+      router,
+      store,
+      render: h => h(App)
+    }).$mount("#app")
+  }
+)
