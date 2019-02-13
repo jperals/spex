@@ -12,14 +12,16 @@
       rows="4"
       maxlength="295"
     ></div>
-    <div v-show="tooltipVisible" class="tooltip" ref="tooltip" :style="tooltipStyle" @mouseover="onMouseOverTooltip">
+    <div
+      v-show="tooltipVisible"
+      class="tooltip"
+      ref="tooltip"
+      :style="tooltipStyle"
+      @mouseover="onMouseOverTooltip"
+    >
       <div class="tooltip-text">
-        <div class="tooltip-title">
-          {{tooltipTitle}}
-        </div>
-        <div class="tooltip-description">
-          {{tooltipText}}
-        </div>
+        <div class="tooltip-title">{{tooltipTitle}}</div>
+        <div class="tooltip-description">{{tooltipText}}</div>
       </div>
     </div>
   </div>
@@ -62,22 +64,25 @@ $fontSize: 20px;
     position: absolute;
     top: -$blank-space;
     left: 0;
-    width: 200px;
+    width: 500px;
     padding-top: $blank-space;
+
     .tooltip-text {
       background-color: #979c9e;
       color: #fff;
       text-align: left;
       font-size: 20px;
-      padding: 0.125em 0.5em;
+      padding: 16px 16px;
       border-radius: 2px;
       position: absolute;
       bottom: $blank-space;
       left: 0;
+      box-shadow: 12px 13px 86px -24px rgba(0, 0, 0, 0.87);
       transform: translateX(-50%);
       width: 100%;
       .tooltip-title {
-        background-color: lightgrey;
+        font-size: 24px;
+        font-weight: 800;
       }
     }
   }
@@ -91,9 +96,9 @@ export default {
   name: "smart-description",
   data() {
     return {
-      tooltipPosition: {x: 0, y: 0},
-      tooltipText: '',
-      tooltipTitle: '',
+      tooltipPosition: { x: 0, y: 0 },
+      tooltipText: "",
+      tooltipTitle: "",
       tooltipVisible: false,
       changeTracker: 1
     };
@@ -138,19 +143,28 @@ export default {
           this.tooltipText = "";
           this.tooltipVisible = false;
         } else {
-          const linkedElement = store.getters.componentById(linkedElementId)
-          if (typeof linkedElement === 'object') {
-            const elementBoundingBox = targetElement.getBoundingClientRect()
-            const containerBoundingBox = this.$refs.textarea.getBoundingClientRect()
-            this.tooltipPosition.x = elementBoundingBox.left - containerBoundingBox.left + elementBoundingBox.width / 2
-            this.tooltipPosition.y = elementBoundingBox.top - containerBoundingBox.top
-            this.tooltipText = linkedElement.description
-            this.tooltipTitle = linkedElement.name
-            this.tooltipVisible = true
+          const linkedElement = store.getters.componentById(linkedElementId);
+          if (typeof linkedElement === "object") {
+            const elementBoundingBox = targetElement.getBoundingClientRect();
+            const containerBoundingBox = this.$refs.textarea.getBoundingClientRect();
+            this.tooltipPosition.x =
+              elementBoundingBox.left -
+              containerBoundingBox.left +
+              elementBoundingBox.width / 2;
+            this.tooltipPosition.y =
+              elementBoundingBox.top - containerBoundingBox.top;
+            this.tooltipText = linkedElement.description;
+            this.tooltipTitle = linkedElement.name;
+            this.tooltipVisible = true;
           }
         }
-      } else if (!(targetElement.classList.contains('tooltip')) && !(targetElement.classList.contains('tooltip-text')) && !(targetElement.classList.contains('tooltip-title')) && !(targetElement.classList.contains('tooltip-description'))) {
-        this.tooltipVisible = false
+      } else if (
+        !targetElement.classList.contains("tooltip") &&
+        !targetElement.classList.contains("tooltip-text") &&
+        !targetElement.classList.contains("tooltip-title") &&
+        !targetElement.classList.contains("tooltip-description")
+      ) {
+        this.tooltipVisible = false;
       }
     },
     onMouseLeave() {
