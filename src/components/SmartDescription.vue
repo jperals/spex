@@ -122,8 +122,8 @@ export default {
     this.updateContent();
   },
   computed: {
-    lastAddedRelationshipId() {
-      return store.getters.lastAddedRelationshipId;
+    lastAddedRelationship() {
+      return store.getters.lastAddedRelationship;
     },
     tooltipStyle() {
       const x = this.tooltipPosition.x;
@@ -141,8 +141,7 @@ export default {
         targetElement &&
         typeof targetElement.getAttribute("link-id") === "string"
       ) {
-        const linkId = targetElement.getAttribute("link-id");
-        const linkedElementId = store.getters.relationship({ id: linkId });
+        const linkedElementId = targetElement.getAttribute("link-id");
         if (typeof linkedElementId === "undefined") {
           this.tooltipText = "";
           this.tooltipVisible = false;
@@ -201,11 +200,7 @@ export default {
         selection.anchorNode.parentElement &&
         selection.anchorNode.parentElement.attributes &&
         selection.anchorNode.parentElement.getAttribute("link-id");
-      if (id === null || typeof id === "undefined") {
-        id = await store.dispatch("addSemanticRelationship");
-      }
-
-      store.dispatch("setSelection", { id });
+      store.dispatch("setSelection", id);
       store.dispatch("setFocus", "smartText");
       store.dispatch("toggleSelection", true);
       this.changeTracker += 1;
@@ -226,7 +221,7 @@ export default {
     }
   },
   watch: {
-    lastAddedRelationshipId(value) {
+    lastAddedRelationship(value) {
       this.setRelationship(value);
     },
     $route() {

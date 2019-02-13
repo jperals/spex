@@ -2,6 +2,7 @@ const ui = {
   state: {
     editingComponent: null,
     focusedElement: null,
+    lastAddedRelationship: null,
     selecting: false,
     showComponents: false,
     textSelection: null
@@ -11,11 +12,12 @@ const ui = {
       return state.editingComponent
     },
     focusedElement: (state) => state.focusedElement,
+    lastAddedRelationship: (state) => state.lastAddedRelationship,
     selecting(state, getters) {
       return state.selecting && getters.focusedElement === 'smartText' || getters.focusedElement === 'componentList'
     },
     selection(state) {
-        return state.textSelection
+      return state.textSelection
     },
     showComponents(state) {
       return state.showComponents
@@ -27,6 +29,9 @@ const ui = {
     },
     setFocus(state, elementId) {
       state.focusedElement = elementId
+    },
+    setRelationship(state, id) {
+      state.lastAddedRelationship = id
     },
     setSelection(state, selection) {
       state.textSelection = selection
@@ -47,6 +52,9 @@ const ui = {
     },
     setFocus(context, focusedElement) {
       context.commit('setFocus', focusedElement)
+    },
+    setRelationship(context, relationship) {
+      context.commit('setRelationship', relationship)
     },
     setSelection(context, selection) {
       context.commit('setSelection', selection)

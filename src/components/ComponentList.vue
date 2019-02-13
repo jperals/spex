@@ -198,19 +198,14 @@ export default {
       store.dispatch("editComponent", component);
     },
     isSelected(component) {
-      const selection = store.getters.selection;
-      const relatedComponentId = store.getters.relationship(selection);
+      const relatedComponentId = store.getters.selection;
       return relatedComponentId === component.id;
     },
     select(component, event) {
       event.stopPropagation();
-      const selection = store.getters.selection;
       store.dispatch("setFocus", "componentList");
       store.dispatch("toggleSelection", true);
-      store.dispatch("setRelationship", {
-        textFragment: selection,
-        component
-      });
+      store.dispatch("setRelationship", component.id);
     }
   },
   computed: {
