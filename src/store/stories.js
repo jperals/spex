@@ -1,4 +1,4 @@
-import {db} from '@/store/firebase'
+import {db, firebase} from '@/store/firebase'
 
 const collection = db.collection('stories')
 
@@ -57,11 +57,21 @@ const stories = {
     },
     updateStories(state, stories) {
       state.stories = stories
+    },
+    updateStory(state, {story, props}) {
+      Object.assign(story, props)
     }
   },
   actions: {
     addFrameToStory(context, {story, frame}) {
-      context.commit('addFrameToStory', {story, frame})
+      return collection.doc(story.id)
+        .update({
+          frames: firebase.firestore.FieldValue.arrayUnion(frame.id)
+        })
+        .catch(console.error)
+        .then(() => {
+          context.commit('addFrameToStory', {frame, story})
+        })
     },
     loadStories(context) {
       return collection.get()
@@ -74,6 +84,20 @@ const stories = {
           context.commit('updateStories', stories)
         })
         .catch(console.error)
+    },
+    updateStory(context, {story, props}) {
+      return collection.doc(story.id).set(
+        props,
+        {
+          merge: true
+        }
+      )
+        .then(() => {
+          context.commit('updateStory', {
+            story,
+            props
+          })
+        })
     }
   }
 }

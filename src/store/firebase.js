@@ -18,5 +18,6 @@ const storageRef = storage.ref()
 
 export {
   db,
+  firebase,
   storageRef
 }
