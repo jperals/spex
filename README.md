@@ -4,6 +4,8 @@ This project uses [Vue.js](https://vuejs.org) with [Vuex](https://vuex.vuejs.org
 
 ## Development setup
 
+Set up a Firebase project in your local environment, e.g by copying `.env.example` as `.env.local` and filling in the data accordingly.
+
 Install the dependencies:
 
 ```sh

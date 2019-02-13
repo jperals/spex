@@ -1,15 +1,22 @@
 const firebase = require("firebase/app");
 // Required for side-effects
 require("firebase/firestore");
+require('firebase/storage')
 
 // Initialize Cloud Firestore through Firebase
 firebase.initializeApp({
-  databaseURL: 'profi-app-mvp.firebaseio.com',
   // apiKey: '### FIREBASE API KEY ###',
   // authDomain: '### FIREBASE AUTH DOMAIN ###',
-  projectId: 'profi-app-mvp'
+  databaseURL: process.env.VUE_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET
 });
 
 const db = firebase.firestore();
+const storage = firebase.storage()
+const storageRef = storage.ref()
 
-export default db
+export {
+  db,
+  storageRef
+}

@@ -1,4 +1,5 @@
 import Frame from "./Frame";
+import {storageRef} from '@/store/firebase'
 
 const frames = {
   state: {
@@ -18,7 +19,7 @@ const frames = {
     },
     forceFrameUpdate(state, frame) {
       const index = state.frames.indexOf(frame)
-      if(index === -1) {
+      if (index === -1) {
         console.warn('Frame not found:', frame)
         return
       }
@@ -46,15 +47,14 @@ const frames = {
     },
     addImage(context, {frame, imageFile}) {
       context.commit('addImage', {frame, imageFile})
-      const reader = new FileReader()
-      return new Promise((resolve) => {
-        reader.onload = (e) => {
-          const imageUrl = e.target.result
+      const imageRef = storageRef.child(`frame-images/${frame.id}`)
+      return imageRef.put(imageFile)
+        .catch(e => console.error(e))
+        .then(() => imageRef.getDownloadURL())
+        .then(imageUrl => {
           context.commit('setImageUrl', {frame, imageUrl})
-          resolve(imageUrl)
-        }
-        reader.readAsDataURL(imageFile)
-      })
+          return imageUrl
+        })
     }
   }
 };
