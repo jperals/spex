@@ -262,7 +262,7 @@ export default {
     },
     handleFile(file) {
       store
-        .dispatch("addImage", {
+        .dispatch("addImageToFrame", {
           frame: this.frame,
           imageFile: file
         })
@@ -279,7 +279,9 @@ export default {
     },
     updateImageUrl() {
       this.changeTrack += 1;
-      this.imageUrl = this.frame.imageUrl;
+      if (this.frame) {
+        this.imageUrl = this.frame.imageUrl;
+      }
     }
   },
   watch: {

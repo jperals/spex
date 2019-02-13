@@ -15,19 +15,27 @@ const stories = {
   },
   getters: {
     framesFromStory: (state, getters) => (story) => {
-      try {
-        return story.frames.map(frameId => getters.frameById(frameId))
-      } catch(e) {
-        console.warn(e)
-        return []
+      const frames = []
+      if (story.frames instanceof Array) {
+        for (const frameId of story.frames) {
+          try {
+            const frame = getters.frameById(frameId)
+            if(typeof frame !== 'undefined') {
+              frames.push(frame)
+            }
+          } catch(e) {
+            console.warn(e)
+          }
+        }
       }
+      return frames
     },
     stories: state => state.stories,
     storyById: (state, getters) => id => getters.stories.find(story => story.id === id),
     storyFromFrame: (state, getters) => (frame) => getters.stories.find(story => story.id === frame.storyId)
   },
   mutations: {
-    addFrame(state, { story, frame }) {
+    addFrameToStory(state, { story, frame }) {
       story.frames.push(frame.id)
     },
     addStory(state, story) {
@@ -46,6 +54,11 @@ const stories = {
     },
     updateStories(state, stories) {
       state.stories = stories
+    }
+  },
+  actions: {
+    addFrameToStory(context, {story, frame}) {
+      context.commit('addFrameToStory', {story, frame})
     }
   }
 }

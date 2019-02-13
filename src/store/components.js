@@ -45,7 +45,8 @@ const components = {
         });
     },
     loadComponents(context) {
-      collection.get()
+      return collection.get()
+        .catch(console.error)
         .then(documents => {
           const components = []
           documents.forEach(document => {

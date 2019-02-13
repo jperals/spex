@@ -7,6 +7,7 @@ import "./generate-dummy-data";
 Vue.config.productionTip = false;
 
 store.dispatch('loadComponents')
+store.dispatch('loadFrames')
 
 new Vue({
   router,

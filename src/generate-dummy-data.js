@@ -16,26 +16,3 @@ store.commit('updateStories', [
     description: 'Technicians can assemble units, and use industrial machinery, assisted by Augmented Reality'
   })
 ])
-
-const story = store.getters.storyById('0')
-
-store.commit('addFrame', {
-  story
-  ,
-  frame: new Frame({
-    story,
-    title: 'Arrive at Machine',
-    description: 'A factory technician arrives at the MOTO MH-6, puts on AR glasses and chooses ‘Begin’ from the controls he sees in AR.'
-  })
-  }
-)
-
-store.commit('addFrame', {
-  story,
-  frame: new Frame({
-    story,
-    title: 'Collect Components',
-    description: 'He sees a list of the components he has to collect. The glasses show him which shelves to find the components in.'
-  })
-  }
-)

@@ -1,5 +1,7 @@
 import Frame from "./Frame";
-import {storageRef} from '@/store/firebase'
+import {db, storageRef} from '@/store/firebase'
+
+const collection = db.collection('frames')
 
 const frames = {
   state: {
@@ -14,7 +16,7 @@ const frames = {
     addFrame(state, {frame}) {
       state.frames.push(frame)
     },
-    addImage(state, {frame, imageFile}) {
+    addImageToFrame(state, {frame, imageFile}) {
       frame.addImage(imageFile)
     },
     forceFrameUpdate(state, frame) {
@@ -33,7 +35,7 @@ const frames = {
       }
       state.frames.splice(index);
     },
-    setImageUrl(state, {frame, imageUrl}) {
+    setFrameImageUrl(state, {frame, imageUrl}) {
       frame.imageUrl = imageUrl
     },
     updateFrames(state, frames) {
@@ -43,17 +45,33 @@ const frames = {
   actions: {
     addNewFrame(context, story) {
       const frame = new Frame({story})
-      context.commit('addFrame', {story, frame})
+      context.commit('addFrameToStory', {story, frame})
     },
-    addImage(context, {frame, imageFile}) {
-      context.commit('addImage', {frame, imageFile})
+    addImageToFrame(context, {frame, imageFile}) {
       const imageRef = storageRef.child(`frame-images/${frame.id}`)
       return imageRef.put(imageFile)
         .catch(e => console.error(e))
         .then(() => imageRef.getDownloadURL())
         .then(imageUrl => {
-          context.commit('setImageUrl', {frame, imageUrl})
+          context.commit('setFrameImageUrl', {frame, imageUrl})
           return imageUrl
+        })
+    },
+    loadFrames(context) {
+      return collection.get()
+        .catch(console.error)
+        .then(documents => {
+          const frames = []
+          documents.forEach(document => {
+            const frame = document.data()
+            frame.id = document.id
+            frames.push(frame)
+          })
+          context.commit('updateFrames', frames)
+          for (const frame of frames) {
+            const story = context.getters.storyById(frame.storyId)
+            context.commit('addFrameToStory', {story, frame})
+          }
         })
     }
   }
