@@ -52,6 +52,7 @@
 
 <script>
 import FrameImage from "@/components/FrameImage.vue";
+import store from '@/store'
 export default {
   name: "frame-thumbnail",
   props: {
@@ -64,6 +65,11 @@ export default {
   },
   components: {
     FrameImage
+  },
+  watch: {
+    'frame.title'(title) {
+      store.dispatch('sendFrameProperties', {frame: this.frame, props: {title}})
+    }
   }
 };
 </script>
