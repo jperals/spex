@@ -87,6 +87,7 @@ const frames = {
             frame,
             newProperties
           })
+          context.commit('forceFrameUpdate', frame)
         })
     }
   }

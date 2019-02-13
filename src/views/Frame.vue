@@ -206,7 +206,6 @@ export default {
   name: "frame",
   data() {
     return {
-      imageUrl: null,
       changeTrack: 1
     };
   },
@@ -231,6 +230,9 @@ export default {
     frame() {
       return this.changeTrack && store.getters.frameById(this.frameId);
     },
+    imageUrl() {
+      return this.frame.imageUrl
+    },
     showComponents() {
       return store.getters.showComponents;
     },
@@ -242,7 +244,6 @@ export default {
     }
   },
   mounted() {
-    this.updateImageUrl();
     const dragAndDropArea = this.$refs.dragAndDropArea;
     if (!dragAndDropArea) {
       console.warn("Drag and drop area not found");
@@ -276,17 +277,6 @@ export default {
     },
     toggleSelection(value) {
       store.dispatch("toggleSelection", value);
-    },
-    updateImageUrl() {
-      this.changeTrack += 1;
-      if (this.frame) {
-        this.imageUrl = this.frame.imageUrl;
-      }
-    }
-  },
-  watch: {
-    "$route.params.frameId"() {
-      this.updateImageUrl();
     }
   }
 };
