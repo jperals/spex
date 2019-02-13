@@ -49,7 +49,9 @@ const frames = {
     // and adds it to the given story too.
     addNewFrameToStory(context, story) {
       const frame = {
-        storyId: story.id
+        description: '',
+        storyId: story.id,
+        title: ''
       }
       return collection.add(frame)
         .then(docRef => {
