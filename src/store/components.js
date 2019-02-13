@@ -2,17 +2,6 @@ import db from "./firebase";
 
 const collection = db.collection('components')
 
-export class Component {
-  constructor(props) {
-    this.id = typeof props.id === 'undefined' ? components.state.nextId.toString() : props.id
-    components.state.nextId += 1
-    if (props && props.story) {
-      this.storyId = props.story.id
-    }
-    Object.assign(this, props)
-  }
-}
-
 // Note:
 // We are not using Components as being story-specific for now.
 
