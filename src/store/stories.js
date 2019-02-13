@@ -1,13 +1,6 @@
-export class Story {
-  constructor(props) {
-    this.id = stories.state.stories.length.toString()
-    if(props && props.project) {
-      this.projectId = props.project.id
-    }
-    this.frames = []
-    Object.assign(this, props)
-  }
-}
+import {db} from '@/store/firebase'
+
+const collection = db.collection('stories')
 
 const stories = {
   state: {
@@ -41,9 +34,6 @@ const stories = {
     addStory(state, story) {
       state.stories.push(story)
     },
-    addNewStory(state, project) {
-      state.stories.push(new Story(project))
-    },
     forceStoryUpdate(state, story) {
       state.changeTracker += 1
       const index = state.stories.findIndex(item => item.id === story.id)
@@ -68,6 +58,18 @@ const stories = {
   actions: {
     addFrameToStory(context, {story, frame}) {
       context.commit('addFrameToStory', {story, frame})
+    },
+    loadStories(context) {
+      return collection.get()
+        .then(documents => {
+          const stories = []
+          documents.forEach(document => {
+            const story = Object.assign({id: document.id}, document.data())
+            stories.push(story)
+          })
+          context.commit('updateStories', stories)
+        })
+        .catch(console.error)
     }
   }
 }

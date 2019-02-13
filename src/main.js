@@ -8,6 +8,7 @@ Vue.config.productionTip = false;
 
 store.dispatch('loadComponents')
 store.dispatch('loadFrames')
+store.dispatch('loadStories')
 
 new Vue({
   router,
