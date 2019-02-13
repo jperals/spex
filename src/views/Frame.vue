@@ -283,6 +283,14 @@ export default {
     toggleSelection(value) {
       store.dispatch("toggleSelection", value);
     }
+  },
+  watch: {
+    'frame.description'(description) {
+      store.dispatch('sendFrameProperties', {frame: this.frame, props: {description}})
+    },
+    'frame.title'(title) {
+      store.dispatch('sendFrameProperties', {frame: this.frame, props: {title}})
+    }
   }
 };
 

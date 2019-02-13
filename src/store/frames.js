@@ -82,8 +82,19 @@ const frames = {
           context.commit('updateFrames', frames)
         })
     },
+    // Update frame properties remotely without waiting for an answer.
+    // (Used in text fields where we want immediate reaction)
+    sendFrameProperties(context, {frame, props}) {
+      return collection.doc(frame.id).set(
+        props,
+        {
+          merge: true
+        }
+      )
+    },
+    // Update frame properties remotely before doing so locally.
     updateFrame(context, {frame, newProperties}) {
-      collection.doc(frame.id).set(
+      return collection.doc(frame.id).set(
         newProperties,
         {
           merge: true
@@ -95,7 +106,7 @@ const frames = {
           })
           context.commit('forceFrameUpdate', frame)
         })
-    }
+    },
   }
 };
 
