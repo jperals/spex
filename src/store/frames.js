@@ -1,4 +1,3 @@
-import Frame from "./Frame";
 import {db, storageRef} from '@/store/firebase'
 
 const collection = db.collection('frames')
@@ -10,10 +9,10 @@ const frames = {
   getters: {
     frameById: state => id => state.frames.find(frame => frame.id === id),
     frames: state => state.frames,
-    framesFromSameStory: state => ourFrame => state.frames.filter(anotherFrame => anotherFrame.storyId === ourFrame.storyId)
+    framesFromSameStory: (state, getters) => frame => getters.framesFromStory(getters.storyFromFrame(frame))
   },
   mutations: {
-    addFrame(state, {frame}) {
+    addFrame(state, frame) {
       state.frames.push(frame)
     },
     addImageToFrame(state, {frame, imageFile}) {
@@ -28,7 +27,7 @@ const frames = {
       state.frames[index] = Object.assign({}, frame)
     },
     removeFrame(state, frame) {
-      const index = state.frames.findIndex(item => item.id);
+      const index = state.frames.findIndex(item => item.id === frame.id);
       if (index === -1) {
         console.warn("Frame with id", frame.id, "not found.");
         return;
@@ -46,9 +45,20 @@ const frames = {
     }
   },
   actions: {
-    addNewFrame(context, story) {
-      const frame = new Frame({story})
-      context.commit('addFrameToStory', {story, frame})
+    // Adds an empty frame to the frames collection
+    // and adds it to the given story too.
+    addNewFrameToStory(context, story) {
+      const frame = {
+        storyId: story.id
+      }
+      return collection.add(frame)
+        .then(docRef => {
+          context.commit('addFrame', Object.assign(frame, {id: docRef.id}))
+          return context.dispatch('addFrameToStory', {story, frame: {id: docRef.id}})
+        })
+        .catch(function (error) {
+          console.error("Error writing document: ", error);
+        })
     },
     addImageToFrame(context, {frame, imageFile}) {
       const imageRef = storageRef.child(`frame-images/${frame.id}`)
@@ -70,10 +80,6 @@ const frames = {
             frames.push(frame)
           })
           context.commit('updateFrames', frames)
-          for (const frame of frames) {
-            const story = context.getters.storyById(frame.storyId)
-            context.commit('addFrameToStory', {story, frame})
-          }
         })
     },
     updateFrame(context, {frame, newProperties}) {

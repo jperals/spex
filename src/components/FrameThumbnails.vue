@@ -29,8 +29,7 @@ export default {
       type: Array
     },
     storyId: {
-      type: String,
-      default: "0"
+      type: String
     }
   },
   computed: {

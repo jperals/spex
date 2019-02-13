@@ -11,7 +11,7 @@
         ></textarea>
       </div>
       <div class="thumbnails">
-        <FrameThumbnails :story-id="storyId" :frames="frames"></FrameThumbnails>
+        <FrameThumbnails :story-id="storyId" :frames="frames" v-if="frames"></FrameThumbnails>
       </div>
     </div>
   </div>

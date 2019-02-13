@@ -44,6 +44,15 @@ const stories = {
     addNewStory(state, project) {
       state.stories.push(new Story(project))
     },
+    forceStoryUpdate(state, story) {
+      state.changeTracker += 1
+      const index = state.stories.findIndex(item => item.id === story.id)
+      if (index === -1) {
+        console.warn('Story with id', story.id, 'not found.')
+        return
+      }
+      state.stories[index] = Object.assign({}, story, {frames: [].concat(story.frames)})
+    },
     removeStory(state, story) {
       const index = state.stories.findIndex(item => item.id === story.id)
       if(index === -1) {

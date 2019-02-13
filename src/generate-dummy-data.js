@@ -1,4 +1,3 @@
-import Frame from '@/store/Frame'
 import store from '@/store.js'
 import {Story} from '@/store/stories.js'
 
@@ -13,6 +12,10 @@ store.commit('updateStories', [
     id: '0',
     projectId: '0',
     title: 'Assembly Line',
-    description: 'Technicians can assemble units, and use industrial machinery, assisted by Augmented Reality'
+    description: 'Technicians can assemble units, and use industrial machinery, assisted by Augmented Reality',
+    frames: [
+      'cIylZ9eWVYDvSo8AIZna',
+      'riMCVi49OUwrejv06AcU'
+    ]
   })
 ])
