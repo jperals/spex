@@ -44,6 +44,9 @@ $fontSize: 20px;
   padding: 0;
   resize: none;
   text-overflow: ellipsis;
+  &:empty:not(:focus)::before{
+    content:attr(placeholder)
+  }
   .smart-link {
     display: inline;
     background-color: #e3dfff;
