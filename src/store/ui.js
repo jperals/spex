@@ -5,7 +5,7 @@ const ui = {
     lastAddedRelationship: null,
     selecting: false,
     showComponents: false,
-    textSelection: null
+    selectedTextComponentId: null
   },
   getters: {
     editingComponent(state) {
@@ -16,8 +16,8 @@ const ui = {
     selecting(state, getters) {
       return state.selecting && getters.focusedElement === 'smartText' || getters.focusedElement === 'componentList'
     },
-    selection(state) {
-      return state.textSelection
+    selectedTextComponentId(state) {
+      return state.selectedTextComponentId
     },
     showComponents(state) {
       return state.showComponents
@@ -33,8 +33,8 @@ const ui = {
     setRelationship(state, id) {
       state.lastAddedRelationship = id
     },
-    setSelection(state, selection) {
-      state.textSelection = selection
+    setSelectedComponentId(state, selection) {
+      state.selectedTextComponentId = selection
     },
     toggleComponents(state, value) {
       state.showComponents = typeof value === 'undefined' ? !state.showComponents : value
@@ -56,8 +56,8 @@ const ui = {
     setRelationship(context, relationship) {
       context.commit('setRelationship', relationship)
     },
-    setSelection(context, selection) {
-      context.commit('setSelection', selection)
+    setSelectedComponentId(context, selection) {
+      context.commit('setSelectedComponentId', selection)
     },
     toggleComponents(context, value) {
       context.commit('toggleComponents', value)

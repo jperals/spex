@@ -198,7 +198,7 @@ export default {
       store.dispatch("editComponent", component);
     },
     isSelected(component) {
-      const relatedComponentId = store.getters.selection;
+      const relatedComponentId = store.getters.selectedTextComponentId;
       return relatedComponentId === component.id;
     },
     select(component, event) {

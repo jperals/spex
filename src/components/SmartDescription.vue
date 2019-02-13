@@ -200,22 +200,22 @@ export default {
         selection.anchorNode.parentElement &&
         selection.anchorNode.parentElement.attributes &&
         selection.anchorNode.parentElement.getAttribute("link-id");
-      store.dispatch("setSelection", id);
+      store.dispatch("setSelectedComponentId", id);
       store.dispatch("setFocus", "smartText");
       store.dispatch("toggleSelection", true);
       this.changeTracker += 1;
     },
-    setRelationship(relationshipId) {
+    setRelationship(relatedElementId) {
       const selection = document.getSelection();
       if (!selection || !selection.toString() || !selection.toString().length) {
         store.dispatch("toggleSelection", false);
         return;
       }
       const currentText = selection.toString();
-      const html = `<div class="smart-link" link-id="${relationshipId}">${currentText}</div>`;
+      const html = `<div class="smart-link" link-id="${relatedElementId}">${currentText}</div>`;
       document.execCommand("insertHTML", false, html);
-      store.dispatch("setSelection", { id: relationshipId });
-      store.dispatch("setFocus", "smartText");
+      store.dispatch("setSelectedComponentId", relatedElementId);
+      // store.dispatch("setFocus", "smartText");
       store.dispatch("toggleSelection", true);
       this.changeTracker += 1;
     }
