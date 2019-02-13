@@ -51,7 +51,7 @@
 </style>
 
 <script>
-import FrameImage from '@/components/FrameImage.vue'
+import FrameImage from "@/components/FrameImage.vue";
 export default {
   name: "frame-thumbnail",
   props: {
