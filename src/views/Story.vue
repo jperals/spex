@@ -14,6 +14,9 @@
         <FrameThumbnails :story-id="storyId" :frames="frames"></FrameThumbnails>
       </div>
     </div>
+    <div v-else>
+      <not-found></not-found>
+    </div>
   </div>
 </template>
 
@@ -64,14 +67,16 @@ textarea {
 </style>
 
 <script>
-import TopBar from "@/components/TopBar.vue";
 import FrameThumbnails from "@/components/FrameThumbnails";
+import NotFound from '@/components/NotFound.vue'
+import TopBar from "@/components/TopBar.vue";
 import store from "@/store";
 
 export default {
   name: "story",
   components: {
     FrameThumbnails,
+    NotFound,
     TopBar
   },
   props: {
