@@ -1,7 +1,7 @@
 <template>
-  <div class="view frame-view" v-if="frame" @click="toggleSelection(false)">
+  <div class="view frame-view" @click="toggleSelection(false)">
     <top-bar :story="story"></top-bar>
-    <div class="top" v-if="frame">
+    <div v-if="frame" class="top">
       <div class="picture-frame image" ref="dragAndDropArea" :class="{empty: !imageUrl}">
         <input type="file" class="picture-input" @change="handleFileSelect" ref="fileInput">
         <FrameImage :image-url="imageUrl" v-if="imageUrl"></FrameImage>
@@ -17,7 +17,10 @@
       </div>
       <component-list :class="{active:showComponents}" :components="components" :frame="frame"></component-list>
     </div>
-    <frame-selector :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
+    <div v-else class="top not-found">
+      <not-found></not-found>
+    </div>
+    <frame-selector v-if="frame" :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
   </div>
 </template>
 
@@ -197,6 +200,7 @@
 import ComponentList from "@/components/ComponentList.vue";
 import FrameImage from "@/components/FrameImage.vue";
 import FrameSelector from "@/components/FrameSelector.vue";
+import NotFound from '@/components/NotFound.vue'
 import TopBar from "@/components/TopBar.vue";
 
 import SmartDescription from "@/components/SmartDescription.vue";
@@ -218,6 +222,7 @@ export default {
     ComponentList,
     FrameImage,
     FrameSelector,
+    NotFound,
     SmartDescription,
     TopBar
   },
