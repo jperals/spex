@@ -5,10 +5,6 @@ const collection = db.collection('components')
 // Note:
 // We are not using Components as being story-specific for now.
 
-// Firebase is our source of truth for data.
-// Please follow this data flow:
-// Views and components -> Dispatch actions -> Call Firebase -> Commit mutations -> Views and components will react
-
 const components = {
   state: {
     components: [],

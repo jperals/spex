@@ -24,6 +24,13 @@ Start the living styleguide:
 yarn styleguide
 ```
 
+## State management
+
+Firebase is our source of truth for data.
+Please follow this data flow:
+
+> Views and components -> Dispatch actions -> Call Firebase -> Commit mutations -> Let views and components update
+
 ## Production build
 
 ```sh
