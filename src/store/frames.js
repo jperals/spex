@@ -38,6 +38,9 @@ const frames = {
     setFrameImageUrl(state, {frame, imageUrl}) {
       frame.imageUrl = imageUrl
     },
+    updateFrame(state, {frame, newProperties}) {
+      Object.assign(frame, newProperties)
+    },
     updateFrames(state, frames) {
       state.frames = frames;
     }
@@ -53,8 +56,7 @@ const frames = {
         .catch(e => console.error(e))
         .then(() => imageRef.getDownloadURL())
         .then(imageUrl => {
-          context.commit('setFrameImageUrl', {frame, imageUrl})
-          return imageUrl
+          return context.dispatch('updateFrame', {frame, newProperties: {imageUrl}}).then(() => imageUrl)
         })
     },
     loadFrames(context) {
@@ -72,6 +74,19 @@ const frames = {
             const story = context.getters.storyById(frame.storyId)
             context.commit('addFrameToStory', {story, frame})
           }
+        })
+    },
+    updateFrame(context, {frame, newProperties}) {
+      collection.doc(frame.id).set(
+        newProperties,
+        {
+          merge: true
+        })
+        .then(() => {
+          context.commit('updateFrame', {
+            frame,
+            newProperties
+          })
         })
     }
   }
