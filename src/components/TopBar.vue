@@ -1,8 +1,9 @@
 <template>
   <div class="TopBar">
     <router-link :to="backUrl" class="link-back">
-      <div class="BackIcon"></div>
+      <div class="BackIcon" v-if="story"></div>
       <span class="PageTitle" v-if="story">{{ story.title }}</span>
+      <span class="PageTitle" v-else-if="title">{{ title }}</span>
     </router-link>
     <SuggestionsIndicator :number-of-suggestions="numberOfSuggestions"></SuggestionsIndicator>
     <div class="tooltip" @click="toggleComponents" :class="{active: showComponents}">
@@ -179,6 +180,9 @@ export default {
     },
     story: {
       type: Object
+    },
+    title: {
+      type: String
     }
   },
   computed: {
