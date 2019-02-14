@@ -8,7 +8,7 @@
       </router-link>
     </div>
     <SuggestionsIndicator :number-of-suggestions="numberOfSuggestions"></SuggestionsIndicator>
-    <div
+    <div v-if="story"
         class="tooltip"
         @click="toggleComponents($event)"
         :class="{active: showComponents, warning: componentsMissing}"
@@ -17,13 +17,14 @@
       <span class="tooltiptext">Components</span>
     </div>
 
-    <div class="Divider"></div>
-    <div class="tooltip">
+    <div class="Divider" v-if="story"></div>
+
+    <router-link :to="storyLink" class="tooltip" v-if="story">
       <div class="StoryIcon"></div>
       <span class="tooltiptext">Story</span>
-    </div>
+    </router-link>
 
-    <router-link :to="systemLink" class="tooltip">
+    <router-link :to="systemLink" class="tooltip" v-if="story">
       <div class="SystemIcon"></div>
       <span class="tooltiptext">System</span>
     </router-link>
@@ -219,6 +220,12 @@ export default {
     },
     showComponents() {
       return store.getters.showComponents;
+    },
+    storyLink() {
+      if (this.story) {
+        return '/story/' + this.story.id
+      }
+      return '#'
     },
     systemLink() {
       if (this.story) {
