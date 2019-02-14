@@ -85,6 +85,14 @@ const frames = {
           context.commit('updateFrames', frames)
         })
     },
+    removeFrame(context, frame) {
+      return collection.doc(frame.id)
+        .delete()
+        .then(() => {
+          context.commit('removeFrame', frame)
+        })
+        .catch(console.warn)
+    },
     // Update frame properties remotely without waiting for an answer.
     // (Used in text fields where we want immediate reaction)
     sendFrameProperties(context, {frame, props}) {

@@ -2,7 +2,7 @@
   <div class="frame-thumbnail">
     <router-link class="image-link" :to="'/frame/' + frame.id">
       <frame-image class="picture" :imageUrl="frame.imageUrl"></frame-image>
-      <div class="delete-icon"></div>
+      <div class="delete-icon" @click="remove($event)"></div>
     </router-link>
     <textarea class="title" v-model="frame.title" placeholder="Frame Title" rows="2" maxlength="27"></textarea>
   </div>
@@ -57,6 +57,7 @@
     top: 8px;
     z-index: 40;
     display: none;
+    cursor: pointer;
   }
 
   .image-link:hover .delete-icon {
@@ -87,6 +88,13 @@ export default {
   },
   components: {
     FrameImage
+  },
+  methods: {
+    remove(event) {
+      event.stopPropagation()
+      event.preventDefault()
+      store.dispatch('removeFrame', this.frame)
+    },
   },
   watch: {
     "frame.title"(title) {

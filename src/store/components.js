@@ -80,6 +80,7 @@ const components = {
         .then(() => {
           context.commit('removeComponent', component)
         })
+        .catch(console.warn)
     },
     // The component exists and will be modified.
     // The component needs to have an id
