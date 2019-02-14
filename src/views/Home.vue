@@ -1,30 +1,33 @@
 <template>
-  <div class="home">
+  <div class="view home-view">
     <top-bar title="ProFi MVP"></top-bar>
-    <div class="welcome-text">👋 Welcome to Profi</div>
+    <div class="main">
+      <div class="welcome-text">👋 Welcome to Profi</div>
 
-    <div class="welcome-image">
-      <a @click="createNewStory">
-        <label class="new-story-button">NEW STORY</label>
-      </a>
+      <div class="welcome-image">
+        <a @click="createNewStory">
+          <label class="new-story-button">NEW STORY</label>
+        </a>
+      </div>
+      <div class="small-title">STORIES</div>
+      <hr class="divider">
+      <router-link
+          :to="'/story/' + story.id"
+          class="story-list-item"
+          v-for="story in stories"
+          :key="story.id"
+      >
+        <div class="story-icon">📕</div>
+        <div class="storyTitle">{{story.title}}</div>
+        <div class="storySecondary">Edited 58 minutes ago</div>
+      </router-link>
     </div>
-    <div class="small-title">STORIES</div>
-    <hr class="divider">
-    <router-link
-      :to="'/story/' + story.id"
-      class="story-list-item"
-      v-for="story in stories"
-      :key="story.id"
-    >
-      <div class="story-icon">📕</div>
-      <div class="storyTitle">{{story.title}}</div>
-      <div class="storySecondary">Edited 58 minutes ago</div>
-    </router-link>
   </div>
 </template>
 
 
 <style scoped lang="scss">
+@import './view';
 .welcome-text {
   font-size: 40px;
   color: #031b26;
@@ -150,7 +153,7 @@ import store from "@/store";
 import TopBar from "@/components/TopBar";
 
 export default {
-  name: "home",
+  name: "home-view",
   components: {
     TopBar
   },

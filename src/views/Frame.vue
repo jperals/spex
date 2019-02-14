@@ -1,7 +1,7 @@
 <template>
   <div class="view frame-view" @click="toggleSelection(false)">
     <top-bar :story="story" :back-url="'/story/' + story.id"></top-bar>
-    <div v-if="frame" class="top">
+    <div v-if="frame" class="main top">
       <div class="picture-frame image" ref="dragAndDropArea" :class="{empty: !imageUrl}">
         <input type="file" class="picture-input" @change="handleFileSelect" ref="fileInput">
         <FrameImage :image-url="imageUrl" v-if="imageUrl"></FrameImage>
@@ -31,12 +31,7 @@
 </template>
 
 <style scoped lang="scss">
-.view {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
+@import './view';
 .title {
   font-weight: 800;
   font-size: 40px;
@@ -104,18 +99,6 @@
   background-color: #f2f6f7;
   position: fixed;
   bottom: 0;
-}
-
-.component-list {
-  /* float: right; */
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  -webkit-­transition: all 0.3s ease;
-  -moz-­transition: all 0.3s ease;
-  ­-o-­transition: all 0.3s ease;
-  transition: all 0.3s ease;
 }
 
 .component-list:not(.active) {
@@ -190,8 +173,6 @@
 }
 
 .top {
-  flex-grow: 1;
-  position: relative;
   z-index: 20;
 }
 

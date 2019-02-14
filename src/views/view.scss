@@ -2,9 +2,14 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
+  .TopBar {
+    flex-shrink: 0;
+  }
   .main {
     position: relative;
     flex-grow: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
     .component-list {
       position: absolute;
       top: 0px;
