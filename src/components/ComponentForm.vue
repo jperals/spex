@@ -41,6 +41,9 @@
     <div class="row buttons">
       <button @click="save" class="primaryButton">SAVE</button>
       <button @click="cancel" class="secondaryButton">CANCEL</button>
+      <div class="delete-icon">
+        <div class="delete-label">DELETE COMPONENT</div>
+      </div>
     </div>
   </div>
 </template>
@@ -265,6 +268,29 @@ textarea:focus {
 .buttons {
   margin-top: 68px;
 }
+
+.delete-icon {
+  background-image: url("../assets/icons/delete.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  /* position: absolute; */
+  width: 24px;
+  height: 24px;
+  margin-left: 30px;
+  opacity: 0.8;
+}
+
+.delete-label {
+  width: 200px;
+  margin-left: 32px;
+  font-weight: 600;
+  color: #707679;
+}
+
+.delete-icon:hover {
+  opacity: 1;
+}
 </style>
 
 <script>
@@ -279,7 +305,7 @@ export default {
   data() {
     return {
       componentCopy: Object.assign({}, this.component)
-    }
+    };
   },
   methods: {
     save() {
