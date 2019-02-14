@@ -43,9 +43,7 @@ const stories = {
       const parser = new DOMParser()
       for (const frame of getters.framesFromStory(story)) {
         const element = parser.parseFromString(frame.description, 'text/html')
-        console.log(element)
         const links = element.querySelectorAll('.smart-link')
-        console.log(links)
         for (const link of links) {
           const id = link.getAttribute('link-id')
           if (typeof id === 'string') {

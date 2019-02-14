@@ -225,7 +225,8 @@ export default {
       return this.linked.includes(component.id)
     },
     isMissing(component) {
-      return component.mandatory && !(this.isLinked(component))
+      const isLinked = this.isLinked(component)
+      return component.mandatory && !isLinked
     },
     isSelected(component) {
       const relatedComponentId = store.getters.selectedTextComponentId;

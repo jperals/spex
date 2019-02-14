@@ -19,9 +19,10 @@ const components = {
     components: state => state.components,
     newComponent: () => ({story}) => {
       const component = {
-        title: '',
+        aliases: '',
         description: '',
-        aliases: ''
+        mandatory: false,
+        title: '',
       }
       if(story && typeof story.id === 'string') {
         component.storyId = story.id
