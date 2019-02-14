@@ -180,11 +180,11 @@ input:checked {
     border-radius: 4px;
     &:after {
       position: absolute;
-      top: -8px;
-      right: -8px;
+      top: -7px;
+      right: -7px;
       content: '';
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
       background-color: rgb(255, 0, 0);
     }
@@ -203,7 +203,7 @@ export default {
     components: {
       type: Object
     },
-    frame: {
+    story: {
       type: Object
     },
     linked: {
@@ -215,7 +215,7 @@ export default {
   },
   methods: {
     createNewComponent() {
-      const component = store.getters.newComponent();
+      const component = store.getters.newComponent({story: this.story});
       this.editComponent(component);
     },
     editComponent(component) {

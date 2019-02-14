@@ -15,7 +15,7 @@
           :placeholder="'Describe what happens in this frame'"
         ></smart-description>
       </div>
-      <component-list :class="{active:showComponents}" :components="components" :frame="frame" :linked="linkedComponents"></component-list>
+      <component-list :class="{active:showComponents}" :components="components" :frame="frame" :linked="linkedComponents" :story="story"></component-list>
     </div>
     <div v-else class="top not-found">
       <not-found></not-found>

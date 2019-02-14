@@ -17,12 +17,16 @@ const components = {
       return component.description
     },
     components: state => state.components,
-    newComponent: () => () => {
-      return {
+    newComponent: () => ({story}) => {
+      const component = {
         title: '',
         description: '',
         aliases: ''
       }
+      if(story && typeof story.id === 'string') {
+        component.storyId = story.id
+      }
+      return component
     }
   },
   mutations: {

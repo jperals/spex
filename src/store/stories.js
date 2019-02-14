@@ -7,6 +7,21 @@ const stories = {
     stories: []
   },
   getters: {
+    componentsFromStory: (state, getters) => story => {
+      return getters.components.filter(component => component.storyId === story.id)
+    },
+    // Returns whether there are mandatory components to be linked in the story.
+    // (i.e, a boolean, not a list of the missing components)
+    componentsMissing: (state, getters) => story => {
+      const componentsFromStory = getters.componentsFromStory(story)
+      const linkedComponents = getters.linkedComponents(story)
+      for (const component of componentsFromStory) {
+        if (component.mandatory && !(linkedComponents.includes(component.id))) {
+          return true
+        }
+      }
+      return false
+    },
     framesFromStory: (state, getters) => (story) => {
       const frames = []
       if (story.frames instanceof Array) {
@@ -24,7 +39,7 @@ const stories = {
       return frames
     },
     linkedComponents: (state, getters) => story => {
-      const components = []
+      const componentIds = []
       const parser = new DOMParser()
       for (const frame of getters.framesFromStory(story)) {
         const element = parser.parseFromString(frame.description, 'text/html')
@@ -34,12 +49,11 @@ const stories = {
         for (const link of links) {
           const id = link.getAttribute('link-id')
           if (typeof id === 'string') {
-            components.push(id)
+            componentIds.push(id)
           }
         }
       }
-      console.log(components)
-      return components
+      return componentIds
     },
     stories: state => state.stories,
     storyById: (state, getters) => id => getters.stories.find(story => story.id === id),
