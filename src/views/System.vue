@@ -1,14 +1,28 @@
 <template>
   <div class="view system-view">
-    <top-bar :back-url="backUrl" :title="topBarTitle"></top-bar>
+    <top-bar :back-url="backUrl" :title="topBarTitle" :story="story"></top-bar>
     <div class="main">
-      System view
     </div>
   </div>
 </template>
 
-<style>
-
+<style lang="scss" scoped>
+@import './view.scss';
+.main {
+  background-image: url('../assets/icons/grid.png');
+  display: flex;
+  align-items: center;
+  &:empty:after {
+    content: '';
+    display: block;
+    width: 575px;
+    height: 577px;
+    margin-left: auto;
+    margin-right: auto;
+    background-image: url('../assets/icons/systemOverview.png');
+    background-repeat: no-repeat;
+  }
+}
 </style>
 
 <script>
