@@ -69,6 +69,22 @@
   margin: auto;
   margin-top: 48px;
   position: relative;
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, .1);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .2s ease;
+  }
+  &:hover:after {
+    opacity: 1;
+  }
 }
 
 .picture-input {
@@ -119,7 +135,7 @@
   /* z-index: -1; */
 }
 
-.picture-input:after {
+.picture-input:before {
   content: "";
   display: block;
   background-size: 160px;
