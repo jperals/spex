@@ -1,7 +1,7 @@
 <template>
   <div class="component-list">
     <div class="header">COMPONENTS</div>
-    <div class="component" v-for="component in components.list" :key="component.id">
+    <div class="component" v-for="component in components.list" :key="component.id" :class="{missing: isMissing(component)}">
       <label v-if="selecting" class="container" @click="select(component, $event)">
         <input
           type="radio"
@@ -140,8 +140,12 @@ input:checked {
 }
 
 .component-name {
-  margin-left: 16px;
   display: block;
+  box-sizing: border-box;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-right: 8px;
   position: relative;
   margin-bottom: 16px;
   cursor: pointer;
@@ -169,6 +173,23 @@ input:checked {
   bottom: 0px;
   display: none;
 }
+
+.component.missing {
+  .component-name {
+    background-color: rgba(255, 0, 0, 0.125);
+    border-radius: 4px;
+    &:after {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      content: '';
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background-color: rgb(255, 0, 0);
+    }
+  }
+}
 </style>
 
 
@@ -184,6 +205,9 @@ export default {
     },
     frame: {
       type: Object
+    },
+    linked: {
+      type: Array
     }
   },
   components: {
@@ -196,6 +220,12 @@ export default {
     },
     editComponent(component) {
       store.dispatch("editComponent", component);
+    },
+    isLinked(component) {
+      return this.linked.includes(component.id)
+    },
+    isMissing(component) {
+      return component.mandatory && !(this.isLinked(component))
     },
     isSelected(component) {
       const relatedComponentId = store.getters.selectedTextComponentId;

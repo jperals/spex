@@ -13,15 +13,33 @@ const stories = {
         for (const frameId of story.frames) {
           try {
             const frame = getters.frameById(frameId)
-            if(typeof frame !== 'undefined') {
+            if (typeof frame !== 'undefined') {
               frames.push(frame)
             }
-          } catch(e) {
+          } catch (e) {
             console.warn(e)
           }
         }
       }
       return frames
+    },
+    linkedComponents: (state, getters) => story => {
+      const components = []
+      const parser = new DOMParser()
+      for (const frame of getters.framesFromStory(story)) {
+        const element = parser.parseFromString(frame.description, 'text/html')
+        console.log(element)
+        const links = element.querySelectorAll('.smart-link')
+        console.log(links)
+        for (const link of links) {
+          const id = link.getAttribute('link-id')
+          if (typeof id === 'string') {
+            components.push(id)
+          }
+        }
+      }
+      console.log(components)
+      return components
     },
     stories: state => state.stories,
     storyById: (state, getters) => id => getters.stories.find(story => story.id === id),
@@ -32,7 +50,7 @@ const stories = {
     }
   },
   mutations: {
-    addFrameToStory(state, { story, frame }) {
+    addFrameToStory(state, {story, frame}) {
       story.frames.push(frame.id)
     },
     addStory(state, story) {
@@ -49,11 +67,28 @@ const stories = {
     },
     removeStory(state, story) {
       const index = state.stories.findIndex(item => item.id === story.id)
-      if(index === -1) {
+      if (index === -1) {
         console.warn('Story with id', story.id, 'not found.')
         return
       }
       state.stories.splice(index)
+    },
+    updateLinkedComponents(state) {
+      const components = []
+      const parser = new DOMParser()
+      for (const story of state.stories) {
+        for (const frame of story.frames) {
+          const element = parser.parseFromString(frame.description, 'text/html')
+          const links = element.querySelectorAll('.smart-link')
+          for (const link of links) {
+            const id = link.getAttribute('link-id')
+            if (typeof id === 'string') {
+              components.push(id)
+            }
+          }
+        }
+      }
+      state.linkedComponents = components
     },
     updateStories(state, stories) {
       state.stories = stories

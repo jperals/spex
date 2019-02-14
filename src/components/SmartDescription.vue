@@ -134,16 +134,6 @@ export default {
     }
   },
   methods: {
-    getLinkedElements() {
-      const elements = []
-      const links = this.$refs.textarea.querySelectorAll('.smart-link')
-      for (const link of links) {
-        const linkId = link.getAttribute('link-id')
-        const elementId = store.getters.relationship({ id: linkId })
-        elements.push(elementId)
-      }
-      return elements
-    },
     onInput() {
       this.$emit("input", this.$refs.textarea.innerHTML);
     },
@@ -238,9 +228,6 @@ export default {
     },
     $route() {
       this.updateContent();
-    },
-    value() {
-      this.linkedElements = this.getLinkedElements()
     }
   }
 };
