@@ -19,3 +19,9 @@ export default {
   name: 'not-found'
 }
 </script>
+
+<docs>
+  ```jsx
+  <not-found></not-found>
+  ```
+</docs>
