@@ -1,6 +1,6 @@
 <template>
   <div class="view frame-view" @click="toggleSelection(false)">
-    <top-bar :story="story"></top-bar>
+    <top-bar :story="story" :back-url="'/story/' + story.id"></top-bar>
     <div v-if="frame" class="top">
       <div class="picture-frame image" ref="dragAndDropArea" :class="{empty: !imageUrl}">
         <input type="file" class="picture-input" @change="handleFileSelect" ref="fileInput">

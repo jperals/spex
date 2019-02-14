@@ -4,9 +4,9 @@
     <div class="welcome-text">👋 Welcome to Profi</div>
 
     <div class="welcome-image">
-      <router-link to="/story/0">
+      <a @click="createNewStory">
         <label class="new-story-button">NEW STORY</label>
-      </router-link>
+      </a>
     </div>
     <div class="small-title">STORIES</div>
     <hr class="divider">
@@ -157,6 +157,14 @@ export default {
   computed: {
     stories() {
       return store.getters.stories;
+    }
+  },
+  methods: {
+    createNewStory() {
+      store.dispatch('addNewStory')
+        .then(id => {
+          this.$router.push('/story/' + id)
+        })
     }
   }
 };

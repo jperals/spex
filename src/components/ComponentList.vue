@@ -210,7 +210,8 @@ export default {
       type: Object
     },
     linked: {
-      type: Array
+      type: Array,
+      default: () => []
     }
   },
   components: {

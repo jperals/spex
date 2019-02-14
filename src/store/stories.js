@@ -110,6 +110,22 @@ const stories = {
     }
   },
   actions: {
+    addNewStory(context) {
+      return context.dispatch('addStory', {
+        title: '',
+        description: '',
+        frames: []
+      })
+    },
+    addStory(context, story) {
+      return collection.add(story)
+        .then(docRef => {
+          const id = docRef.id
+          context.commit('addStory', Object.assign(story, {id}))
+          return id
+        })
+        .catch(console.warn)
+    },
     addFrameToStory(context, {story, frame}) {
       return collection.doc(story.id)
         .update({
@@ -131,6 +147,16 @@ const stories = {
           context.commit('updateStories', stories)
         })
         .catch(console.error)
+    },
+    // Update story properties remotely without waiting for an answer.
+    // (Used in text fields where we want an immediate reaction)
+    sendStoryProperties(context, {story, props}) {
+      return collection.doc(story.id).set(
+        props,
+        {
+          merge: true
+        }
+      )
     },
     updateStory(context, {story, props}) {
       return collection.doc(story.id).set(
