@@ -83,6 +83,7 @@ textarea {
   width: 800px;
   height: 634px;
   border-radius: 2px;
+  box-shadow: 12px 13px 86px -24px rgba(0, 0, 0, 0.87);
 }
 
 .label {
@@ -160,6 +161,7 @@ textarea {
   opacity: 0;
   cursor: pointer;
   height: 0;
+  transition: transform 0.3s ease;
 }
 
 /* Create a custom checkbox */
