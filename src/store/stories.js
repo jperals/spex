@@ -110,6 +110,22 @@ const stories = {
     }
   },
   actions: {
+    addNewStory(context) {
+      return context.dispatch('addStory', {
+        title: '',
+        description: '',
+        frames: []
+      })
+    },
+    addStory(context, story) {
+      return collection.add(story)
+        .then(docRef => {
+          const id = docRef.id
+          context.commit('addStory', Object.assign(story, {id}))
+          return id
+        })
+        .catch(console.warn)
+    },
     addFrameToStory(context, {story, frame}) {
       return collection.doc(story.id)
         .update({
