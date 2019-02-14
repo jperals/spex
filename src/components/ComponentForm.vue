@@ -276,6 +276,7 @@ textarea:focus {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: left;
+  display: inline-block;
   /* position: absolute; */
   height: 24px;
   margin-left: 30px;
