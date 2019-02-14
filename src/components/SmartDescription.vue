@@ -20,7 +20,7 @@
         @mouseover="onMouseOverTooltip"
     >
       <div class="tooltip-text">
-        <div class="delete-icon"></div>
+        <div class="delete-icon" @click="unsetRelationship(tooltipId)"></div>
         <div class="tooltip-title">{{tooltipTitle}}</div>
         <div class="tooltip-description">{{tooltipText}}</div>
       </div>
@@ -104,6 +104,7 @@ $fontSize: 20px;
       margin-top: 8px;
       right: 0;
       opacity: 0.5;
+      cursor: pointer;
     }
 
     .delete-icon:hover {
@@ -123,6 +124,7 @@ export default {
     return {
       changeTracker: 1,
       textSelectionRange: null,
+      tooltipId: null,
       tooltipPosition: {x: 0, y: 0},
       tooltipText: "",
       tooltipTitle: "",
@@ -175,6 +177,7 @@ export default {
           if (typeof linkedElement === "object") {
             const elementBoundingBox = targetElement.getBoundingClientRect();
             const containerBoundingBox = this.$refs.textarea.getBoundingClientRect();
+            this.tooltipId = targetElement.getAttribute('id')
             this.tooltipPosition.x =
               elementBoundingBox.left -
               containerBoundingBox.left +
@@ -252,6 +255,16 @@ export default {
         selectText(newElement)
       }
       this.changeTracker += 1;
+    },
+    unsetRelationship(id) {
+      const element = this.$refs.textarea.querySelector('#' + id)
+      if (!element) {
+        console.warn('Element with id', id, 'was not found.')
+        return
+      }
+      const newElement = document.createElement('span')
+      newElement.innerText = element.innerText
+      element.parentNode.replaceChild(newElement, element)
     },
     updateContent() {
       const textarea = this.$refs.textarea;
