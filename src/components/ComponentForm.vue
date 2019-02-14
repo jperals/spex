@@ -41,7 +41,7 @@
     <div class="row buttons">
       <button @click="save" class="primaryButton">SAVE</button>
       <button @click="cancel" class="secondaryButton">CANCEL</button>
-      <div class="delete-icon" v-if="exists">
+      <div class="delete-icon" v-if="exists" @click="remove">
         <div class="delete-label">DELETE COMPONENT</div>
       </div>
     </div>
@@ -275,12 +275,12 @@ textarea:focus {
   background-image: url("../assets/icons/delete.png");
   background-size: contain;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: left;
   /* position: absolute; */
-  width: 24px;
   height: 24px;
   margin-left: 30px;
   opacity: 0.8;
+  cursor: pointer;
 }
 
 .delete-label {
@@ -297,6 +297,7 @@ textarea:focus {
 
 <script>
 import store from "@/store";
+
 export default {
   name: "component-form",
   props: {
@@ -315,11 +316,17 @@ export default {
     }
   },
   methods: {
-    save() {
-      store.dispatch("saveComponent", this.componentCopy);
+    cancel() {
       store.dispatch("editComponent");
     },
-    cancel() {
+    remove() {
+      store.dispatch('removeComponent', this.componentCopy)
+        .then(() => {
+          store.dispatch('editComponent')
+        })
+    },
+    save() {
+      store.dispatch("saveComponent", this.componentCopy);
       store.dispatch("editComponent");
     }
   }

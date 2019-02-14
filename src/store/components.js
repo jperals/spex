@@ -31,6 +31,14 @@ const components = {
     addComponent(state, component) {
       state.components.push(component)
     },
+    removeComponent(state, component) {
+      const index = state.components.findIndex(item => item.id === component.id)
+      if (index === -1) {
+        console.warn(`Component with id ${component.id} not found.`)
+        return
+      }
+      state.components.splice(index, 1)
+    },
     updateComponent(state, {component, newProperties}) {
       Object.assign(component, newProperties)
     }
@@ -64,6 +72,13 @@ const components = {
           components.forEach(component => {
             context.commit('addComponent', component)
           })
+        })
+    },
+    removeComponent(context, component) {
+      return collection.doc(component.id)
+        .delete()
+        .then(() => {
+          context.commit('removeComponent', component)
         })
     },
     // The component exists and will be modified.

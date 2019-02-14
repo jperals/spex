@@ -32,7 +32,7 @@ const frames = {
         console.warn("Frame with id", frame.id, "not found.");
         return;
       }
-      state.frames.splice(index);
+      state.frames.splice(index, 1);
     },
     setFrameImageUrl(state, {frame, imageUrl}) {
       frame.imageUrl = imageUrl
