@@ -8,7 +8,7 @@
     <SuggestionsIndicator :number-of-suggestions="numberOfSuggestions"></SuggestionsIndicator>
     <div
       class="tooltip"
-      @click="toggleComponents"
+      @click="toggleComponents($event)"
       :class="{active: showComponents, warning: componentsMissing}"
     >
       <div class="Components"></div>
@@ -217,7 +217,17 @@ export default {
     }
   },
   methods: {
-    toggleComponents() {
+    toggleComponents(event) {
+      // Use preventDefault and stopPropagation
+      // to avoid losing the text selection if the smart text field is focused.
+      // https://stackoverflow.com/a/20759988
+      if(store.getters.focusedElement === 'smartText') {
+        event.preventDefault()
+        // We need stopPropagation as well because clicking on the outer frame
+        // also has side effects.
+        event.stopPropagation()
+        store.dispatch('setFocus', 'componentsToggle')
+      }
       store.dispatch("toggleComponents");
     }
   }

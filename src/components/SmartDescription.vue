@@ -1,23 +1,23 @@
 <template>
   <div class="smart-text-container" @mouseleave="onMouseLeave($event)">
     <div
-      class="smart-text"
-      contenteditable
-      ref="textarea"
-      v-bind:value="value"
-      @click="updateSelection"
-      @input="onInput"
-      v-on:mousemove="onMouseMove($event)"
-      :placeholder="placeholder"
-      rows="4"
-      maxlength="295"
+        class="smart-text"
+        contenteditable
+        ref="textarea"
+        v-bind:value="value"
+        @click="updateSelection"
+        @input="onInput"
+        v-on:mousemove="onMouseMove($event)"
+        :placeholder="placeholder"
+        rows="4"
+        maxlength="295"
     ></div>
     <div
-      v-show="tooltipVisible"
-      class="tooltip"
-      ref="tooltip"
-      :style="tooltipStyle"
-      @mouseover="onMouseOverTooltip"
+        v-show="tooltipVisible"
+        class="tooltip"
+        ref="tooltip"
+        :style="tooltipStyle"
+        @mouseover="onMouseOverTooltip"
     >
       <div class="tooltip-text">
         <div class="delete-icon"></div>
@@ -120,12 +120,12 @@ export default {
   name: "smart-description",
   data() {
     return {
-      linkedElements: [],
-      tooltipPosition: { x: 0, y: 0 },
+      changeTracker: 1,
+      textSelectionRange: null,
+      tooltipPosition: {x: 0, y: 0},
       tooltipText: "",
       tooltipTitle: "",
-      tooltipVisible: false,
-      changeTracker: 1
+      tooltipVisible: false
     };
   },
   props: {
@@ -150,6 +150,9 @@ export default {
       const x = this.tooltipPosition.x;
       const y = this.tooltipPosition.y;
       return `transform: translate(${x}px,${y}px)`;
+    },
+    focusedElement() {
+      return store.getters.focusedElement
     }
   },
   methods: {
@@ -197,6 +200,57 @@ export default {
     onMouseOverTooltip() {
       this.tooltipVisible = true;
     },
+    restoreSelection() {
+      // Based on
+      // http://stackoverflow.com/a/3316483/1470564
+      const range = this.textSelectionRange
+      if (range) {
+        if (document.getSelection) {
+          const sel = document.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        } else if (document.selection && range.select) {
+          range.select();
+        }
+      }
+    },
+    // Based on
+    // http://stackoverflow.com/a/3316483/1470564
+    saveSelection() {
+      let selection
+      if (document.getSelection) {
+        const sel = document.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+          selection = sel.getRangeAt(0);
+        }
+      } else if (document.selection && document.selection.createRange) {
+        selection = document.selection.createRange();
+      }
+      this.textSelectionRange = selection
+      if (!selection) {
+        console.warn('Could not save the text selection.')
+      }
+    },
+    setRelationship(relatedElementId) {
+      const selection = document.getSelection();
+      if (!selection || !selection.toString() || !selection.toString().length) {
+        console.log(1)
+        store.dispatch("toggleSelection", false);
+        return;
+      }
+      const currentText = selection.toString();
+      const id = 'smart-link-' + this.$refs.textarea.querySelectorAll('.smart-link').length.toString()
+      const html = `<div class="smart-link" link-id="${relatedElementId}" id="${id}">${currentText}</div>`;
+      document.execCommand("insertHTML", false, html);
+      store.dispatch("setSelectedComponentId", relatedElementId);
+      store.dispatch("setFocus", "smartText");
+      store.dispatch("toggleSelection", true);
+      const newElement = document.getElementById(id)
+      if (newElement) {
+        selectText(newElement)
+      }
+      this.changeTracker += 1;
+    },
     updateContent() {
       const textarea = this.$refs.textarea;
       if (typeof this.value === "string") {
@@ -206,13 +260,11 @@ export default {
       }
       this.changeTracker += 1;
     },
-    toggleSelection(value) {
-      console.log(value);
-    },
     async updateSelection(event) {
       event.stopPropagation();
       const selection = document.getSelection();
       if (!selection || !selection.toString() || !selection.toString().length) {
+        console.log(2)
         store.dispatch("toggleSelection", false);
         return;
       }
@@ -225,23 +277,16 @@ export default {
       store.dispatch("setFocus", "smartText");
       store.dispatch("toggleSelection", true);
       this.changeTracker += 1;
-    },
-    setRelationship(relatedElementId) {
-      const selection = document.getSelection();
-      if (!selection || !selection.toString() || !selection.toString().length) {
-        store.dispatch("toggleSelection", false);
-        return;
-      }
-      const currentText = selection.toString();
-      const html = `<div class="smart-link" link-id="${relatedElementId}">${currentText}</div>`;
-      document.execCommand("insertHTML", false, html);
-      store.dispatch("setSelectedComponentId", relatedElementId);
-      // store.dispatch("setFocus", "smartText");
-      store.dispatch("toggleSelection", true);
-      this.changeTracker += 1;
     }
   },
   watch: {
+    focusedElement(newValue, oldValue) {
+      if (newValue === 'componentsToggle' && oldValue === 'smartText') {
+        store.dispatch('setFocus', 'smartText')
+      } else if (newValue === 'smartText' && oldValue === 'componentsToggle' && this.textSelectionRange) {
+        this.restoreSelection()
+      }
+    },
     lastAddedRelationship(value) {
       if (typeof value === "string" && value.length > 0) {
         this.setRelationship(value);
@@ -253,6 +298,26 @@ export default {
     }
   }
 };
+
+// https://stackoverflow.com/a/17439316
+function selectText(node) {
+  console.log(node)
+  if (document.body.createTextRange) {
+    const range = document.body.createTextRange();
+    range.moveToElementText(node);
+    range.select();
+  } else if (window.getSelection) {
+    const selection = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    selection.removeAllRanges();
+    selection.addRange(range);
+    console.log(selection, range)
+  } else {
+    console.warn("Could not select text in node: Unsupported browser.");
+  }
+}
+
 </script>
 
 <docs>
