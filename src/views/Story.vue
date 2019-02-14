@@ -91,6 +91,20 @@ export default {
     story() {
       return store.getters.storyById(this.storyId);
     }
+  },
+  watch: {
+    'story.description'(description) {
+      store.dispatch('sendStoryProperties', {
+        story: this.story,
+        props: {description}
+      })
+    },
+    'story.title'(title) {
+      store.dispatch('sendStoryProperties', {
+        story: this.story,
+        props: {title}
+      })
+    }
   }
 };
 </script>

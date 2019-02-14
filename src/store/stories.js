@@ -132,6 +132,16 @@ const stories = {
         })
         .catch(console.error)
     },
+    // Update story properties remotely without waiting for an answer.
+    // (Used in text fields where we want an immediate reaction)
+    sendStoryProperties(context, {story, props}) {
+      return collection.doc(story.id).set(
+        props,
+        {
+          merge: true
+        }
+      )
+    },
     updateStory(context, {story, props}) {
       return collection.doc(story.id).set(
         props,
