@@ -42,7 +42,7 @@
     background-repeat: no-repeat;
     background-position: center;
     margin-left: 16px;
-    margin-right: 16px;
+    /* margin-right: 16px; */
     margin-top: 20px;
     margin-bottom: 20px;
   }
@@ -72,6 +72,7 @@
     vertical-align: middle;
     margin-top: 16px;
     margin-bottom: 16px;
+    margin-left: 16px;
   }
 
   .StoryIcon {

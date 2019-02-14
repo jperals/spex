@@ -68,7 +68,7 @@ textarea {
 
 <script>
 import FrameThumbnails from "@/components/FrameThumbnails";
-import NotFound from '@/components/NotFound.vue'
+import NotFound from "@/components/NotFound.vue";
 import TopBar from "@/components/TopBar.vue";
 import store from "@/store";
 
