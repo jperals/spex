@@ -9,9 +9,9 @@
     </div>
     <SuggestionsIndicator :number-of-suggestions="numberOfSuggestions"></SuggestionsIndicator>
     <div v-if="story"
-        class="tooltip"
-        @click="toggleComponents($event)"
-        :class="{active: showComponents, warning: componentsMissing}"
+         class="tooltip"
+         @click="toggleComponents($event)"
+         :class="{active: showComponents, warning: componentsMissing}"
     >
       <div class="Components"></div>
       <span class="tooltiptext">Components</span>
@@ -62,14 +62,14 @@
     margin-right: 16px;
     margin-top: 20px;
     margin-bottom: 20px;
-    background-image: url("../assets/icons/components.png");
+    background-image: url("../assets/icons/components-idle.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
   }
 
   .tooltip.active .Components {
-    background-image: url("../assets/icons/components_active.png");
+    background-image: url("../assets/icons/components-active.png");
   }
   .tooltip.warning {
     background-color: none;
@@ -100,7 +100,7 @@
     width: 24px;
     height: 24px;
     margin: auto;
-    background-image: url("../assets/icons/story_Focus.png");
+    background-image: url("../assets/icons/story-idle.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -109,12 +109,16 @@
     margin-top: 20px;
     margin-bottom: 20px;
   }
+  .tooltip.router-link-active .StoryIcon {
+    background-image: url("../assets/icons/story-active.png");
+  }
+
   .SystemIcon {
     justify-content: flex-end;
     width: 24px;
     height: 24px;
     margin: auto;
-    background-image: url("../assets/icons/system.png");
+    background-image: url("../assets/icons/system-idle.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -123,6 +127,10 @@
     margin-top: 20px;
     margin-bottom: 20px;
   }
+  .tooltip.router-link-active .SystemIcon {
+    background-image: url("../assets/icons/system-active.png");
+  }
+
   .Divider {
     justify-content: flex-end;
     width: 1px;
