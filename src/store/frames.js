@@ -50,6 +50,7 @@ const frames = {
     addNewFrameToStory(context, story) {
       const frame = {
         description: '',
+        imageUrl: '',
         storyId: story.id,
         title: ''
       }
