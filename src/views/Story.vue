@@ -23,11 +23,8 @@
 </template>
 
 <style scoped lang="scss">
-.view {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+@import './view.scss';
+
 input {
   font-weight: 800;
   font-size: 40px;
@@ -46,8 +43,6 @@ textarea::placeholder {
 
 .main {
   padding-top: 48px;
-  position: relative;
-  flex-grow: 1;
 }
 
 .story-fields {
@@ -74,17 +69,6 @@ textarea {
   margin-left: auto;
   margin-right: auto;
   margin-top: 48px;
-}
-
-.component-list {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  transition: transform 0.3s ease;
-  &:not(.active) {
-    transform: translateX(100%);
-  }
 }
 
 </style>
