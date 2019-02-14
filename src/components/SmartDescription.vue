@@ -20,6 +20,7 @@
       @mouseover="onMouseOverTooltip"
     >
       <div class="tooltip-text">
+        <div class="delete-icon"></div>
         <div class="tooltip-title">{{tooltipTitle}}</div>
         <div class="tooltip-description">{{tooltipText}}</div>
       </div>
@@ -45,8 +46,8 @@ $fontSize: 20px;
   resize: none;
   text-overflow: ellipsis;
   cursor: text;
-  &:empty::before{
-    content:attr(placeholder);
+  &:empty::before {
+    content: attr(placeholder);
     opacity: 0.7;
   }
   .smart-link {
@@ -89,6 +90,24 @@ $fontSize: 20px;
         font-size: 24px;
         font-weight: 800;
       }
+    }
+
+    .delete-icon {
+      background-image: url("../assets/icons/delete-white.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      margin-right: 24px;
+      margin-top: 8px;
+      right: 0;
+      opacity: 0.5;
+    }
+
+    .delete-icon:hover {
+      opacity: 1;
     }
   }
 }
@@ -180,10 +199,10 @@ export default {
     },
     updateContent() {
       const textarea = this.$refs.textarea;
-      if (typeof this.value === 'string') {
+      if (typeof this.value === "string") {
         textarea.innerHTML = this.value;
       } else {
-        textarea.innerHTML = ''
+        textarea.innerHTML = "";
       }
       this.changeTracker += 1;
     },
@@ -224,9 +243,9 @@ export default {
   },
   watch: {
     lastAddedRelationship(value) {
-      if (typeof value === 'string' && value.length > 0) {
+      if (typeof value === "string" && value.length > 0) {
         this.setRelationship(value);
-        store.dispatch('setRelationship', null)
+        store.dispatch("setRelationship", null);
       }
     },
     $route() {

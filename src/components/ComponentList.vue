@@ -1,7 +1,12 @@
 <template>
   <div class="component-list">
     <div class="header">COMPONENTS</div>
-    <div class="component" v-for="component in components.list" :key="component.id" :class="{missing: isMissing(component)}">
+    <div
+      class="component"
+      v-for="component in components.list"
+      :key="component.id"
+      :class="{missing: isMissing(component)}"
+    >
       <label v-if="selecting" class="container" @click="select(component, $event)">
         <input
           type="radio"
@@ -144,7 +149,7 @@ input:checked {
   box-sizing: border-box;
   margin-left: 8px;
   padding-left: 8px;
-  padding-right: 8px;
+  padding-right: 20px;
   margin-right: 8px;
   position: relative;
   margin-bottom: 16px;
@@ -169,25 +174,23 @@ input:checked {
   width: 24px;
   height: 24px;
   margin-right: 24px;
+  margin-top: auto;
   right: 0;
   bottom: 0px;
   display: none;
 }
 
 .component.missing {
-  .component-name {
-    background-color: rgba(255, 0, 0, 0.125);
-    border-radius: 4px;
-    &:after {
-      position: absolute;
-      top: -7px;
-      right: -7px;
-      content: '';
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background-color: rgb(255, 0, 0);
-    }
+  position: relative;
+  &:before {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    content: "";
+    width: 4px;
+    height: 100%;
+    border-radius: 0px;
+    background-color: #db4141;
   }
 }
 </style>
@@ -215,18 +218,18 @@ export default {
   },
   methods: {
     createNewComponent() {
-      const component = store.getters.newComponent({story: this.story});
+      const component = store.getters.newComponent({ story: this.story });
       this.editComponent(component);
     },
     editComponent(component) {
       store.dispatch("editComponent", component);
     },
     isLinked(component) {
-      return this.linked.includes(component.id)
+      return this.linked.includes(component.id);
     },
     isMissing(component) {
-      const isLinked = this.isLinked(component)
-      return component.mandatory && !isLinked
+      const isLinked = this.isLinked(component);
+      return component.mandatory && !isLinked;
     },
     isSelected(component) {
       const relatedComponentId = store.getters.selectedTextComponentId;

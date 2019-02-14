@@ -6,7 +6,11 @@
       <span class="PageTitle" v-else-if="title">{{ title }}</span>
     </router-link>
     <SuggestionsIndicator :number-of-suggestions="numberOfSuggestions"></SuggestionsIndicator>
-    <div class="tooltip" @click="toggleComponents" :class="{active: showComponents, warning: componentsMissing}">
+    <div
+      class="tooltip"
+      @click="toggleComponents"
+      :class="{active: showComponents, warning: componentsMissing}"
+    >
       <div class="Components"></div>
       <span class="tooltiptext">Components</span>
     </div>
@@ -65,16 +69,16 @@
     background-image: url("../assets/icons/components_active.png");
   }
   .tooltip.warning {
-    background-color: rgba(255, 0, 0, .1);
+    background-color: none;
     &:after {
       position: absolute;
       top: 10px;
       right: 7px;
-      content: '';
+      content: "";
       width: 14px;
       height: 14px;
       border-radius: 50%;
-      background-color: rgb(255, 0, 0);
+      background-color: #db4141;
     }
   }
 
@@ -135,6 +139,7 @@
   .tooltip {
     position: relative;
     display: inline-block;
+    z-index: 40;
   }
 
   /* Tooltip text */
@@ -204,7 +209,7 @@ export default {
       return this.story ? "/story/" + this.story.id : this.$route.fullPath;
     },
     componentsMissing() {
-      return this.story && store.getters.componentsMissing(this.story)
+      return this.story && store.getters.componentsMissing(this.story);
     },
     showComponents() {
       return store.getters.showComponents;
