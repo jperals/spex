@@ -217,6 +217,7 @@ export default {
     // Based on
     // http://stackoverflow.com/a/3316483/1470564
     saveSelection() {
+      console.log('save selection')
       let selection
       if (document.getSelection) {
         const sel = document.getSelection();
@@ -234,7 +235,6 @@ export default {
     setRelationship(relatedElementId) {
       const selection = document.getSelection();
       if (!selection || !selection.toString() || !selection.toString().length) {
-        console.log(1)
         store.dispatch("toggleSelection", false);
         return;
       }
@@ -264,7 +264,6 @@ export default {
       event.stopPropagation();
       const selection = document.getSelection();
       if (!selection || !selection.toString() || !selection.toString().length) {
-        console.log(2)
         store.dispatch("toggleSelection", false);
         return;
       }
@@ -276,6 +275,7 @@ export default {
       store.dispatch("setSelectedComponentId", id);
       store.dispatch("setFocus", "smartText");
       store.dispatch("toggleSelection", true);
+      this.saveSelection()
       this.changeTracker += 1;
     }
   },
@@ -301,7 +301,6 @@ export default {
 
 // https://stackoverflow.com/a/17439316
 function selectText(node) {
-  console.log(node)
   if (document.body.createTextRange) {
     const range = document.body.createTextRange();
     range.moveToElementText(node);
@@ -312,7 +311,6 @@ function selectText(node) {
     range.selectNodeContents(node);
     selection.removeAllRanges();
     selection.addRange(range);
-    console.log(selection, range)
   } else {
     console.warn("Could not select text in node: Unsupported browser.");
   }

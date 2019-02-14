@@ -284,7 +284,6 @@ export default {
       this.handleFiles(event.target.files);
     },
     toggleSelection(value) {
-      console.log(3)
       store.dispatch("toggleSelection", value);
     }
   },
