@@ -188,6 +188,10 @@ export default {
   name: "top-bar",
   components: { SuggestionsIndicator },
   props: {
+    backUrl: {
+      type: String,
+      default: '/'
+    },
     numberOfSuggestions: {
       type: Number,
       default: 0
@@ -200,9 +204,6 @@ export default {
     }
   },
   computed: {
-    backUrl() {
-      return this.story ? "/story/" + this.story.id : this.$route.fullPath;
-    },
     componentsMissing() {
       return this.story && store.getters.componentsMissing(this.story)
     },
