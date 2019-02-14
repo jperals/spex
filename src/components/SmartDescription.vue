@@ -114,6 +114,7 @@ $fontSize: 20px;
 </style>
 
 <script>
+import uniqid from 'uniqid'
 import store from "@/store";
 
 export default {
@@ -239,7 +240,8 @@ export default {
         return;
       }
       const currentText = selection.toString();
-      const id = 'smart-link-' + this.$refs.textarea.querySelectorAll('.smart-link').length.toString()
+      const hash = uniqid()
+      const id = 'smart-link-' + hash
       const html = `<div class="smart-link" link-id="${relatedElementId}" id="${id}">${currentText}</div>`;
       document.execCommand("insertHTML", false, html);
       store.dispatch("setSelectedComponentId", relatedElementId);
