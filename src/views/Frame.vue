@@ -229,7 +229,7 @@ export default {
   computed: {
     components() {
       return {
-        list: store.getters.components
+        list: store.getters.componentsFromStory(this.story)
       };
     },
     frame() {
