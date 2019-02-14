@@ -7,21 +7,51 @@ const stories = {
     stories: []
   },
   getters: {
+    componentsFromStory: (state, getters) => story => {
+      return getters.components.filter(component => component.storyId === story.id)
+    },
+    // Returns whether there are mandatory components to be linked in the story.
+    // (i.e, a boolean, not a list of the missing components)
+    componentsMissing: (state, getters) => story => {
+      const componentsFromStory = getters.componentsFromStory(story)
+      const linkedComponents = getters.linkedComponents(story)
+      for (const component of componentsFromStory) {
+        if (component.mandatory && !(linkedComponents.includes(component.id))) {
+          return true
+        }
+      }
+      return false
+    },
     framesFromStory: (state, getters) => (story) => {
       const frames = []
       if (story.frames instanceof Array) {
         for (const frameId of story.frames) {
           try {
             const frame = getters.frameById(frameId)
-            if(typeof frame !== 'undefined') {
+            if (typeof frame !== 'undefined') {
               frames.push(frame)
             }
-          } catch(e) {
+          } catch (e) {
             console.warn(e)
           }
         }
       }
       return frames
+    },
+    linkedComponents: (state, getters) => story => {
+      const componentIds = []
+      const parser = new DOMParser()
+      for (const frame of getters.framesFromStory(story)) {
+        const element = parser.parseFromString(frame.description, 'text/html')
+        const links = element.querySelectorAll('.smart-link')
+        for (const link of links) {
+          const id = link.getAttribute('link-id')
+          if (typeof id === 'string') {
+            componentIds.push(id)
+          }
+        }
+      }
+      return componentIds
     },
     stories: state => state.stories,
     storyById: (state, getters) => id => getters.stories.find(story => story.id === id),
@@ -32,7 +62,7 @@ const stories = {
     }
   },
   mutations: {
-    addFrameToStory(state, { story, frame }) {
+    addFrameToStory(state, {story, frame}) {
       story.frames.push(frame.id)
     },
     addStory(state, story) {
@@ -49,11 +79,28 @@ const stories = {
     },
     removeStory(state, story) {
       const index = state.stories.findIndex(item => item.id === story.id)
-      if(index === -1) {
+      if (index === -1) {
         console.warn('Story with id', story.id, 'not found.')
         return
       }
       state.stories.splice(index)
+    },
+    updateLinkedComponents(state) {
+      const components = []
+      const parser = new DOMParser()
+      for (const story of state.stories) {
+        for (const frame of story.frames) {
+          const element = parser.parseFromString(frame.description, 'text/html')
+          const links = element.querySelectorAll('.smart-link')
+          for (const link of links) {
+            const id = link.getAttribute('link-id')
+            if (typeof id === 'string') {
+              components.push(id)
+            }
+          }
+        }
+      }
+      state.linkedComponents = components
     },
     updateStories(state, stories) {
       state.stories = stories

@@ -32,6 +32,7 @@ $fontSize: 20px;
 .smart-text {
   font-weight: 400;
   width: 590px;
+  min-height: 5em;
   color: #031b26;
   margin-top: 8px;
   line-height: 28px;
@@ -100,6 +101,7 @@ export default {
   name: "smart-description",
   data() {
     return {
+      linkedElements: [],
       tooltipPosition: { x: 0, y: 0 },
       tooltipText: "",
       tooltipTitle: "",
@@ -222,7 +224,10 @@ export default {
   },
   watch: {
     lastAddedRelationship(value) {
-      this.setRelationship(value);
+      if (typeof value === 'string' && value.length > 0) {
+        this.setRelationship(value);
+        store.dispatch('setRelationship', null)
+      }
     },
     $route() {
       this.updateContent();

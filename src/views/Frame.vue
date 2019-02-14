@@ -15,7 +15,7 @@
           :placeholder="'Describe what happens in this frame'"
         ></smart-description>
       </div>
-      <component-list :class="{active:showComponents}" :components="components" :frame="frame"></component-list>
+      <component-list :class="{active:showComponents}" :components="components" :frame="frame" :linked="linkedComponents" :story="story"></component-list>
     </div>
     <div v-else class="top not-found">
       <not-found></not-found>
@@ -237,6 +237,9 @@ export default {
     },
     imageUrl() {
       return this.frame.imageUrl
+    },
+    linkedComponents() {
+      return store.getters.linkedComponents(this.story)
     },
     showComponents() {
       return store.getters.showComponents;
