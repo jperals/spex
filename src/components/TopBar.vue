@@ -1,10 +1,10 @@
 <template>
   <div class="TopBar">
     <div class="left-items">
-      <router-link :to="backUrl" class="link-back">
-        <div class="BackIcon" v-if="story"></div>
-        <span class="PageTitle" v-if="story">{{ story.title }}</span>
-        <span class="PageTitle" v-else-if="title">{{ title }}</span>
+      <router-link :to="backUrl || '/'" class="link-back">
+        <div class="BackIcon" v-if="backUrl"></div>
+        <span class="PageTitle" v-if="title">{{ title }}</span>
+        <span class="PageTitle" v-else-if="story">{{ story.title }}</span>
       </router-link>
     </div>
     <SuggestionsIndicator :number-of-suggestions="numberOfSuggestions"></SuggestionsIndicator>
@@ -23,10 +23,10 @@
       <span class="tooltiptext">Story</span>
     </div>
 
-    <div class="tooltip">
+    <router-link :to="systemLink" class="tooltip">
       <div class="SystemIcon"></div>
       <span class="tooltiptext">System</span>
-    </div>
+    </router-link>
   </div>
 </template>
 
@@ -200,8 +200,7 @@ export default {
   components: {SuggestionsIndicator},
   props: {
     backUrl: {
-      type: String,
-      default: '/'
+      type: String
     },
     numberOfSuggestions: {
       type: Number,
@@ -220,6 +219,12 @@ export default {
     },
     showComponents() {
       return store.getters.showComponents;
+    },
+    systemLink() {
+      if (this.story) {
+        return '/system/' + this.story.id
+      }
+      return '#'
     }
   },
   methods: {

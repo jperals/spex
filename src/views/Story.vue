@@ -1,6 +1,6 @@
 <template>
   <div class="view story-view">
-    <top-bar :story="story"></top-bar>
+    <top-bar :story="story" :back-url="'/'"></top-bar>
     <div class="main" v-if="story">
       <div class="story-fields">
         <input v-model="story.title" placeholder="Give your story a title">
