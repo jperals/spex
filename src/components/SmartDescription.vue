@@ -223,7 +223,10 @@ export default {
   },
   watch: {
     lastAddedRelationship(value) {
-      this.setRelationship(value);
+      if (typeof value === 'string' && value.length > 0) {
+        this.setRelationship(value);
+        store.dispatch('setRelationship', null)
+      }
     },
     $route() {
       this.updateContent();
