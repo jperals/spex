@@ -1,18 +1,20 @@
 <template>
   <div class="view story-view">
     <top-bar :story="story"></top-bar>
-    <div class="story" v-if="story">
-      <div class="top">
+    <div class="main" v-if="story">
+      <div class="story-fields">
         <input v-model="story.title" placeholder="Give your story a title">
         <textarea
-          v-model="story.description"
-          placeholder="Write a short description"
-          maxlength="95"
+            v-model="story.description"
+            placeholder="Write a short description"
+            maxlength="95"
         ></textarea>
       </div>
       <div class="thumbnails">
         <FrameThumbnails :story-id="storyId" :frames="frames" v-if="frames"></FrameThumbnails>
       </div>
+      <component-list :components="components" :linked="linkedComponents" :story="story"
+                      :class="{active:showComponents}"></component-list>
     </div>
     <div v-else>
       <not-found></not-found>
@@ -21,6 +23,11 @@
 </template>
 
 <style scoped lang="scss">
+.view {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 input {
   font-weight: 800;
   font-size: 40px;
@@ -37,11 +44,15 @@ textarea::placeholder {
   opacity: 0.7;
 }
 
-.top {
-  margin: auto;
+.main {
+  padding-top: 48px;
+  position: relative;
+  flex-grow: 1;
+}
+
+.story-fields {
   margin-left: auto;
   margin-right: auto;
-  margin-top: 48px;
   max-width: 600px;
 }
 
@@ -64,9 +75,22 @@ textarea {
   margin-right: auto;
   margin-top: 48px;
 }
+
+.component-list {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  transition: transform 0.3s ease;
+  &:not(.active) {
+    transform: translateX(100%);
+  }
+}
+
 </style>
 
 <script>
+import ComponentList from '@/components/ComponentList'
 import FrameThumbnails from "@/components/FrameThumbnails";
 import NotFound from "@/components/NotFound.vue";
 import TopBar from "@/components/TopBar.vue";
@@ -75,6 +99,7 @@ import store from "@/store";
 export default {
   name: "story",
   components: {
+    ComponentList,
     FrameThumbnails,
     NotFound,
     TopBar
@@ -85,8 +110,19 @@ export default {
     }
   },
   computed: {
+    components() {
+      return {
+        list: store.getters.componentsFromStory(this.story)
+      }
+    },
     frames() {
       return store.getters.framesFromStory(this.story);
+    },
+    linkedComponents() {
+      return store.getters.linkedComponents(this.story)
+    },
+    showComponents() {
+      return store.getters.showComponents;
     },
     story() {
       return store.getters.storyById(this.storyId);

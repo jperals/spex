@@ -238,6 +238,12 @@ export default {
     },
     select(component, event) {
       event.stopPropagation();
+      // Use stopPropagation
+      // to avoid losing the text selection if the smart text field is focused.
+      // https://stackoverflow.com/a/20759988
+      if(store.getters.focusedElement === 'smartText') {
+        event.preventDefault()
+      }
       store.dispatch("setFocus", "componentList");
       store.dispatch("toggleSelection", true);
       store.dispatch("setRelationship", component.id);

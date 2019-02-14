@@ -1,15 +1,17 @@
 <template>
   <div class="TopBar">
-    <router-link :to="backUrl" class="link-back">
-      <div class="BackIcon" v-if="story"></div>
-      <span class="PageTitle" v-if="story">{{ story.title }}</span>
-      <span class="PageTitle" v-else-if="title">{{ title }}</span>
-    </router-link>
+    <div class="left-items">
+      <router-link :to="backUrl" class="link-back">
+        <div class="BackIcon" v-if="story"></div>
+        <span class="PageTitle" v-if="story">{{ story.title }}</span>
+        <span class="PageTitle" v-else-if="title">{{ title }}</span>
+      </router-link>
+    </div>
     <SuggestionsIndicator :number-of-suggestions="numberOfSuggestions"></SuggestionsIndicator>
     <div
-      class="tooltip"
-      @click="toggleComponents"
-      :class="{active: showComponents, warning: componentsMissing}"
+        class="tooltip"
+        @click="toggleComponents($event)"
+        :class="{active: showComponents, warning: componentsMissing}"
     >
       <div class="Components"></div>
       <span class="tooltiptext">Components</span>
@@ -175,9 +177,13 @@
     border-color: transparent transparent #707679 transparent;
   }
 
-  .link-back {
+  .left-items {
     display: flex;
     flex-grow: 1;
+  }
+
+  .link-back {
+    display: flex;
     &:not(:hover) {
       text-decoration: none;
     }
@@ -191,7 +197,7 @@ import SuggestionsIndicator from "@/components/SuggestionsIndicator";
 
 export default {
   name: "top-bar",
-  components: { SuggestionsIndicator },
+  components: {SuggestionsIndicator},
   props: {
     backUrl: {
       type: String,
@@ -217,7 +223,17 @@ export default {
     }
   },
   methods: {
-    toggleComponents() {
+    toggleComponents(event) {
+      // Use preventDefault and stopPropagation
+      // to avoid losing the text selection if the smart text field is focused.
+      // https://stackoverflow.com/a/20759988
+      if (store.getters.focusedElement === 'smartText') {
+        event.preventDefault()
+        // We need stopPropagation as well because clicking on the outer frame
+        // also has side effects.
+        event.stopPropagation()
+        store.dispatch('setFocus', 'componentsToggle')
+      }
       store.dispatch("toggleComponents");
     }
   }

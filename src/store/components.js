@@ -2,9 +2,6 @@ import {db} from "./firebase";
 
 const collection = db.collection('components')
 
-// Note:
-// We are not using Components as being story-specific for now.
-
 const components = {
   state: {
     components: [],
