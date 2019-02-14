@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Frame from './views/Frame.vue'
 import Home from './views/Home.vue'
 import Story from './views/Story.vue'
+import System from './views/System.vue'
 
 Vue.use(Router)
 
@@ -33,6 +34,12 @@ export default new Router({
       path: '/frame/:frameId',
       name: 'frame',
       component: Frame,
+      props: true
+    },
+    {
+      path: '/system/:storyId',
+      name: 'system',
+      component: System,
       props: true
     }
   ]

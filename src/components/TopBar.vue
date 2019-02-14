@@ -1,14 +1,14 @@
 <template>
   <div class="TopBar">
     <div class="left-items">
-      <router-link :to="backUrl" class="link-back">
-        <div class="BackIcon" v-if="story"></div>
-        <span class="PageTitle" v-if="story">{{ story.title }}</span>
-        <span class="PageTitle" v-else-if="title">{{ title }}</span>
+      <router-link :to="backUrl || '/'" class="link-back">
+        <div class="BackIcon" v-if="backUrl"></div>
+        <span class="PageTitle" v-if="title">{{ title }}</span>
+        <span class="PageTitle" v-else-if="story">{{ story.title }}</span>
       </router-link>
     </div>
     <SuggestionsIndicator :number-of-suggestions="numberOfSuggestions"></SuggestionsIndicator>
-    <div
+    <div v-if="story"
         class="tooltip"
         @click="toggleComponents($event)"
         :class="{active: showComponents, warning: componentsMissing}"
@@ -17,16 +17,17 @@
       <span class="tooltiptext">Components</span>
     </div>
 
-    <div class="Divider"></div>
-    <div class="tooltip">
+    <div class="Divider" v-if="story"></div>
+
+    <router-link :to="storyLink" class="tooltip" v-if="story">
       <div class="StoryIcon"></div>
       <span class="tooltiptext">Story</span>
-    </div>
+    </router-link>
 
-    <div class="tooltip">
+    <router-link :to="systemLink" class="tooltip" v-if="story">
       <div class="SystemIcon"></div>
       <span class="tooltiptext">System</span>
-    </div>
+    </router-link>
   </div>
 </template>
 
@@ -200,8 +201,7 @@ export default {
   components: {SuggestionsIndicator},
   props: {
     backUrl: {
-      type: String,
-      default: '/'
+      type: String
     },
     numberOfSuggestions: {
       type: Number,
@@ -220,6 +220,18 @@ export default {
     },
     showComponents() {
       return store.getters.showComponents;
+    },
+    storyLink() {
+      if (this.story) {
+        return '/story/' + this.story.id
+      }
+      return '#'
+    },
+    systemLink() {
+      if (this.story) {
+        return '/system/' + this.story.id
+      }
+      return '#'
     }
   },
   methods: {
