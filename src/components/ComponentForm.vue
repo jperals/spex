@@ -41,7 +41,7 @@
     <div class="row buttons">
       <button @click="save" class="primaryButton">SAVE</button>
       <button @click="cancel" class="secondaryButton">CANCEL</button>
-      <div class="delete-icon">
+      <div class="delete-icon" v-if="exists">
         <div class="delete-label">DELETE COMPONENT</div>
       </div>
     </div>
@@ -306,6 +306,11 @@ export default {
     return {
       componentCopy: Object.assign({}, this.component)
     };
+  },
+  computed: {
+    exists() {
+      return typeof this.componentCopy.id !== 'undefined'
+    }
   },
   methods: {
     save() {
