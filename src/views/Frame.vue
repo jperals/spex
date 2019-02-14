@@ -15,7 +15,13 @@
           :placeholder="'Describe what happens in this frame'"
         ></smart-description>
       </div>
-      <component-list :class="{active:showComponents}" :components="components" :frame="frame" :linked="linkedComponents" :story="story"></component-list>
+      <component-list
+        :class="{active:showComponents}"
+        :components="components"
+        :frame="frame"
+        :linked="linkedComponents"
+        :story="story"
+      ></component-list>
     </div>
     <div v-else class="top not-found">
       <not-found></not-found>
@@ -53,6 +59,10 @@
 
 .picture-frame:not(.empty):not(:hover) label {
   display: none;
+}
+
+.picture-input:hover {
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .picture-frame {
@@ -200,7 +210,7 @@
 import ComponentList from "@/components/ComponentList.vue";
 import FrameImage from "@/components/FrameImage.vue";
 import FrameSelector from "@/components/FrameSelector.vue";
-import NotFound from '@/components/NotFound.vue'
+import NotFound from "@/components/NotFound.vue";
 import TopBar from "@/components/TopBar.vue";
 
 import SmartDescription from "@/components/SmartDescription.vue";
@@ -236,10 +246,10 @@ export default {
       return this.changeTrack && store.getters.frameById(this.frameId);
     },
     imageUrl() {
-      return this.frame.imageUrl
+      return this.frame.imageUrl;
     },
     linkedComponents() {
-      return store.getters.linkedComponents(this.story)
+      return store.getters.linkedComponents(this.story);
     },
     showComponents() {
       return store.getters.showComponents;
@@ -288,11 +298,17 @@ export default {
     }
   },
   watch: {
-    'frame.description'(description) {
-      store.dispatch('sendFrameProperties', {frame: this.frame, props: {description}})
+    "frame.description"(description) {
+      store.dispatch("sendFrameProperties", {
+        frame: this.frame,
+        props: { description }
+      });
     },
-    'frame.title'(title) {
-      store.dispatch('sendFrameProperties', {frame: this.frame, props: {title}})
+    "frame.title"(title) {
+      store.dispatch("sendFrameProperties", {
+        frame: this.frame,
+        props: { title }
+      });
     }
   }
 };
