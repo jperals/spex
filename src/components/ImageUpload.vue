@@ -111,7 +111,6 @@
   }
 
   .frame-image {
-    background-color: black;
     top: 0px;
     left: 0px;
     bottom: 0px;
