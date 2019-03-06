@@ -2,6 +2,7 @@
   <div class="component-form">
     <span class="title" v-if="exists">Edit Component</span>
     <span class="title" v-else>New Component</span>
+    <image-upload :image-url="componentCopy.imageUrl" @upload="handleFile"></image-upload>
     <div class="row name-field">
       <label class="label">NAME</label>
       <input
@@ -82,9 +83,13 @@ textarea {
 .component-form {
   background-color: #f2f6f7;
   width: 800px;
-  height: 634px;
   border-radius: 2px;
   box-shadow: 12px 13px 86px -24px rgba(0, 0, 0, 0.87);
+  padding-bottom: 24px;
+  .picture-frame {
+    width: 350px;
+    height: 350px;
+  }
 }
 
 .label {
@@ -295,9 +300,11 @@ textarea:focus {
 .delete-icon:hover {
   opacity: 1;
 }
+
 </style>
 
 <script>
+import ImageUpload from '@/components/ImageUpload'
 import store from "@/store";
 
 export default {
@@ -312,6 +319,9 @@ export default {
       componentCopy: Object.assign({}, this.component)
     };
   },
+  components: {
+    ImageUpload
+  },
   computed: {
     exists() {
       return typeof this.componentCopy.id !== 'undefined'
@@ -320,6 +330,13 @@ export default {
   methods: {
     cancel() {
       store.dispatch("editComponent");
+    },
+    handleFile(file) {
+      store
+        .dispatch('addImageToComponent', {
+          component: this.componentCopy,
+          imageFile: file
+        })
     },
     remove() {
       store.dispatch('removeComponent', this.componentCopy)

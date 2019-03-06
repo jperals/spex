@@ -59,7 +59,7 @@ const components = {
       const imageRef = storageRef.child(`component-images/${component.id}`)
       return imageRef.put(imageFile)
         .catch(console.error)
-        .then(imageRef.getDownloadURL)
+        .then(() => imageRef.getDownloadURL())
         .then(imageUrl => context.dispatch('updateComponent', {
             component, newProperties: {imageUrl}
           }).then(() => imageUrl)

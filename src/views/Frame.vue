@@ -140,7 +140,6 @@ export default {
           frame: this.frame,
           imageFile: file
         })
-        // .then(this.updateImageUrl);
     },
     toggleSelection(value) {
       store.dispatch("toggleSelection", value);
