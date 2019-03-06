@@ -1,6 +1,7 @@
 <template>
   <div class="component-form">
-    <span class="title">New Component</span>
+    <span class="title" v-if="exists">Edit Component</span>
+    <span class="title" v-else>New Component</span>
     <div class="row name-field">
       <label class="label">NAME</label>
       <input
