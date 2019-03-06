@@ -1,4 +1,4 @@
-import {db} from "./firebase";
+import {db, storageRef} from "./firebase";
 
 const collection = db.collection('components')
 
@@ -18,10 +18,11 @@ const components = {
       const component = {
         aliases: '',
         description: '',
+        imageUrl: '',
         mandatory: false,
         title: '',
       }
-      if(story && typeof story.id === 'string') {
+      if (story && typeof story.id === 'string') {
         component.storyId = story.id
       }
       return component
@@ -53,6 +54,16 @@ const components = {
         .catch(function (error) {
           console.error("Error writing document: ", error);
         });
+    },
+    addImageToComponent(context, {component, imageFile}) {
+      const imageRef = storageRef.child(`component-images/${component.id}`)
+      return imageRef.put(imageFile)
+        .catch(console.error)
+        .then(imageRef.getDownloadURL)
+        .then(imageUrl => context.dispatch('updateComponent', {
+            component, newProperties: {imageUrl}
+          }).then(() => imageUrl)
+        )
     },
     loadComponents(context) {
       return collection.get()

@@ -10,6 +10,7 @@
   border: 2px solid #979c9e;
   box-sizing: border-box;
   border-radius: 2px;
+  position: relative;
   &.empty {
     background-image: url("../assets/icons/noImage.png");
     background-size: 24px;
