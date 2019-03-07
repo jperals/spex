@@ -46,7 +46,6 @@
 }
 
 .frame-selector {
-  height: 100px;
   background-color: #f2f6f7;
 }
 
