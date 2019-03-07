@@ -1,4 +1,5 @@
 import {db, storageRef} from "./firebase";
+import uniqid from 'uniqid'
 
 const collection = db.collection('components')
 
@@ -56,7 +57,8 @@ const components = {
         });
     },
     addImageToComponent(context, {component, imageFile}) {
-      const imageRef = storageRef.child(`component-images/${component.id}`)
+      const refId = uniqid()
+      const imageRef = storageRef.child(`component-images/${refId}`)
       return imageRef.put(imageFile)
         .catch(console.error)
         .then(() => imageRef.getDownloadURL())
@@ -93,20 +95,6 @@ const components = {
         })
         .catch(console.warn)
     },
-    // The component exists and will be modified.
-    // The component needs to have an id
-    updateComponent(context, {component, newProperties}) {
-      collection.doc(component.id).set(newProperties)
-        .then(() => {
-          context.commit('updateComponent', {
-            component,
-            newProperties
-          })
-        })
-        .catch(function (error) {
-          console.error("Error writing document: ", error);
-        });
-    },
     // The component might exist or not.
     // Add to the components if it's not there;
     // modify the corresponding component if we already have it
@@ -119,6 +107,30 @@ const components = {
         })
       } else {
         context.dispatch('addComponent', properties)
+      }
+    },
+    updateComponent(context, {component, newProperties}) {
+      if(component.id) {
+        // If the component exists it will be modified upstream.
+        return collection
+          .doc(component.id)
+          .set(newProperties)
+          .then(() => {
+            context.commit('updateComponent', {
+              component,
+              newProperties
+            })
+          })
+          .catch(function (error) {
+            console.error("Error writing document: ", error);
+          })
+      } else {
+        // Otherwise, it is a new component which has not been saved yet
+        // and doesn't have an id. Just update the in-memory instance.
+        context.commit('updateComponent', {
+          component,
+          newProperties
+        })
       }
     }
   }
