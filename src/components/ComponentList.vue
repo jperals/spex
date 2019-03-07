@@ -226,7 +226,7 @@ export default {
       store.dispatch("editComponent", component);
     },
     isLinked(component) {
-      return this.linked.includes(component.id);
+      return this.linked.map(component => component.id).includes(component.id);
     },
     isMissing(component) {
       const isLinked = this.isLinked(component);

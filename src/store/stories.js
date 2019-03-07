@@ -14,7 +14,7 @@ const stories = {
     // (i.e, a boolean, not a list of the missing components)
     componentsMissing: (state, getters) => story => {
       const componentsFromStory = getters.componentsFromStory(story)
-      const linkedComponents = getters.linkedComponents(story)
+      const linkedComponents = getters.linkedComponents(story).map(component => component.id)
       for (const component of componentsFromStory) {
         if (component.mandatory && !(linkedComponents.includes(component.id))) {
           return true
@@ -47,7 +47,7 @@ const stories = {
         for (const link of links) {
           const id = link.getAttribute('link-id')
           if (typeof id === 'string') {
-            componentIds.push(id)
+            componentIds.push(getters.componentById(id))
           }
         }
       }

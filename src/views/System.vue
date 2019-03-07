@@ -2,6 +2,7 @@
   <div class="view system-view">
     <top-bar :back-url="backUrl" :title="topBarTitle" :story="story"></top-bar>
     <div class="main" :class="{'with-sidebar': showComponents}">
+      <system-diagram :story="story"></system-diagram>
       <component-list :components="components" :linked="linkedComponents" :story="story"
                       :class="{active:showComponents}"></component-list>
     </div>
@@ -13,28 +14,13 @@
 
 .main {
   background-image: url('../assets/icons/grid.png');
-  display: flex;
-  align-items: center;
-  &:before {
-    content: '';
-    display: block;
-    width: 575px;
-    height: 577px;
-    margin-left: auto;
-    margin-right: auto;
-    background-image: url('../assets/icons/systemOverview.png');
-    background-repeat: no-repeat;
-    transition: transform 0.3s ease;
-  }
-  &.with-sidebar:before {
-    transform: translateX(-100px);
-  }
 }
 </style>
 
 <script>
 import ComponentList from '@/components/ComponentList'
 import store from '@/store'
+import SystemDiagram from '@/components/SystemDiagram'
 import TopBar from '@/components/TopBar'
 
 export default {
@@ -46,6 +32,7 @@ export default {
   },
   components: {
     ComponentList,
+    SystemDiagram,
     TopBar
   },
   computed: {
