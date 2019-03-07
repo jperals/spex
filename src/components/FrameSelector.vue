@@ -17,17 +17,28 @@
 </template>
 
 <style scoped lang="scss">
+$height: 100px;
+$frame-height: 68px;
+$horizontal-spacing: 24px;
+$vertical-padding: ($height - $frame-height)/2;
 .frame-selector {
-  display: flex;
-  padding-left: 24px;
-  align-items: center;
-
+  padding-left: $horizontal-spacing;
+  height: $height - $vertical-padding*2;
+  /* Keep all elements to one line */
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-top: $vertical-padding;
+  padding-bottom: $vertical-padding;
+  font-size: 0;
+  //height: $height - $vertical-padding*2;
   .frame {
     /* padding: 0 16 0 16; */
-    margin-left: 24px;
+    margin-right: $horizontal-spacing;
     width: 120px;
-    height: 68px;
+    height: $frame-height;
     position: relative;
+    display: inline-block;
     &.active:after {
       content: " ";
       display: block;
@@ -36,7 +47,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background-color: rgba(165, 136, 223, 0.3);
+      background-color: rgba(165, 136, 223, 0.5);
       cursor: default;
     }
   }
@@ -52,21 +63,25 @@
   .frame-title {
     font-weight: 800;
     font-size: 14pt;
-    margin-left: 6px;
-    margin-top: 6px;
-    max-width: 100px;
+    padding: 6px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
     line-height: 28px;
+    position: absolute;
     color: white;
-    display: none;
+    opacity: 0;
+    white-space: normal;
+    background-color: rgba(3, 27, 38, 0.7);
   }
   .frame:not(.active):hover {
     /* border: 2px solid #56a8d1; */
     .frame-image {
-      background-color: rgba(3, 27, 38, 0.8);
+      background-color: rgba(3, 27, 38, 0.7);
     }
     .frame-title {
-      display: inline-block;
-      align: center;
+      opacity: 1;
     }
   }
 }
