@@ -16,6 +16,8 @@ const components = {
     },
     components: state => state.components,
     newComponent: () => ({story}) => {
+      // Define all properties here
+      // so that the app correctly reacts to changes
       const component = {
         aliases: '',
         description: '',

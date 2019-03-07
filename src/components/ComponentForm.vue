@@ -316,7 +316,7 @@ export default {
   },
   data() {
     return {
-      componentCopy: Object.assign({}, this.component)
+      componentCopy: Object.assign(store.getters.newComponent({story: this.component && this.component.story || undefined}), this.component)
     };
   },
   components: {
