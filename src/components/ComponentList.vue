@@ -26,7 +26,6 @@
       </div>
     </div>
     <button @click="createNewComponent" class="newButton">NEW</button>
-    <component-modal v-if="editingComponent" :component="editingComponent"></component-modal>
   </div>
 </template>
 
@@ -197,7 +196,6 @@ input:checked {
 
 
 <script>
-import ComponentModal from "./ComponentModal";
 import store from "@/store";
 
 export default {
@@ -213,9 +211,6 @@ export default {
       type: Array,
       default: () => []
     }
-  },
-  components: {
-    ComponentModal
   },
   methods: {
     createNewComponent() {
@@ -250,9 +245,6 @@ export default {
     }
   },
   computed: {
-    editingComponent() {
-      return store.getters.editingComponent;
-    },
     selecting() {
       return store.getters.selecting;
     }

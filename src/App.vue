@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <router-view/>
+    <component-modal v-if="editingComponent" :component="editingComponent"></component-modal>
   </div>
 </template>
 
@@ -22,3 +23,20 @@ a {
   overflow-x: hidden;
 }
 </style>
+
+<script>
+import store from '@/store'
+import ComponentModal from '@/components/ComponentModal'
+
+export default {
+  name: 'profi-app',
+  components: {
+    ComponentModal
+  },
+  computed: {
+    editingComponent() {
+      return store.getters.editingComponent
+    }
+  }
+}
+</script>
