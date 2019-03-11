@@ -13,8 +13,6 @@
   background-color: #f2f6f7;
   border-radius: 2px;
   box-sizing: border-box;
-  margin: auto;
-  margin-top: 48px;
   position: relative;
   &:after {
     content: '';
@@ -59,37 +57,43 @@
       bottom: 0px;
       right: 0px;
       position: absolute;
-      background-image: url("../assets/icons/noImageEmptyState.png");
-      background-repeat: no-repeat;
-      background-position: center;
       border: 2px solid #56a8d1;
       border-radius: 2px;
     }
   }
-  .chooseButton {
-    font-size: 16px;
-    font-weight: 800;
-    padding-top: 4px;
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-bottom: 4px;
-    letter-spacing: 0.5px;
-    color: white;
-    background-color: #56a8d1;
-    display: block;
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    top: 270px;
-    text-align: center;
-    width: 100px;
-    pointer-events: none;
-    border-radius: 2px;
-    cursor: pointer; /* "hand" cursor */
-  }
+  &:not(.small) {
+    margin: auto;
+    margin-top: 48px;
+    .picture-input:before {
+      background-image: url("../assets/icons/noImageEmptyState.png");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .chooseButton {
+      font-size: 16px;
+      font-weight: 800;
+      padding-top: 4px;
+      padding-left: 16px;
+      padding-right: 16px;
+      padding-bottom: 4px;
+      letter-spacing: 0.5px;
+      color: white;
+      background-color: #56a8d1;
+      display: block;
+      position: relative;
+      margin-left: auto;
+      margin-right: auto;
+      top: 270px;
+      text-align: center;
+      width: 100px;
+      pointer-events: none;
+      border-radius: 2px;
+      cursor: pointer; /* "hand" cursor */
+      &:hover {
+        background-color: #4b93b8;
+      }
+    }
 
-  .chooseButton:hover {
-    background-color: #4b93b8;
   }
 
   .picture-input:focus {
@@ -108,6 +112,10 @@
 
   .picture-input ~ label {
     cursor: pointer; /* "hand" cursor */
+  }
+
+  &.small label {
+    display: none;
   }
 
   .frame-image {

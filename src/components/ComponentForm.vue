@@ -2,7 +2,7 @@
   <div class="component-form">
     <span class="title" v-if="exists">Edit Component</span>
     <span class="title" v-else>New Component</span>
-    <image-upload :image-url="componentCopy.imageUrl" @upload="handleFile"></image-upload>
+    <image-upload class="small" :image-url="componentCopy.imageUrl" @upload="handleFile"></image-upload>
     <div class="row name-field">
       <label class="label">NAME</label>
       <input
@@ -75,9 +75,8 @@ textarea {
   font-size: 24px;
   color: #031b26;
   font-weight: 800;
-  margin-left: 32px;
-  margin-top: 24px;
   display: inline-block;
+  margin-bottom: 16px;
 }
 
 .component-form {
@@ -85,10 +84,10 @@ textarea {
   width: 800px;
   border-radius: 2px;
   box-shadow: 12px 13px 86px -24px rgba(0, 0, 0, 0.87);
-  padding-bottom: 24px;
+  padding: 24px 24px 24px 32px;
   .picture-frame {
-    width: 350px;
-    height: 350px;
+    width: 40px;
+    height: 40px;
   }
 }
 
@@ -100,14 +99,12 @@ textarea {
   color: #707679;
   letter-spacing: 1px;
   line-height: 32px;
-  margin-left: 32px;
   display: inline-block;
   width: 100%;
 }
 
 .name-text-box {
   width: 736px;
-  margin-left: 32px;
   height: 40px;
   border: none;
   resize: none;
@@ -117,7 +114,6 @@ textarea {
 .description-text-box {
   height: 144px;
   width: 736px;
-  margin-left: 32px;
   height: 40px;
   border: none;
   resize: none;
@@ -126,7 +122,6 @@ textarea {
 
 .alias-text-box {
   width: 736px;
-  margin-left: 32px;
   height: 40px;
   border: none;
   resize: none;
@@ -142,7 +137,6 @@ textarea {
 
 /* Customize the label (the container) */
 .container {
-  display: inline-block;
   position: absolute;
   margin-bottom: 12px;
   cursor: pointer;
@@ -178,7 +172,6 @@ textarea {
   height: 40px;
   width: 40px;
   background-color: #fff;
-  margin-left: 32px;
   margin-right: 32px;
   display: inline-block;
 }
@@ -240,7 +233,6 @@ textarea:focus {
   display: inline-block;
   font-size: 16px;
   float: right;
-  margin-right: 24px;
   transition: all 0.3s;
   outline: none;
   border-radius: 2px;
@@ -285,7 +277,6 @@ textarea:focus {
   display: inline-block;
   /* position: absolute; */
   height: 24px;
-  margin-left: 30px;
   opacity: 0.8;
   cursor: pointer;
 }
