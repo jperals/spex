@@ -15,6 +15,8 @@
   padding: 30px;
   display: flex;
   align-items: center;
+  overflow-y: auto;
+  z-index: 40;
 }
 </style>
 
