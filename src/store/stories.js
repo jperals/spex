@@ -53,7 +53,10 @@ const stories = {
         }
       }
       for (const id of linkedIds) {
-        componentIds.push(getters.componentById(id))
+        const component = getters.componentById(id)
+        if (typeof component === 'object') {
+          componentIds.push(component)
+        }
       }
       return componentIds
     },
