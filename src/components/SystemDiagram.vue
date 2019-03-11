@@ -1,6 +1,6 @@
 <template>
   <div class="system-diagram">
-    <div class="diagram-component" v-for="component in components" :key="component.id" :title="component.name">
+    <div class="diagram-component" v-for="component in components" :key="component.id" :title="component.name" :style="componentStyle(component)">
       <label class="component-name">{{component.name}}</label>
       <img v-if="component.imageUrl" :src="component.imageUrl">
     </div>
@@ -56,6 +56,24 @@ export default {
   computed: {
     components() {
       return store.getters.linkedComponents(this.story)
+    }
+  },
+  methods: {
+    componentPosition(component) {
+      return store.getters.componentDiagramPosition(component)
+    },
+    componentStyle(component) {
+      const position = this.componentPosition(component)
+      if (typeof position === 'object') {
+        return {
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          transform: `translate(${position.x}px, ${position.y}px)`
+        }
+      } else {
+        return {}
+      }
     }
   }
 }
