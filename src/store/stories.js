@@ -41,15 +41,19 @@ const stories = {
     linkedComponents: (state, getters) => story => {
       const componentIds = []
       const parser = new DOMParser()
+      const linkedIds = new Set()
       for (const frame of getters.framesFromStory(story)) {
         const element = parser.parseFromString(frame.description, 'text/html')
         const links = element.querySelectorAll('.smart-link')
         for (const link of links) {
           const id = link.getAttribute('link-id')
           if (typeof id === 'string') {
-            componentIds.push(getters.componentById(id))
+            linkedIds.add(id)
           }
         }
+      }
+      for (const id of linkedIds) {
+        componentIds.push(getters.componentById(id))
       }
       return componentIds
     },
