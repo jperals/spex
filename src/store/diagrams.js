@@ -5,14 +5,20 @@ const collection = db.collection('diagrams')
 const diagrams = {
   state: {
     diagramRelationships: [],
-    diagramComponentPositions: {},
+    diagramItems: [],
     diagramGroups: []
   },
   getters: {
-    componentDiagramPosition: state => component => {
-      return state.diagramComponentPositions[component.id]
+    diagramItemComponent: (state, getters) => item => {
+      return getters.componentById(item.componentId)
     },
-    relationshipsFromComponent: state => component => {
+    diagramItemPosition: state => item => {
+      return item.position
+    },
+    diagramItemsFromStory: (state, getters) => story => {
+      return state.diagramItems.filter(item => item && getters.componentById(item.componentId).storyId === story.id)
+    },
+    relationshipsFromDiagramItem: state => component => {
       return state.diagramRelationships.filter(relationship => relationship.from === component.id)
     }
   },
@@ -20,22 +26,23 @@ const diagrams = {
     addDiagramRelationship(state, relationship) {
       state.diagramRelationships.push(relationship)
     },
+    addDiagramItem(state, props = {}) {
+      const newItem = Object.assign({
+        componentId: null,
+        position: {x: null, y: null}
+      }, props)
+      state.diagramItems.push(newItem)
+    },
+    addDiagramRelationShip(state, relationship) {
+      state.diagramRelationships.push(relationship)
+    },
     updateDiagramRelationship(state, {relationship, newProperties}) {
       Object.assign(relationship, newProperties)
     },
-    updateDiagramComponentPosition(state, {component, newPosition}) {
-      state.diagramComponentPositions[component.id] = newPosition
+    updateDiagramComponentPosition(state, {item, newPosition}) {
+      item.position = newPosition
     }
-  },
-  actions: {
-    moveDiagramComponentPosition(context, {component, delta}) {
-      const currentPosition = context.getters.componentDiagramPosition(component)
-      const newPosition = {
-        x: currentPosition.x + delta.x,
-        y: currentPosition.y + delta.y
-      }
-      context.commit('updateDiagramComponentPosition', {component, newPosition})
-    },
+
   }
 }
 

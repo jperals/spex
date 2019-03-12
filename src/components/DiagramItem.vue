@@ -1,5 +1,5 @@
 <template>
-  <div class="diagram-component" :title="component.name" draggable="true">
+  <div class="diagram-item" :title="component.name" draggable="true">
     <label class="component-name">{{component.name}}</label>
     <img v-if="component.imageUrl" :src="component.imageUrl">
   </div>
@@ -8,7 +8,7 @@
 <style lang="scss" scoped>
 
 // Layout
-.diagram-component {
+.diagram-item {
   width: 50px;
   height: 50px;
   margin: 30px;
@@ -32,7 +32,7 @@
 }
 
 // Colors
-.diagram-component {
+.diagram-item {
   background-color: #ddd;
   .component-name {
     color: #999;
@@ -47,19 +47,19 @@ import store from '@/store'
 export default {
   name: 'diagram-component',
   props: {
-    component: {
+    item: {
       type: Object
     }
   },
   data() {
     return {
-      currentCoords: store.getters.componentDiagramPosition(this.component),
+      currentCoords: this.item.position,
       currentDrag: {
         x: 0,
         y: 0
       },
       initialDragCoords: null,
-      initialCoords: store.getters.componentDiagramPosition(this.component)
+      initialCoords: this.item.position
     }
   },
   methods: {
@@ -89,10 +89,6 @@ export default {
     },
     dragend(event) {
       this.drag(event)
-      store.dispatch('moveDiagramComponentPosition', {
-        component: this.component,
-        delta: this.currentCoords
-      }).then(this.updateElementPosition)
       this.initialDragCoords = null
       this.initialCoords = this.currentCoords
     },
@@ -118,6 +114,12 @@ export default {
     this.$el.addEventListener('dragend', event => {
       this.dragend(event)
     })
+    this.updateElementPosition()
+  },
+  computed: {
+    component() {
+      return store.getters.componentById(this.item.componentId)
+    }
   }
 }
 </script>

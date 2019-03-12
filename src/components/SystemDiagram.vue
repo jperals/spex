@@ -1,20 +1,20 @@
 <template>
   <div class="system-diagram">
-    <diagram-component :component="component" v-for="component in components" :key="component.id" ></diagram-component>
+    <diagram-item :item="item" v-for="item in items" :key="item.id" ></diagram-item>
   </div>
 </template>
 
 <style lang="scss" scoped>
 
 // Layout
-.diagram-component {
+.diagram-item {
   display: inline-block;
 }
 
 </style>
 
 <script>
-import DiagramComponent from '@/components/DiagramComponent'
+import DiagramItem from '@/components/DiagramItem'
 import store from '@/store'
 export default {
   name: 'system-diagram',
@@ -24,11 +24,11 @@ export default {
     }
   },
   components: {
-    DiagramComponent
+    DiagramItem
   },
   computed: {
-    components() {
-      return store.getters.linkedComponents(this.story)
+    items() {
+      return store.getters.diagramItemsFromStory(this.story)
     }
   }
 }
