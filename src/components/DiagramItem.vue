@@ -1,7 +1,7 @@
 <template>
   <div class="diagram-item" :title="component.name" draggable="true">
-    <label class="component-name">{{component.name}}</label>
     <img v-if="component.imageUrl" :src="component.imageUrl">
+    <label class="component-name">{{component.name}}</label>
   </div>
 </template>
 
@@ -17,11 +17,14 @@
   position: relative;
   .component-name {
     position: absolute;
-    left: 10%;
-    right: 10%;
-    top: 5%;
-    line-height: 1em;
+    left: 0;
+    right: 0;
+    top: calc(100% + 2px);
     font-size: 14px;
+    border-radius: 3px;
+    display: block;
+    padding-left: 7%;
+    padding-right: 7%;
   }
   img {
     display: block;
@@ -38,6 +41,7 @@
   background-color: #ddd;
   .component-name {
     color: #999;
+    background-color: #e7e7e7;
   }
 }
 
