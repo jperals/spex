@@ -8,6 +8,8 @@ store.commit('updateProjects', [
 
 export default function init() {
 
+  // Diagram items
+
 // User
   store.commit('addDiagramItem', {
     id: '0',
@@ -98,6 +100,8 @@ export default function init() {
     }
   })
 
+  // Relationships
+
   // User to AR app
   store.commit('addDiagramRelationship', {
     id: '0',
@@ -117,6 +121,13 @@ export default function init() {
     id: '2',
     from: '3',
     to: '6'
+  })
+
+  // Shopping cart to cBlocks
+  store.commit('addDiagramRelationship', {
+    id: '3',
+    from: '8',
+    to: '2'
   })
 
 }
