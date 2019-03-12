@@ -207,7 +207,7 @@ export default {
     story: {
       type: Object
     },
-    linked: {
+    missing: {
       type: Array,
       default: () => []
     }
@@ -220,12 +220,8 @@ export default {
     editComponent(component) {
       store.dispatch("editComponent", component);
     },
-    isLinked(component) {
-      return this.linked.map(component => component.id).includes(component.id);
-    },
     isMissing(component) {
-      const isLinked = this.isLinked(component);
-      return component.mandatory && !isLinked;
+      return this.missing.map(component => component.id).includes(component.id);
     },
     isSelected(component) {
       const relatedComponentId = store.getters.selectedTextComponentId;

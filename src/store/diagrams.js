@@ -36,6 +36,11 @@ const diagrams = {
         }
       }
       return relationships
+    },
+    missingComponentsInStoryDiagram: (state, getters) => story => {
+      const storyComponents = getters.componentsFromStory(story)
+      const diagramComponentIds = getters.componentsFromStoryDiagram(story).map(component => component.id)
+      return storyComponents.filter(component => !(diagramComponentIds.includes(component.id)))
     }
   },
   mutations: {

@@ -13,7 +13,7 @@
       <div class="thumbnails">
         <FrameThumbnails :story-id="storyId" :frames="frames" v-if="frames"></FrameThumbnails>
       </div>
-      <component-list :components="components" :linked="linkedComponents" :story="story"
+      <component-list :components="components" :missing="missingComponents" :story="story"
                       :class="{active:showComponents}"></component-list>
     </div>
     <div v-else>
@@ -102,8 +102,8 @@ export default {
     frames() {
       return store.getters.framesFromStory(this.story);
     },
-    linkedComponents() {
-      return store.getters.linkedComponents(this.story)
+    missingComponents() {
+      return store.getters.missingComponentsFromStory(this.story)
     },
     showComponents() {
       return store.getters.showComponents;

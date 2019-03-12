@@ -3,7 +3,7 @@
     <top-bar :back-url="backUrl" :title="topBarTitle" :story="story"></top-bar>
     <div class="main" :class="{'with-sidebar': showComponents}">
       <system-diagram :story="story"></system-diagram>
-      <component-list :components="components" :linked="linkedComponents" :story="story"
+      <component-list :components="components" :missing="missingComponents" :story="story"
                       :class="{active:showComponents}"></component-list>
     </div>
   </div>
@@ -44,8 +44,8 @@ export default {
         list: store.getters.componentsFromStory(this.story)
       }
     },
-    linkedComponents() {
-      return store.getters.componentsFromStoryDiagram(this.story)
+    missingComponents() {
+      return store.getters.missingComponentsInStoryDiagram(this.story)
     },
     showComponents() {
       return store.getters.showComponents;

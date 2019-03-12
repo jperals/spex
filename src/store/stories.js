@@ -39,7 +39,7 @@ const stories = {
       return frames
     },
     linkedComponents: (state, getters) => story => {
-      const componentIds = []
+      const components = []
       const parser = new DOMParser()
       const linkedIds = new Set()
       for (const frame of getters.framesFromStory(story)) {
@@ -55,10 +55,15 @@ const stories = {
       for (const id of linkedIds) {
         const component = getters.componentById(id)
         if (typeof component === 'object') {
-          componentIds.push(component)
+          components.push(component)
         }
       }
-      return componentIds
+      return components
+    },
+    missingComponentsFromStory: (state, getters) => story => {
+      const storyComponents = getters.componentsFromStory(story)
+      const linkedComponentIds = getters.linkedComponents(story).map(component => component.id)
+      return storyComponents.filter(component => !(linkedComponentIds.includes(component.id)))
     },
     stories: state => state.stories,
     storyById: (state, getters) => id => getters.stories.find(story => story.id === id),
