@@ -16,6 +16,8 @@ store.commit('updateDiagramComponentPosition', {
   component: {
     id: 'F4lSsfNGpLZlgOnZJcor'
   },
-  x: 20,
-  y: 50
+  newPosition: {
+    x: 20,
+    y: 50
+  }
 })

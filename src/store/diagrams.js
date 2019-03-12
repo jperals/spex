@@ -23,9 +23,19 @@ const diagrams = {
     updateDiagramRelationship(state, {relationship, newProperties}) {
       Object.assign(relationship, newProperties)
     },
-    updateDiagramComponentPosition(state, {component, x, y}) {
-      state.diagramComponentPositions[component.id] = {x, y}
+    updateDiagramComponentPosition(state, {component, newPosition}) {
+      state.diagramComponentPositions[component.id] = newPosition
     }
+  },
+  actions: {
+    moveDiagramComponentPosition(context, {component, delta}) {
+      const currentPosition = context.getters.componentDiagramPosition(component)
+      const newPosition = {
+        x: currentPosition.x + delta.x,
+        y: currentPosition.y + delta.y
+      }
+      context.commit('updateDiagramComponentPosition', {component, newPosition})
+    },
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="diagram-component" :title="component.name" :style="componentStyle(component)">
+  <div class="diagram-component" :title="component.name" :style="componentStyle(component)" v-on:drag="drag" v-on:dragend="dragend" v-on:dragstart="dragstart">
     <label class="component-name">{{component.name}}</label>
     <img v-if="component.imageUrl" :src="component.imageUrl">
   </div>
@@ -43,19 +43,28 @@
 
 <script>
 import store from '@/store'
-export default{
+
+export default {
   name: 'diagram-component',
   props: {
     component: {
       type: Object
     }
   },
+  data() {
+    return {
+      currentCoords: store.getters.componentDiagramPosition(this.component),
+      currentDrag: {
+        x: 0,
+        y: 0
+      },
+      initialDragCoords: null,
+      initialCoords: store.getters.componentDiagramPosition(this.component)
+    }
+  },
   methods: {
-    componentPosition() {
-      return store.getters.componentDiagramPosition(this.component)
-    },
     componentStyle() {
-      const position = this.componentPosition(this.component)
+      const position = this.currentCoords
       if (typeof position === 'object') {
         return {
           position: 'absolute',
@@ -66,6 +75,32 @@ export default{
       } else {
         return {}
       }
+    },
+    drag(event) {
+      this.currentDrag = {
+        x: event.x - this.initialDragCoords.x,
+        y: event.y - this.initialDragCoords.y
+      }
+      this.currentCoords = {
+        x: this.initialCoords.x + this.currentDrag.x,
+        y: this.initialCoords.y + this.currentDrag.y
+      }
+    },
+    dragend(event) {
+      this.drag(event)
+      store.dispatch('moveDiagramComponentPosition', {
+        component: this.component,
+        delta: this.currentCoords
+      })
+      this.initialDragCoords = null
+      this.initialCoords = this.currentCoords
+    },
+    dragstart(event) {
+      this.initialDragCoords = {
+        x: event.x,
+        y: event.y
+      }
+      this.currentCoords = this.initialDragCoords
     }
   }
 
