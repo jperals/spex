@@ -1,6 +1,6 @@
 import {db} from './firebase'
 
-const collection = db.collection('diagrams')
+const diagramItemsCollection = db.collection('diagram-items')
 
 const diagrams = {
   state: {
@@ -63,7 +63,22 @@ const diagrams = {
     updateDiagramItemPosition(state, {item, newPosition}) {
       item.position = newPosition
     }
-
+  },
+  actions: {
+    loadDiagrams(context) {
+      return diagramItemsCollection.get()
+        .catch(console.error)
+        .then(documents => {
+          documents.forEach(document => {
+            const diagramItem = Object.assign({
+                id: document.id
+              },
+              document.data()
+            )
+            context.commit('addDiagramItem', diagramItem)
+          })
+        })
+    }
   }
 }
 

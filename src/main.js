@@ -8,6 +8,7 @@ Vue.config.productionTip = false;
 
 Promise.all([
   store.dispatch('loadComponents'),
+  store.dispatch('loadDiagrams'),
   store.dispatch('loadFrames'),
   store.dispatch('loadStories')
 ]).then(() => {
