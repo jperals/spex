@@ -48,7 +48,6 @@ const components = {
     }
   },
   actions: {
-    // The component will be added
     addComponent(context, component) {
       collection.add(component)
         .then(docRef => {
