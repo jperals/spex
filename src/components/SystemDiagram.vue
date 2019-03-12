@@ -1,7 +1,11 @@
 <template>
   <div class="system-diagram">
-    <diagram-relationship :relationship="relationship" v-for="relationship in relationships" :key="relationship.id"></diagram-relationship>
-    <diagram-item :item="item" v-for="item in items" :key="item.id" ></diagram-item>
+    <div class="diagram-relationships">
+      <diagram-relationship :relationship="relationship" v-for="relationship in relationships" :key="relationship.id"></diagram-relationship>
+    </div>
+    <div class="diagram-items">
+      <diagram-item :item="item" v-for="item in items" :key="item.id" ></diagram-item>
+    </div>
   </div>
 </template>
 
