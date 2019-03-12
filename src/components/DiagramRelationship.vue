@@ -1,6 +1,6 @@
 <template>
   <svg class="diagram-relationship" :viewBox="viewBox" :style="style">
-    <line :x1="x1" :y1="y1" :x2="x2" :y2="y2" stroke="lightgray"/>
+    <line :x1="x1" :y1="y1" :x2="x2" :y2="y2" stroke="lightgray" stroke-width="2"/>
   </svg>
 </template>
 
@@ -12,6 +12,9 @@
 
 <script>
 import store from '@/store'
+
+const strokeWidth = 2
+
 export default {
   name: 'diagram-relationship',
   props: {
@@ -42,16 +45,19 @@ export default {
       return `0 0 ${this.width} ${this.height}`
     },
     width() {
-      return Math.abs(this.position2.x - this.position1.x)
+      return Math.abs(this.position2.x - this.position1.x) + strokeWidth
     },
     height() {
-      return Math.abs(this.position2.y - this.position1.x)
+      return Math.abs(this.position2.y - this.position1.y) + strokeWidth
     },
     left() {
-      return Math.min(this.position1.x, this.position2.x)
+      return Math.min(this.position1.x, this.position2.x) - strokeWidth/2
     },
     top() {
-      return Math.min(this.position1.y, this.position2.y)
+      return Math.min(this.position1.y, this.position2.y) - strokeWidth/2
+    },
+    strokeWidth() {
+      return strokeWidth
     },
     style() {
       return {
