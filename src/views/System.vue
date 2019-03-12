@@ -45,7 +45,7 @@ export default {
       }
     },
     linkedComponents() {
-      return store.getters.linkedComponents(this.story)
+      return store.getters.componentsFromStoryDiagram(this.story)
     },
     showComponents() {
       return store.getters.showComponents;

@@ -9,6 +9,10 @@ const diagrams = {
     diagramGroups: []
   },
   getters: {
+    // Returns which components are included in the diagram of a story
+    componentsFromStoryDiagram: (state, getters) => story => {
+      return getters.diagramItemsFromStory(story).map(item => getters.componentById(item.componentId))
+    },
     diagramItemById: state => id => state.diagramItems.find(item => item.id === id),
     diagramItemComponent: (state, getters) => item => {
       return getters.componentById(item.componentId)
