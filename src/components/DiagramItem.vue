@@ -93,6 +93,10 @@ export default {
       this.drag(event)
       this.initialDragCoords = null
       this.initialCoords = this.currentCoords
+      store.commit('updateDiagramItemPosition', {
+        item: this.item,
+        newPosition: this.currentCoords
+      })
     },
     dragstart(event) {
       this.initialDragCoords = {

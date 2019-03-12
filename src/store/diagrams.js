@@ -51,7 +51,7 @@ const diagrams = {
     updateDiagramRelationship(state, {relationship, newProperties}) {
       Object.assign(relationship, newProperties)
     },
-    updateDiagramComponentPosition(state, {item, newPosition}) {
+    updateDiagramItemPosition(state, {item, newPosition}) {
       item.position = newPosition
     }
 
