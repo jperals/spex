@@ -9,9 +9,11 @@
 
 // Layout
 .diagram-item {
-  width: 50px;
-  height: 50px;
-  margin: 30px;
+  $side : 50px;
+  width: $side;
+  height: $side;
+  margin-left: - $side/2;
+  margin-top: - $side/2;
   position: relative;
   .component-name {
     position: absolute;

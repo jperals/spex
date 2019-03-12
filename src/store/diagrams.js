@@ -9,6 +9,7 @@ const diagrams = {
     diagramGroups: []
   },
   getters: {
+    diagramItemById: state => id => state.diagramItems.find(item => item.id === id),
     diagramItemComponent: (state, getters) => item => {
       return getters.componentById(item.componentId)
     },
@@ -18,8 +19,19 @@ const diagrams = {
     diagramItemsFromStory: (state, getters) => story => {
       return state.diagramItems.filter(item => item && getters.componentById(item.componentId).storyId === story.id)
     },
-    relationshipsFromDiagramItem: state => component => {
-      return state.diagramRelationships.filter(relationship => relationship.from === component.id)
+    diagramRelationshipsFromItem: state => item => {
+      return state.diagramRelationships.filter(relationship => relationship.from === item.id)
+    },
+    diagramRelationshipsFromStory: (state, getters) => story => {
+      const relationships = []
+      const items = getters.diagramItemsFromStory(story)
+      for (const item of items) {
+        const itemRelationships = getters.diagramRelationshipsFromItem(item)
+        for (const relationship of itemRelationships) {
+          relationships.push(relationship)
+        }
+      }
+      return relationships
     }
   },
   mutations: {
