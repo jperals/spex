@@ -24,7 +24,7 @@ const stories = {
     },
     framesFromStory: (state, getters) => (story) => {
       const frames = []
-      if (story.frames instanceof Array) {
+      if (story && story.frames instanceof Array) {
         for (const frameId of story.frames) {
           try {
             const frame = getters.frameById(frameId)
