@@ -1,6 +1,8 @@
 <template>
   <div class="diagram-item" :title="component.name" draggable="true" @click="openComponent">
-    <img v-if="component.imageUrl" :src="component.imageUrl">
+    <div class="component-image">
+      <img v-if="component.imageUrl" :src="component.imageUrl">
+    </div>
     <label class="component-name">{{component.name}}</label>
   </div>
 </template>
@@ -11,14 +13,22 @@
 .diagram-item {
   $side : 50px;
   width: $side;
-  height: $side;
   margin-left: - $side/2;
   margin-top: - $side/2;
+  .component-image {
+    width: 100%;
+    height: $side;
+    img {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: $side;
+    }
+  }
   .component-name {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: calc(100% + 2px);
+    margin-top: 2px;
     font-size: 12px;
     hyphens: auto;
     border-radius: 3px;
@@ -26,19 +36,13 @@
     padding-left: 7%;
     padding-right: 5%;
   }
-  img {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
 }
 
 // Colors
 .diagram-item {
-  background-color: #ddd;
+  .component-image {
+    background-color: #ddd;
+  }
   .component-name {
     color: #999;
     background-color: #e7e7e7;
@@ -46,7 +50,8 @@
 }
 
 // UX
-.diagram-item {
+.diagram-item,
+.component-name {
   cursor: pointer;
 }
 

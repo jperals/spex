@@ -1,6 +1,6 @@
 <template>
   <div class="component-form">
-    <div class="edit-button" :class="{active: editing}" @click="toggleEdit"></div>
+    <div class="edit-button" title="Edit" v-if="exists" :class="{active: editing}" @click="toggleEdit"></div>
     <span class="title" v-if="!exists">New Component</span>
     <div class="row name-field">
       <label class="label">NAME</label>
@@ -45,7 +45,7 @@
         </label>
       </div>
     </div>
-    <div class="row buttons" v-if="editing">
+    <div class="row buttons" :class="{hidden: !editing}">
       <button @click="save" class="primaryButton">SAVE</button>
       <button @click="cancel" class="secondaryButton">CANCEL</button>
       <div class="delete-icon" v-if="exists" @click="remove">
@@ -81,6 +81,9 @@
     &:hover {
       background-color: rgba(0, 0, 150, 0.05);
       color: #666;
+    }
+    &:not(.active):not(:hover) {
+      opacity: 0.4;
     }
   }
   .picture-frame {
@@ -292,6 +295,10 @@ input[type=checkbox][disabled=disabled] ~.checkmark {
 
 .buttons {
   margin-top: 68px;
+  &.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
 }
 
 .delete-icon {
