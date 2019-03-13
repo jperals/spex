@@ -15,7 +15,7 @@
         :class="{active:showComponents}"
         :components="components"
         :frame="frame"
-        :linked="linkedComponents"
+        :missing="missingComponents"
         :story="story"
       ></component-list>
     </div>
@@ -119,8 +119,8 @@ export default {
     imageUrl() {
       return this.frame.imageUrl;
     },
-    linkedComponents() {
-      return store.getters.linkedComponents(this.story);
+    missingComponents() {
+      return store.getters.missingComponentsFromStory(this.story)
     },
     showComponents() {
       return store.getters.showComponents;
