@@ -1,5 +1,5 @@
 <template>
-  <div class="diagram-item" :title="component.name" draggable="true" @click="openComponent">
+  <div class="diagram-item" :title="component.name" @click="openComponent" draggable="true">
     <div class="component-image">
       <img v-if="component.imageUrl" :src="component.imageUrl">
     </div>
@@ -60,6 +60,11 @@
 <script>
 import store from '@/store'
 
+// Use transparent ghost image for drag
+// https://stackoverflow.com/a/49535378
+const img = new Image();
+img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+
 export default {
   name: 'diagram-component',
   props: {
@@ -90,6 +95,9 @@ export default {
       }
     },
     drag(event) {
+      if (event.x === 0 && event.y === 0) {
+        return false
+      }
       this.currentDrag = {
         x: event.x - this.initialDragCoords.x,
         y: event.y - this.initialDragCoords.y
@@ -98,22 +106,28 @@ export default {
         x: this.initialCoords.x + this.currentDrag.x,
         y: this.initialCoords.y + this.currentDrag.y
       }
-      console.log('drag', new Date())
-      this.updateElementPosition()
-      return false
-    },
-    dragend(event) {
-      this.drag(event)
-      this.initialDragCoords = null
-      this.initialCoords = this.currentCoords
       store.commit('updateDiagramItemPosition', {
         item: this.item,
         newPosition: this.currentCoords
       })
+      this.updateElementPosition()
+      return false
+    },
+    dragend() {
+      this.initialDragCoords = null
+      this.initialCoords = this.currentCoords
+      store.dispatch('updateDiagramItem', {
+        item: this.item,
+        newProperties: {
+          position: this.currentCoords
+        }
+      })
       return false
     },
     dragstart(event) {
-      console.log('dragstart', event)
+      // Use transparent ghost image for drag
+      // https://stackoverflow.com/a/49535378
+      event.dataTransfer.setDragImage(img, 0, 0);
       this.initialDragCoords = {
         x: event.x,
         y: event.y
@@ -126,7 +140,6 @@ export default {
     },
     updateElementPosition() {
       const style = this.componentStyle()
-      // console.log('style', style)
       Object.assign(this.$el.style, style)
     }
   },

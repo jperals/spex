@@ -21,7 +21,7 @@ const diagrams = {
       return item.position
     },
     diagramItemsFromStory: (state, getters) => story => {
-      return state.diagramItems.filter(item => item && getters.componentById(item.componentId).storyId === story.id)
+      return state.diagramItems.filter(item => item && typeof item.componentId === 'string' && getters.componentById(item.componentId).storyId === story.id)
     },
     diagramRelationshipsFromItem: state => item => {
       return state.diagramRelationships.filter(relationship => relationship.from === item.id)
@@ -57,11 +57,14 @@ const diagrams = {
     addDiagramRelationShip(state, relationship) {
       state.diagramRelationships.push(relationship)
     },
-    updateDiagramRelationship(state, {relationship, newProperties}) {
-      Object.assign(relationship, newProperties)
+    updateDiagramItem(state, {item, newProperties}) {
+      Object.assign(item, newProperties)
     },
     updateDiagramItemPosition(state, {item, newPosition}) {
       item.position = newPosition
+    },
+    updateDiagramRelationship(state, {relationship, newProperties}) {
+      Object.assign(relationship, newProperties)
     }
   },
   actions: {
@@ -76,6 +79,17 @@ const diagrams = {
               document.data()
             )
             context.commit('addDiagramItem', diagramItem)
+          })
+        })
+    },
+    updateDiagramItem(context, {item, newProperties}) {
+      return diagramItemsCollection
+        .doc(item.id)
+        .update(newProperties)
+        .then(() => {
+          context.commit('updateDiagramItem', {
+            item,
+            newProperties
           })
         })
     }
