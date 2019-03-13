@@ -14,7 +14,6 @@
       position: absolute;
       top: 0px;
       right: 0px;
-      bottom: 0px;
       transition: transform 0.3s ease;
       &:not(.active) {
         transform: translateX(100%);

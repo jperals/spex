@@ -1,25 +1,27 @@
 <template>
   <div class="component-list">
     <div class="header">COMPONENTS</div>
-    <div
-      class="component"
-      v-for="component in components.list"
-      :key="component.id"
-      :class="{missing: isMissing(component)}"
-    >
-      <label v-if="selecting" class="container" @click="select(component, $event)">
-        <input
-          type="radio"
-          :checked="isSelected(component)"
-          :class="{checked: isSelected(component) }"
-        >
-        <span class="checkmark"></span>
-        <span class="component-name">{{component.name}}</span>
-      </label>
-      <div v-else>
-        <span class="component-name" @click="openComponent(component)">
-          {{component.name}}
-        </span>
+      <div class="components">
+        <div
+        class="component"
+        v-for="component in components.list"
+        :key="component.id"
+        :class="{missing: isMissing(component)}"
+      >
+        <label v-if="selecting" class="container" @click="select(component, $event)">
+          <input
+            type="radio"
+            :checked="isSelected(component)"
+            :class="{checked: isSelected(component) }"
+          >
+          <span class="checkmark"></span>
+          <span class="component-name">{{component.name}}</span>
+        </label>
+        <div v-else>
+          <span class="component-name" @click="openComponent(component)">
+            {{component.name}}
+          </span>
+        </div>
       </div>
     </div>
     <button @click="createNewComponent" class="newButton">NEW</button>
@@ -27,6 +29,7 @@
 </template>
 
 <style scoped lang="scss">
+
 input:checked {
   background-color: pink;
 }
@@ -113,7 +116,7 @@ input:checked {
 .component-list {
   background-color: #f2f6f7;
   width: 250px;
-  height: 100%;
+  min-height: 100%;
 }
 
 .newButton {
@@ -124,16 +127,12 @@ input:checked {
   font-weight: 600;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
+  display: block;
   font-size: 16px;
-  float: left;
-  margin-right: 24px;
+  margin: 12px auto;
   transition: all 0.3s;
   outline: none;
   border-radius: 2px;
-  margin-left: 80px;
-  position: absolute;
-  bottom: 24px;
 }
 
 .newButton:hover {
@@ -174,6 +173,7 @@ input:checked {
     background-color: #db4141;
   }
 }
+
 </style>
 
 
