@@ -24,7 +24,7 @@ const ui = {
     }
   },
   mutations: {
-    editComponent(state, component) {
+    openComponent(state, component) {
       state.editingComponent = component
     },
     setFocus(state, elementId) {
@@ -47,8 +47,8 @@ const ui = {
     }
   },
   actions: {
-    editComponent(context, component) {
-      context.commit('editComponent', component)
+    openComponent(context, component) {
+      context.commit('openComponent', component)
     },
     setFocus(context, focusedElement) {
       context.commit('setFocus', focusedElement)

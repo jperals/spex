@@ -1,5 +1,5 @@
 <template>
-  <modal>
+  <modal @modal-click="cancel">
     <component-form :component="component" class="component-form"></component-form>
   </modal>
 </template>
@@ -14,6 +14,7 @@
 <script>
 import ComponentForm from "./ComponentForm";
 import Modal from "./Modal";
+import store from '@/store'
 
 export default {
   name: "component-modal",
@@ -24,6 +25,11 @@ export default {
   props: {
     component: {
       type: Object
+    }
+  },
+  methods: {
+    cancel() {
+      store.dispatch("openComponent");
     }
   }
 };

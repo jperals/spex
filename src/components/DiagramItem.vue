@@ -1,5 +1,5 @@
 <template>
-  <div class="diagram-item" :title="component.name" draggable="true">
+  <div class="diagram-item" :title="component.name" draggable="true" @click="openComponent">
     <img v-if="component.imageUrl" :src="component.imageUrl">
     <label class="component-name">{{component.name}}</label>
   </div>
@@ -43,6 +43,11 @@
     color: #999;
     background-color: #e7e7e7;
   }
+}
+
+// UX
+.diagram-item {
+  cursor: pointer;
 }
 
 </style>
@@ -110,6 +115,9 @@ export default {
       }
       this.currentCoords = this.initialDragCoords
       return false
+    },
+    openComponent() {
+      store.dispatch("openComponent", this.component);
     },
     updateElementPosition() {
       const style = this.componentStyle()

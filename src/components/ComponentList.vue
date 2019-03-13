@@ -17,12 +17,9 @@
         <span class="component-name">{{component.name}}</span>
       </label>
       <div v-else>
-        <span class="component-name" @click="editComponent(component)">
+        <span class="component-name" @click="openComponent(component)">
           {{component.name}}
-          <div class="edit"></div>
         </span>
-
-        <!-- <button @click="editComponent(component)" class="editButton">Edit</button> -->
       </div>
     </div>
     <button @click="createNewComponent" class="newButton">NEW</button>
@@ -158,25 +155,10 @@ input:checked {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-}
-
-.component-name:hover .edit {
-  display: block;
-}
-
-.edit {
-  background-image: url("../assets/icons/edit.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  margin-right: 24px;
-  margin-top: auto;
-  right: 0;
-  bottom: 0px;
-  display: none;
+  border-radius: 3px;
+  &:hover {
+    background-color: rgba(0, 0, 150, 0.05);
+  }
 }
 
 .component.missing {
@@ -215,10 +197,10 @@ export default {
   methods: {
     createNewComponent() {
       const component = store.getters.newComponent({ story: this.story });
-      this.editComponent(component);
+      this.openComponent(component);
     },
-    editComponent(component) {
-      store.dispatch("editComponent", component);
+    openComponent(component) {
+      store.dispatch("openComponent", component);
     },
     isMissing(component) {
       return this.missing.map(component => component.id).includes(component.id);

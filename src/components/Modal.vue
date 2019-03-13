@@ -1,5 +1,5 @@
 <template>
-  <div class="modal">
+  <div class="modal" @click="modalClick" ref="background">
     <slot></slot>
   </div>
 </template>
@@ -22,6 +22,13 @@
 
 <script>
 export default {
-  name: 'modal-dialog'
+  name: 'modal-dialog',
+  methods: {
+    modalClick(event) {
+      if(event.target === this.$refs.background){
+        this.$emit('modal-click')
+      }
+    }
+  }
 }
 </script>

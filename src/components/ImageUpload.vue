@@ -27,8 +27,11 @@
     opacity: 0;
     transition: opacity .2s ease;
   }
-  &:hover:after {
+  &:not(.readonly):hover:after {
     opacity: 1;
+    .picture-input {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
   }
   &:not(.empty):not(:hover) label {
     display: none;
@@ -42,29 +45,51 @@
     display: table;
     margin: 0 auto;
     width: 100%;
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.8);
-    }
     &:before {
       content: "";
       display: block;
       background-size: 160px;
       margin: auto;
       object-fit: scale-down;
-      background-color: #f3f6f7;
       top: 0px;
       left: 0px;
       bottom: 0px;
       right: 0px;
       position: absolute;
-      border: 2px solid #56a8d1;
       border-radius: 2px;
     }
+  }
+  &.readonly {
+    pointer-events: none;
+  }
+  &:not(.readonly) {
+    .picture-input {
+      cursor: pointer;
+    }
+  }
+  &.small {
+    &:not(.readonly) .frame-image {
+      border: 2px solid #56a8d1;
+    }
+    &.readonly {
+      .picture-input:before,
+      .frame-image {
+        border: 0 none;
+      }
+    }
+    .picture-input:before {
+      background-color: lightgray;
+    }
+  }
+  &:not(.readonly) .picture-input:before {
+    border: 2px solid #56a8d1;
+    border-radius: 2px;
   }
   &:not(.small) {
     margin: auto;
     margin-top: 48px;
     .picture-input:before {
+      background-color: #f3f6f7;
       background-image: url("../assets/icons/noImageEmptyState.png");
       background-repeat: no-repeat;
       background-position: center;
@@ -98,10 +123,6 @@
 
   .picture-input:focus {
     outline: none;
-  }
-
-  .picture-input:hover {
-    cursor: pointer;
   }
 
   .picture-input:focus ~ label,

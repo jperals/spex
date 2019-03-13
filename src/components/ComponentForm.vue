@@ -1,8 +1,7 @@
 <template>
   <div class="component-form">
-    <span class="title" v-if="exists">Edit Component</span>
-    <span class="title" v-else>New Component</span>
-    <image-upload class="small" :image-url="componentCopy.imageUrl" @upload="handleFile"></image-upload>
+    <div class="edit-button" :class="{active: editing}" @click="toggleEdit"></div>
+    <span class="title" v-if="!exists">New Component</span>
     <div class="row name-field">
       <label class="label">NAME</label>
       <input
@@ -10,6 +9,7 @@
         class="name-text-box"
         v-model="componentCopy.name"
         placeholder="Give your component a name..."
+        :readonly="!editing"
       >
     </div>
     <div class="row description-field">
@@ -19,7 +19,12 @@
         v-model="componentCopy.description"
         placeholder="Describe your component..."
         style="height:144px;"
+        :readonly="!editing"
       ></textarea>
+    </div>
+    <div class="row icon-field">
+      <label class="label">ICON</label>
+      <image-upload class="small" :class="{readonly: !editing}" :image-url="componentCopy.imageUrl" @upload="handleFile"></image-upload>
     </div>
     <div class="row alias-field">
       <label class="label">ALIAS</label>
@@ -27,20 +32,20 @@
         class="alias-text-box"
         v-model="componentCopy.aliases"
         placeholder="What other words do people use to describe this component?"
+        :readonly="!editing"
       ></textarea>
     </div>
     <div class="row mandatory-field">
       <label class="label">STATUS</label>
       <div class="container">
-        <label class="container">
-          <input type="checkbox" class="checkbox" v-model="componentCopy.mandatory">
-          <span class="mandatory-text">This component is mandatory</span>
-          <input type="checkbox">
+        <label class="container v-center">
+          <input type="checkbox" class="checkbox" v-model="componentCopy.mandatory" :disabled="!editing">
           <span class="checkmark"></span>
+          <span class="mandatory-text">This component is mandatory</span>
         </label>
       </div>
     </div>
-    <div class="row buttons">
+    <div class="row buttons" v-if="editing">
       <button @click="save" class="primaryButton">SAVE</button>
       <button @click="cancel" class="secondaryButton">CANCEL</button>
       <div class="delete-icon" v-if="exists" @click="remove">
@@ -51,6 +56,39 @@
 </template>
 
 <style lang="scss" scoped>
+
+.component-form {
+  background-color: #f2f6f7;
+  width: 800px;
+  border-radius: 2px;
+  box-shadow: 12px 13px 86px -24px rgba(0, 0, 0, 0.87);
+  padding: 24px 24px 24px 32px;
+  position: relative;
+  .edit-button {
+    background-image: url("../assets/icons/edit.png");
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+    border-radius: 25%;
+    padding: 8px;
+    &.active,
+    &:hover {
+      background-color: rgba(0, 0, 150, 0.05);
+      color: #666;
+    }
+  }
+  .picture-frame {
+    width: 40px;
+    height: 40px;
+  }
+}
+
 input {
   display: inline-block;
   width: 736px;
@@ -71,24 +109,27 @@ textarea {
   padding-top: 8px;
 }
 
+input[readonly=readonly],
+textarea[readonly=readonly] {
+  background-color: transparent;
+  &:focus {
+    outline: none;
+  }
+}
+
+input:not([readonly=readonly]):focus,
+textarea:not([readonly=readonly]):focus {
+  outline: none !important;
+  border-color: #56a8d1;
+  box-shadow: 0px 0px 10px #56a8d1;
+}
+
 .title {
   font-size: 24px;
   color: #031b26;
   font-weight: 800;
   display: inline-block;
   margin-bottom: 16px;
-}
-
-.component-form {
-  background-color: #f2f6f7;
-  width: 800px;
-  border-radius: 2px;
-  box-shadow: 12px 13px 86px -24px rgba(0, 0, 0, 0.87);
-  padding: 24px 24px 24px 32px;
-  .picture-frame {
-    width: 40px;
-    height: 40px;
-  }
 }
 
 .label {
@@ -112,7 +153,6 @@ textarea {
 }
 
 .description-text-box {
-  height: 144px;
   width: 736px;
   height: 40px;
   border: none;
@@ -137,7 +177,6 @@ textarea {
 
 /* Customize the label (the container) */
 .container {
-  position: absolute;
   margin-bottom: 12px;
   cursor: pointer;
   font-size: 20px;
@@ -149,31 +188,23 @@ textarea {
 }
 
 .mandatory-text {
+  display: inline-block;
   position: relative;
-  left: 80px;
-  top: 8px;
-  width: 400px;
 }
 
 /* Hide the browser's default checkbox */
 .container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  transition: transform 0.3s ease;
+  display: none;
 }
 
 /* Create a custom checkbox */
 .checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
   height: 40px;
   width: 40px;
   background-color: #fff;
   margin-right: 32px;
   display: inline-block;
+  position: relative;
 }
 
 /* On mouse-over, add a grey background color */
@@ -184,6 +215,11 @@ textarea {
 /* When the checkbox is checked, add a blue background */
 .container input:checked ~ .checkmark {
   background-color: #56a8d1;
+}
+
+/* When the checkmark is disabled (not editing), gray it out a bit */
+input[type=checkbox][disabled=disabled] ~.checkmark {
+  opacity: 0.6;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -209,17 +245,6 @@ textarea {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
-}
-
-input:focus {
-  outline: none !important;
-  border-color: #56a8d1;
-  box-shadow: 0px 0px 10px #56a8d1;
-}
-textarea:focus {
-  outline: none !important;
-  border-color: #56a8d1;
-  box-shadow: 0 0 10px #56a8d1;
 }
 
 .primaryButton {
@@ -292,6 +317,16 @@ textarea:focus {
   opacity: 1;
 }
 
+.v-center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+label + .container {
+  margin-top: 12px;
+}
+
 </style>
 
 <script>
@@ -306,8 +341,10 @@ export default {
     }
   },
   data() {
+    const componentCopy = Object.assign(store.getters.newComponent({story: this.component && this.component.story || undefined}), this.component)
     return {
-      componentCopy: Object.assign(store.getters.newComponent({story: this.component && this.component.story || undefined}), this.component)
+      componentCopy,
+      editing: typeof componentCopy.id === 'undefined'
     };
   },
   components: {
@@ -320,7 +357,7 @@ export default {
   },
   methods: {
     cancel() {
-      store.dispatch("editComponent");
+      store.dispatch("openComponent");
     },
     handleFile(file) {
       store
@@ -332,12 +369,15 @@ export default {
     remove() {
       store.dispatch('removeComponent', this.componentCopy)
         .then(() => {
-          store.dispatch('editComponent')
+          store.dispatch('openComponent')
         })
     },
     save() {
       store.dispatch("saveComponent", this.componentCopy);
-      store.dispatch("editComponent");
+      store.dispatch("openComponent");
+    },
+    toggleEdit() {
+      this.editing = !(this.editing)
     }
   }
 };
