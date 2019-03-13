@@ -12,8 +12,15 @@
 <style lang="scss" scoped>
 
 // Layout
-.diagram-item {
-  display: inline-block;
+.system-diagram {
+  position: relative;
+  .diagram-item,
+  .diagram-relationship {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
 }
 
 </style>
