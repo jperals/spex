@@ -20,8 +20,8 @@
         @mouseover="onMouseOverTooltip"
     >
       <div class="tooltip-text">
-        <div class="delete-icon" @click="unsetRelationship(tooltipId)"></div>
-        <div class="tooltip-title">{{tooltipTitle}}</div>
+        <div class="delete-icon" title="Remove relationship" @click="unsetRelationship(tooltipId)"></div>
+        <div class="tooltip-title" @click="openComponent(linkedComponent)">{{tooltipTitle}}</div>
         <div class="tooltip-description">{{tooltipText}}</div>
       </div>
     </div>
@@ -89,6 +89,10 @@ $fontSize: 20px;
       .tooltip-title {
         font-size: 24px;
         font-weight: 800;
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
 
@@ -124,6 +128,7 @@ export default {
     return {
       changeTracker: 1,
       textSelectionRange: null,
+      tooltipComponent: null,
       tooltipId: null,
       tooltipPosition: {x: 0, y: 0},
       tooltipText: "",
@@ -177,6 +182,7 @@ export default {
           if (typeof linkedElement === "object") {
             const elementBoundingBox = targetElement.getBoundingClientRect();
             const containerBoundingBox = this.$refs.textarea.getBoundingClientRect();
+            this.linkedComponent = linkedElement
             this.tooltipId = targetElement.getAttribute('id')
             this.tooltipPosition.x =
               elementBoundingBox.left -
@@ -203,6 +209,9 @@ export default {
     },
     onMouseOverTooltip() {
       this.tooltipVisible = true;
+    },
+    openComponent(component) {
+      store.dispatch('openComponent', component)
     },
     restoreSelection() {
       // Based on
