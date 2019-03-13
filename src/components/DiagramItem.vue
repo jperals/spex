@@ -14,17 +14,17 @@
   height: $side;
   margin-left: - $side/2;
   margin-top: - $side/2;
-  position: relative;
   .component-name {
     position: absolute;
     left: 0;
     right: 0;
     top: calc(100% + 2px);
-    font-size: 14px;
+    font-size: 12px;
+    hyphens: auto;
     border-radius: 3px;
     display: block;
     padding-left: 7%;
-    padding-right: 7%;
+    padding-right: 5%;
   }
   img {
     display: block;
@@ -59,13 +59,13 @@ export default {
   },
   data() {
     return {
-      currentCoords: this.item.position,
+      currentCoords: Object.assign({}, this.item.position),
       currentDrag: {
         x: 0,
         y: 0
       },
       initialDragCoords: null,
-      initialCoords: this.item.position
+      initialCoords: Object.assign({}, this.item.position)
     }
   },
   methods: {
@@ -73,9 +73,6 @@ export default {
       const position = this.currentCoords
       if (typeof position === 'object') {
         return {
-          position: 'absolute',
-          top: 0,
-          left: 0,
           transform: `translate(${position.x}px, ${position.y}px)`
         }
       } else {
@@ -91,7 +88,9 @@ export default {
         x: this.initialCoords.x + this.currentDrag.x,
         y: this.initialCoords.y + this.currentDrag.y
       }
+      console.log('drag', new Date())
       this.updateElementPosition()
+      return false
     },
     dragend(event) {
       this.drag(event)
@@ -101,16 +100,20 @@ export default {
         item: this.item,
         newPosition: this.currentCoords
       })
+      return false
     },
     dragstart(event) {
+      console.log('dragstart', event)
       this.initialDragCoords = {
         x: event.x,
         y: event.y
       }
       this.currentCoords = this.initialDragCoords
+      return false
     },
     updateElementPosition() {
       const style = this.componentStyle()
+      // console.log('style', style)
       Object.assign(this.$el.style, style)
     }
   },
