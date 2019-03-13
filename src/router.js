@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Frame from './views/Frame.vue'
+import Login from './views/Login.vue'
 import Home from './views/Home.vue'
 import Story from './views/Story.vue'
 import System from './views/System.vue'
@@ -12,15 +13,15 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      path: '/login',
+      name: 'login',
+      component: Login
     },
     {
       path: '/story/:storyId',
@@ -28,19 +29,28 @@ export default new Router({
       component: Story,
       // See https://router.vuejs.org/guide/essentials/passing-props.html#boolean-mode
       // > When props is set to true, the route.params will be set as the component props.
-      props: true
+      props: true,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/frame/:frameId',
       name: 'frame',
       component: Frame,
-      props: true
+      props: true,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/system/:storyId',
       name: 'system',
       component: System,
-      props: true
+      props: true,
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 })

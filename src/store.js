@@ -4,6 +4,7 @@ import frames from '@/store/frames'
 import projects from '@/store/projects'
 import stories from '@/store/stories'
 import ui from '@/store/ui'
+import user from '@/store/user'
 
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -17,7 +18,8 @@ const store = new Vuex.Store({
     frames,
     projects,
     stories,
-    ui
+    ui,
+    user
   },
   getters: {
     // Returns which frames link to what components
