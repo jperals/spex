@@ -45,6 +45,10 @@
         </label>
       </div>
     </div>
+    <div class="row mentioned-field">
+      <label class="label">Frames using this</label>
+      <frame-selector :frames="framesThatLinkToComponent"></frame-selector>
+    </div>
     <div class="row buttons" :class="{hidden: !editing}">
       <button @click="save" class="primaryButton">SAVE</button>
       <button @click="cancel" class="secondaryButton">CANCEL</button>
@@ -145,6 +149,7 @@ textarea:not([readonly=readonly]):focus {
   line-height: 32px;
   display: inline-block;
   width: 100%;
+  text-transform: uppercase;
 }
 
 .name-text-box {
@@ -337,6 +342,7 @@ label + .container {
 </style>
 
 <script>
+import FrameSelector from '@/components/FrameSelector'
 import ImageUpload from '@/components/ImageUpload'
 import store from "@/store";
 
@@ -355,9 +361,13 @@ export default {
     };
   },
   components: {
+    FrameSelector,
     ImageUpload
   },
   computed: {
+    framesThatLinkToComponent() {
+      return store.getters.framesThatLinkToComponent(this.component)
+    },
     exists() {
       return typeof this.componentCopy.id !== 'undefined'
     }

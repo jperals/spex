@@ -22,15 +22,9 @@ $frame-height: 68px;
 $horizontal-spacing: 24px;
 $vertical-padding: ($height - $frame-height)/2;
 .frame-selector {
-  padding-left: $horizontal-spacing;
-  height: $height - $vertical-padding*2;
   /* Keep all elements to one line */
-  white-space: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
   padding-top: $vertical-padding;
   padding-bottom: $vertical-padding;
-  font-size: 0;
   //height: $height - $vertical-padding*2;
   .frame {
     /* padding: 0 16 0 16; */
@@ -83,6 +77,11 @@ $vertical-padding: ($height - $frame-height)/2;
     .frame-title {
       opacity: 1;
     }
+  }
+}
+.frame-selector:not(.inline) {
+  .frame {
+    margin-bottom: 24px;
   }
 }
 </style>

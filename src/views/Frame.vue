@@ -22,7 +22,7 @@
     <div v-else class="top not-found">
       <not-found></not-found>
     </div>
-    <frame-selector v-if="storyFrames" :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
+    <frame-selector class="inline" v-if="storyFrames" :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
   </div>
 </template>
 
@@ -46,7 +46,17 @@
 }
 
 .frame-selector {
+  $frame-height: 68px;
+  $height: 100px;
+  $horizontal-spacing: 24px;
+  $vertical-padding: ($height - $frame-height)/2;
+  height: $height - $vertical-padding*2;
+  padding-left: $horizontal-spacing;
   background-color: #f2f6f7;
+  overflow-x: auto;
+  white-space: nowrap;
+  font-size: 0;
+  overflow-y: hidden;
 }
 
 .frame-selector.frames {
