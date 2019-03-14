@@ -1,6 +1,10 @@
 <template>
   <div class="diagram-relationship" :style="relationshipStyle">
     <div class="line" :style="lineStyle"></div>
+    <div class="arrow-tip" :style="arrowTipStyle">
+      <div class="line arrow-stroke arrow-stroke-1"></div>
+      <div class="line arrow-stroke arrow-stroke-2"></div>
+    </div>
   </div>
 </template>
 
@@ -18,6 +22,17 @@
     transform-origin: left center;
     width: 1px;
     height: 1px;
+    position: absolute;
+    top: 0;
+    &.arrow-stroke {
+      transform-origin: right center;
+    }
+    &.arrow-stroke-1 {
+      transform: rotate(20deg) scaleX(8);
+    }
+    &.arrow-stroke-2 {
+      transform: rotate(-20deg) scaleX(8);
+    }
   }
 }
 </style>
@@ -26,6 +41,8 @@
 import store from '@/store'
 
 const strokeWidth = 1
+const blankSpaceBetweenFirstItemAndLine = 100
+const blankSpaceBetweenLineAndSecondItem = 50
 
 export default {
   name: 'diagram-relationship',
@@ -35,6 +52,14 @@ export default {
     }
   },
   computed: {
+    arrowTipStyle() {
+      return {
+        transform: `translateX(${this.lineLength}px)`
+      }
+    },
+    distance() {
+      return Math.sqrt(this.width * this.width + this.height * this. height)
+    },
     position1() {
       return store.getters.diagramItemById(this.relationship.from.itemId).position
     },
@@ -47,11 +72,13 @@ export default {
     height() {
       return Math.abs(this.position2.y - this.position1.y)
     },
+    lineLength() {
+      return this.distance - blankSpaceBetweenLineAndSecondItem
+    },
     lineStyle() {
-      const distance = Math.sqrt(this.width * this.width + this.height * this. height)
-      const scaleFactor = distance / strokeWidth
+      const scaleFactor = (this.lineLength - blankSpaceBetweenFirstItemAndLine) / strokeWidth
       return {
-        transform: `scaleX(${scaleFactor})`
+        transform: `translateX(${blankSpaceBetweenFirstItemAndLine}px) scaleX(${scaleFactor})`
       }
     },
     rotationInDegrees() {
