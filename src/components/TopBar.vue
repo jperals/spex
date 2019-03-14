@@ -1,8 +1,8 @@
 <template>
   <div class="TopBar">
     <div class="left-items">
-      <router-link :to="backUrl || '/'" class="link-back">
-        <div class="HomeIcon" v-if="backUrl"></div>
+      <router-link :to="homeUrl || '/'" class="link-back">
+        <div class="HomeIcon" v-if="notAtRoot"></div>
         <div class="Logo" v-else></div>
       </router-link>
       <input type="text" class="PageTitle" v-if="story" v-model="story.title">
@@ -288,8 +288,14 @@ export default {
     componentsMissing() {
       return this.story && store.getters.componentsMissing(this.story);
     },
+    homeUrl() {
+      return '/'
+    },
     inStoryMode() {
-      return this.$route.name === 'story' || this.$route.name === 'frame'
+      return this.$route && (this.$route.name === 'story' || this.$route.name === 'frame')
+    },
+    notAtRoot() {
+      return this.$route && this.$route.name !== 'home'
     },
     showComponents() {
       return store.getters.showComponents;
@@ -304,7 +310,7 @@ export default {
       if (this.inStoryMode && this.story) {
         return '/system/' + this.story.id
       }
-      return this.$route.fullPath
+      return this.$route && this.$route.fullPath || '/'
     }
   },
   methods: {
