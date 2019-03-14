@@ -11,7 +11,7 @@
     <div class="center-items">
       <h3 v-if="title" class="PageTitle">{{title}}</h3>
       <div v-else-if="story" class="NavToggle">
-        <router-link :to="storyLink" class="tooltip" v-if="story">
+        <router-link :to="storyLink" class="tooltip" v-if="story" :class="{active: inStoryMode}">
           <div class="StoryIcon"></div>
           <span>Story</span>
           <!-- <span class="tooltiptext">Story</span> -->
@@ -144,7 +144,7 @@
     margin-top: 20px;
     margin-bottom: 20px;
   }
-  .tooltip.router-link-active .StoryIcon {
+  .tooltip.active .StoryIcon {
     background-image: url("../assets/icons/story-active.png");
   }
 
@@ -288,20 +288,23 @@ export default {
     componentsMissing() {
       return this.story && store.getters.componentsMissing(this.story);
     },
+    inStoryMode() {
+      return this.$route.name === 'story' || this.$route.name === 'frame'
+    },
     showComponents() {
       return store.getters.showComponents;
     },
     storyLink() {
-      if (this.story) {
+      if (!this.inStoryMode && this.story) {
         return '/story/' + this.story.id
       }
-      return '#'
+      return this.$route.fullPath
     },
     systemLink() {
-      if (this.story) {
+      if (this.inStoryMode && this.story) {
         return '/system/' + this.story.id
       }
-      return '#'
+      return this.$route.fullPath
     }
   },
   methods: {
