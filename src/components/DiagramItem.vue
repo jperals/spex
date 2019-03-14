@@ -1,5 +1,5 @@
 <template>
-  <div class="diagram-item" :style="componentStyle">
+  <div class="diagram-item" :class="{dragging}" :style="componentStyle">
     <div class="component-name">
       <label>{{componentName}}</label>
       <div class="remove-button" @click="removeItem" ref="removeButton">&times;</div>
@@ -83,10 +83,12 @@
 .remove-button {
   opacity: 0;
 }
-.diagram-item:hover .remove-button {
-  opacity: 0.5;
-  &:hover {
-    opacity: 1;
+.diagram-item:not(.dragging):hover {
+  .remove-button {
+    opacity: 0.5;
+    &:hover {
+      opacity: 1;
+    }
   }
 }
 
