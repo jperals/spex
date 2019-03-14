@@ -1,5 +1,5 @@
 <template>
-  <div class="diagram-item" :title="componentName" :style="componentStyle">
+  <div class="diagram-item" :style="componentStyle">
     <label class="component-name">{{componentName}}</label>
     <div class="component-image" draggable="false">
       <img v-if="imageUrl" :src="imageUrl" draggable="false">
@@ -11,13 +11,13 @@
 
 // Layout
 .diagram-item {
-  $side: 50px;
-  width: $side;
-  margin-left: - $side/2;
-  margin-top: - $side/2;
+  $square-side: 50px;
+  width: $square-side;
+  margin-left: - $square-side/2;
+  margin-top: - $square-side/2;
   .component-image {
     width: 100%;
-    height: $side;
+    height: $square-side;
     position: relative;
     img {
       display: block;
@@ -25,7 +25,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: $side;
+      height: $square-side;
     }
   }
   .component-name {
@@ -34,11 +34,13 @@
     top: 0;
     bottom: 0;
     font-size: 12px;
-    padding-left: $side + 5px;
-    padding-right: 5px;
     display: flex;
     align-items: center;
-    border-radius: $side/2 0 0 $side/2;
+    border-radius: $square-side/2 0 0 $square-side/2;
+    box-sizing: border-box;
+    padding-left: $square-side + 5px;
+    padding-right: 5px;
+    min-width: $square-side * 2;
   }
 }
 
