@@ -3,10 +3,9 @@
     <div class="left-items">
       <router-link :to="backUrl || '/'" class="link-back">
         <div class="HomeIcon" v-if="backUrl"></div>
-        <div class="Logo" v-if="title"></div>
-        <!-- <span class="PageTitle" v-if="title">{{ title }}</span> -->
-        <h3 class="PageTitle" v-else-if="story">{{ story.title }}</h3>
+        <div class="Logo" v-else></div>
       </router-link>
+      <input type="text" class="PageTitle" v-if="story" v-model="story.title">
     </div>
 
     <div class="center-items">
@@ -52,6 +51,7 @@
 
 <style scoped lang="scss">
 @import "./vars";
+@import '../common-styles/headings';
 .Logo{
     width: 78px;
     height: 40px;
@@ -118,8 +118,12 @@
   }
 
   .PageTitle {
+    @extend %h3;
+    border: 0 none;
+    padding: 5px;
     vertical-align: middle;
     margin: auto 16px;
+    flex-grow: 1;
   }
 
   .NavToggle{
@@ -313,6 +317,15 @@ export default {
         store.dispatch('setFocus', 'componentsToggle')
       }
       store.dispatch("toggleComponents");
+    }
+  },
+  watch: {
+    // Save the story title upstream when it changes in the UI
+    'story.title'(title) {
+      store.dispatch('sendStoryProperties', {
+        story: this.story,
+        props: {title}
+      })
     }
   }
 };

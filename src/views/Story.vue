@@ -3,7 +3,6 @@
     <top-bar :story="story" :back-url="'/'"></top-bar>
     <div class="main" v-if="story">
       <div class="story-fields">
-        <input v-model="story.title" placeholder="Give your story a title">
         <textarea
             v-model="story.description"
             placeholder="Write a short description"
@@ -117,12 +116,6 @@ export default {
       store.dispatch('sendStoryProperties', {
         story: this.story,
         props: {description}
-      })
-    },
-    'story.title'(title) {
-      store.dispatch('sendStoryProperties', {
-        story: this.story,
-        props: {title}
       })
     }
   }

@@ -6,6 +6,7 @@
 </template>
 
 <style lang="scss">
+@import './common-styles/headings';
 body {
   margin: 0;
   verflow-x: hidden;
@@ -24,10 +25,7 @@ a {
 }
 
 h3{
-  color: #031b26;
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 28px;
+  @extend %h3;
 }
 
 .button-secondary{
