@@ -1,5 +1,6 @@
 <template>
   <div class="diagram-item" :class="{dragging}" :style="componentStyle">
+    <div class="arrow-attachment-area"></div>
     <div class="component-name">
       <label>{{componentName}}</label>
       <div class="remove-button" @click="removeItem" ref="removeButton">&times;</div>
@@ -12,9 +13,10 @@
 
 <style lang="scss" scoped>
 
+
 // Layout
+$square-side: 50px;
 .diagram-item {
-  $square-side: 50px;
   width: $square-side;
   margin-left: - $square-side/2;
   margin-top: - $square-side/2;
@@ -59,7 +61,21 @@
   }
 }
 
+.arrow-attachment-area {
+  $diameter: $square-side*1.75;
+  border-radius :50%;
+  width: $diameter;
+  height: $diameter;
+  position: absolute;
+  top: ($square-side - $diameter)/2;
+  left: ($square-side - $diameter)/2;
+}
+
 // Colors
+.arrow-attachment-area {
+  background-color: hsl(0, 0, 95%);
+  border: 1px dashed hsl(200, 30, 80%);
+}
 .component-image {
   background-color: #ddd;
 }
@@ -75,6 +91,12 @@
 }
 
 // UX
+.arrow-attachment-area {
+  opacity: 0;
+}
+.diagram-item:not(.dragging):hover .arrow-attachment-area {
+  opacity: 1;
+}
 .diagram-item,
 .component-name {
   cursor: pointer;
