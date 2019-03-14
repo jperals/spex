@@ -1,17 +1,12 @@
 <template>
-  <div class="diagram-relationship" :style="relationshipStyle">
-    <div class="line" :style="lineStyle"></div>
-  </div>
+  <svg class="diagram-relationship" :viewBox="viewBox" :style="style">
+    <line :x1="x1" :y1="y1" :x2="x2" :y2="y2" stroke="lightgray" stroke-width="2"/>
+  </svg>
 </template>
 
-<style lang="scss" scoped>
+<style>
 .diagram-relationship {
   position: absolute;
-  left: 0;
-  right: 0;
-  .line {
-    background-color: #979C9E;
-  }
 }
 </style>
 
