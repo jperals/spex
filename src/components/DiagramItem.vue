@@ -58,6 +58,7 @@
 .diagram-item,
 .component-name {
   cursor: pointer;
+  user-select: none;
 }
 
 </style>
