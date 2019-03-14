@@ -76,7 +76,8 @@ export default {
       return this.distance - blankSpaceBetweenLineAndSecondItem
     },
     lineStyle() {
-      const scaleFactor = (this.lineLength - blankSpaceBetweenFirstItemAndLine) / strokeWidth
+      let scaleFactor = (this.lineLength - blankSpaceBetweenFirstItemAndLine) / strokeWidth
+      scaleFactor = Math.max(0, scaleFactor)
       return {
         transform: `translateX(${blankSpaceBetweenFirstItemAndLine}px) scaleX(${scaleFactor})`
       }
