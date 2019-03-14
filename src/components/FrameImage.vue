@@ -3,7 +3,7 @@
 </template>
 
 <style lang="scss" scoped>
-@import "./vars";
+@import "../common-styles/vars";
 
 .frame-image {
   background-size: cover;

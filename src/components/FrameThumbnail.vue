@@ -10,7 +10,7 @@
 
 <style scoped lang="scss">
 @import "./frame-thumbnail-size";
-@import "./vars";
+@import "../common-styles/vars";
 .frame-thumbnail {
   display: flex;
   flex-direction: row;
