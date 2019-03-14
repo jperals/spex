@@ -79,6 +79,20 @@
   bottom: 0;
 }
 
+component-list {
+  position: absolute;
+  overflow-y: auto;
+  top:0;
+  /*top: 64px;*/
+  bottom: 0;
+  right: 0;
+  background-color: #FAFAFA;
+  border-left: $border-default;
+  width: 250px;
+  min-height: 100%;
+  overflow-y: hidden;
+}
+
 .component-list:not(.active) {
   transform: translateX(100%);
 }

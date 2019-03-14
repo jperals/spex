@@ -120,13 +120,14 @@ input:checked {
 }
 
 .component-list {
-  position: absolute;
-  top: 64px;
-  right: 0px;
-  background-color: #FAFAFA;
-  border-left: $border-default;
-  width: 250px;
-  min-height: 100%;
+  /*position: absolute;*/
+  /*top: 64px;*/
+  /*bottom: 0px;*/
+  /*right: 0px;*/
+  /*background-color: #FAFAFA;*/
+  /*border-left: $border-default;*/
+  /*width: 250px;*/
+  /*min-height: 100%;*/
 }
 
 .newButton {
