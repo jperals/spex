@@ -18,6 +18,7 @@
           <span class="component-name">{{component.name}}</span>
         </label>
         <div v-else>
+          <div class="add-item" @click="addItemToDiagram(component)" v-if="systemMode && isMissing(component)"> < Add</div>
           <span class="component-name" @click="openComponent(component)">
             {{component.name}}
           </span>
@@ -30,6 +31,10 @@
 
 <style scoped lang="scss">
 @import "./vars";
+
+$light-bg-color: #f2f6f7;
+$highlighted-bg-color: #e6eaf1;
+$warning-color: #db4141;
 
 input:checked {
   background-color: pink;
@@ -118,7 +123,7 @@ input:checked {
   position: absolute;
   top: 64px;
   right: 0px;
-  background-color: #f2f6f7;
+  background-color: $light-bg-color;
   width: 250px;
   min-height: 100%;
 }
@@ -143,12 +148,17 @@ input:checked {
   background-color: #417f9e;
 }
 
+.component-name,
+.add-item {
+  padding: 6px 16px;
+  font-size: 15px;
+  line-height: 26px;
+}
+
 .component-name {
   display: block;
   position: relative;
   box-sizing: border-box;
-  padding: 6px 16px 8px 0;
-  margin-left: 16px;
   border-bottom: $border-default;
   /*margin-left: 8px;*/
   /*padding-left: 8px;*/
@@ -157,21 +167,37 @@ input:checked {
 
   /*margin-bottom: 16px;*/
   cursor: pointer;
-  font-size: 15px;
-  line-height: 26px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
   /*border-radius: 3px;*/
+  background-color: $light-bg-color;
   &:hover {
-    background-color: rgba(0, 0, 150, 0.05);
+    background-color: $highlighted-bg-color;
+  }
+}
+
+.component {
+  position: relative;
+}
+
+.add-item {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  transition: transform .3s;
+  border-radius: 3px 0 0 3px;
+  background-color: $light-bg-color;
+  &:hover {
+    background-color: $highlighted-bg-color;
   }
 }
 
 .component.missing {
   position: relative;
-  &:before {
+  &:after {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -179,7 +205,10 @@ input:checked {
     width: 4px;
     height: 100%;
     border-radius: 0px;
-    background-color: #db4141;
+    background-color: $warning-color;
+  }
+  &:hover .add-item {
+    transform: translateX(-100%);
   }
 }
 
@@ -195,6 +224,10 @@ export default {
     components: {
       type: Object
     },
+    systemMode: {
+      type: Boolean,
+      default: false
+    },
     story: {
       type: Object
     },
@@ -204,6 +237,11 @@ export default {
     }
   },
   methods: {
+    addItemToDiagram(component) {
+      store.dispatch('addDiagramItem', {
+        componentId: component.id
+      })
+    },
     createNewComponent() {
       const component = store.getters.newComponent({ story: this.story });
       this.openComponent(component);

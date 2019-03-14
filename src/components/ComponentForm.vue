@@ -65,6 +65,8 @@
 .component-form {
   background-color: #f2f6f7;
   width: 800px;
+  max-height: 100%;
+  overflow-y: auto;
   border-radius: 2px;
   box-shadow: 12px 13px 86px -24px rgba(0, 0, 0, 0.87);
   padding: 24px 24px 24px 32px;

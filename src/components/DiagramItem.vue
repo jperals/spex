@@ -1,6 +1,9 @@
 <template>
   <div class="diagram-item" :style="componentStyle">
-    <label class="component-name">{{componentName}}</label>
+    <div class="component-name">
+      <label>{{componentName}}</label>
+      <div class="remove-button" @click="removeItem" ref="removeButton">&times;</div>
+    </div>
     <div class="component-image" draggable="false">
       <img v-if="imageUrl" :src="imageUrl" draggable="false">
     </div>
@@ -42,18 +45,33 @@
     padding-right: 5px;
     min-width: $square-side * 2;
   }
+  .remove-button {
+    $side: 12px;
+    position: absolute;
+    top: - $side/2;
+    right: - $side/2;
+    width: $side;
+    height: $side;
+    border-radius: 50%;
+    text-align: center;
+    line-height: $side;
+    font-weight: bold;
+  }
 }
 
 // Colors
-.diagram-item {
-  .component-image {
-    background-color: #ddd;
-  }
-  .component-name {
-    color: #1F2122;
-    background-color: white;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  }
+.component-image {
+  background-color: #ddd;
+}
+.component-name {
+  color: #1F2122;
+  background-color: white;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+.remove-button {
+  background-color: gray;
+  border: 1px solid white;
+  color: white;
 }
 
 // UX
@@ -61,6 +79,15 @@
 .component-name {
   cursor: pointer;
   user-select: none;
+}
+.remove-button {
+  opacity: 0;
+}
+.diagram-item:hover .remove-button {
+  opacity: 0.5;
+  &:hover {
+    opacity: 1;
+  }
 }
 
 </style>
@@ -143,6 +170,9 @@ export default {
     },
     openComponent() {
       store.dispatch("openComponent", this.component);
+    },
+    removeItem() {
+      store.dispatch('removeDiagramItem', this.item)
     }
   },
   mounted() {
@@ -158,7 +188,7 @@ export default {
       console.log(this.dragging)
       if (this.dragging) {
         this.dragend(event)
-      } else {
+      } else if (event.target !== this.$refs.removeButton) {
         this.openComponent()
       }
       this.mouseDown = false

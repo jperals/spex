@@ -48,12 +48,20 @@ const diagrams = {
     addDiagramItem(state, props = {}) {
       const newItem = Object.assign({
         componentId: null,
-        position: {x: null, y: null}
+        position: {x: 35, y: 35}
       }, props)
       state.diagramItems.push(newItem)
     },
     addDiagramRelationship(state, relationship) {
       state.diagramRelationships.push(relationship)
+    },
+    removeDiagramItem(state, item) {
+      const index = state.diagramItems.findIndex(diagramItem => diagramItem.id === item.id)
+      if (index === -1) {
+        console.warn(`Diagram with id ${item.id} not found.`)
+        return
+      }
+      state.diagramItems.splice(index, 1)
     },
     updateDiagramItem(state, {item, newProperties}) {
       Object.assign(item, newProperties)
@@ -66,6 +74,15 @@ const diagrams = {
     }
   },
   actions: {
+    addDiagramItem(context, item) {
+      diagramItemsCollection.add(item)
+        .then(docRef => {
+          context.commit('addDiagramItem', Object.assign(item, {id: docRef.id}))
+        })
+        .catch(function (error) {
+          console.error("Error writing document: ", error);
+        });
+    },
     loadDiagramItems(context) {
       return diagramItemsCollection.get()
         .catch(console.error)
@@ -99,6 +116,14 @@ const diagrams = {
         context.dispatch('loadDiagramItems'),
         context.dispatch('loadDiagramRelationships')
       ])
+    },
+    removeDiagramItem(context, item) {
+      return diagramItemsCollection.doc(item.id)
+        .delete()
+        .then(() => {
+          context.commit('removeDiagramItem', item)
+        })
+        .catch(console.warn)
     },
     updateDiagramItem(context, {item, newProperties}) {
       return diagramItemsCollection
