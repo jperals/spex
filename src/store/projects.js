@@ -4,14 +4,18 @@ class Project {
   }
 }
 
-const projects = {
-  state: {
+function initialState() {
+  return {
     projects: [
       {
         id: 0
       }
     ]
-  },
+  }
+}
+
+const projects = {
+  state: initialState(),
   mutations: {
     addNewProject(state) {
       state.projects.push(new Project())
@@ -24,12 +28,17 @@ const projects = {
       }
       state.projects.splice(index)
     },
+    reset(state) {
+      Object.assign(state, initialState())
+    },
     updateProjects(state, projects) {
       state.projects = projects
     }
   },
   actions: {
-
+    reset(context) {
+      return context.commit('reset')
+    }
   },
   getters: {
     projects: (state) => {

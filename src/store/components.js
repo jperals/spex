@@ -3,11 +3,14 @@ import uniqid from 'uniqid'
 
 const collection = db.collection('components')
 
+function initialState() {
+  return {
+    components: []
+  }
+}
+
 const components = {
-  state: {
-    components: [],
-    nextId: 0
-  },
+  state: initialState(),
   getters: {
     componentById: state => id => state.components.find(component => component.id === id),
     componentDescription: (state, getters) => componentId => {
@@ -42,6 +45,9 @@ const components = {
         return
       }
       state.components.splice(index, 1)
+    },
+    reset(state) {
+      Object.assign(state, initialState())
     },
     updateComponent(state, {component, newProperties}) {
       Object.assign(component, newProperties)
@@ -95,6 +101,9 @@ const components = {
           context.commit('removeComponent', component)
         })
         .catch(console.warn)
+    },
+    reset(context) {
+      return context.commit('reset')
     },
     // The component might exist or not.
     // Add to the components if it's not there;

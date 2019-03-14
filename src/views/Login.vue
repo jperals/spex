@@ -60,7 +60,8 @@ export default {
       })
         .then(() => {
           this.redirecting = true
-          this.$router.push('/')
+          const nextPath = this.$route.params.to && this.$route.params.to.fullPath || '/'
+          this.$router.push(nextPath)
         })
         .catch(() => {
           this.showWarning = true

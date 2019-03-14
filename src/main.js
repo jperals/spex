@@ -4,7 +4,7 @@ import requireAuth from './require-auth'
 import router from "./router";
 import store from "./store";
 
-requireAuth(router)
+// requireAuth(router)
 Vue.config.productionTip = false;
 
 new Vue({

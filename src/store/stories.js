@@ -2,10 +2,14 @@ import {db, firebase} from '@/store/firebase'
 
 const collection = db.collection('stories')
 
-const stories = {
-  state: {
+function initialState() {
+  return {
     stories: []
-  },
+  }
+}
+
+const stories = {
+  state: initialState(),
   getters: {
     componentsFromStory: (state, getters) => story => {
       return getters.components.filter(component => component.storyId === story.id)
@@ -97,6 +101,9 @@ const stories = {
       }
       state.stories.splice(index)
     },
+    reset(state) {
+      Object.assign(state, initialState())
+    },
     updateLinkedComponents(state) {
       const components = []
       const parser = new DOMParser()
@@ -159,6 +166,9 @@ const stories = {
           context.commit('updateStories', stories)
         })
         .catch(console.error)
+    },
+    reset(context) {
+      return context.commit('reset')
     },
     // Update story properties remotely without waiting for an answer.
     // (Used in text fields where we want an immediate reaction)

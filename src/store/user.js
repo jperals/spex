@@ -3,8 +3,6 @@ import dummyData from "@/generate-dummy-data";
 
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 
-console.log(firebase.auth().currentUser)
-
 const user = {
   state: {
     user: null,
@@ -19,24 +17,14 @@ const user = {
       state.user = user
     },
     signOut(state) {
-      state.signedIn= false
+      state.signedIn = false
     }
   },
   actions: {
-    signIn(context, {email, password}) {
-      return firebase.auth()
-        .signInWithEmailAndPassword(email, password)
+    signIn(context, credentials) {
+      return signIn(credentials)
         .then(() => {
           context.commit('signIn', firebase.auth().currentUser)
-          return Promise.all([
-            context.dispatch('loadComponents'),
-            context.dispatch('loadDiagrams'),
-            context.dispatch('loadFrames'),
-            context.dispatch('loadStories')
-          ])
-        })
-        .then(() => {
-          dummyData(context)
         })
         .catch(error => {
           console.error(error.message)
@@ -52,6 +40,15 @@ const user = {
           console.error(error.message)
         })
     }
+  }
+}
+
+function signIn(credentials) {
+  if (credentials && credentials.email && credentials.password) {
+    return firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password)
+  } else {
+    // Assume the user is already logged in
+    return new Promise(resolve => resolve())
   }
 }
 

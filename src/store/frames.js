@@ -2,10 +2,14 @@ import {db, storageRef} from '@/store/firebase'
 
 const collection = db.collection('frames')
 
-const frames = {
-  state: {
+function initialState() {
+  return {
     frames: []
-  },
+  }
+}
+
+const frames = {
+  state: initialState(),
   getters: {
     frameById: state => id => state.frames.find(frame => frame.id === id),
     frames: state => state.frames,
@@ -33,6 +37,9 @@ const frames = {
         return;
       }
       state.frames.splice(index, 1);
+    },
+    reset(state) {
+      Object.assign(state, initialState())
     },
     setFrameImageUrl(state, {frame, imageUrl}) {
       frame.imageUrl = imageUrl
@@ -92,6 +99,9 @@ const frames = {
           context.commit('removeFrame', frame)
         })
         .catch(console.warn)
+    },
+    reset(context) {
+      return context.commit('reset')
     },
     // Update frame properties remotely without waiting for an answer.
     // (Used in text fields where we want immediate reaction)

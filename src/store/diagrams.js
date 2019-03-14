@@ -2,12 +2,16 @@ import {db} from './firebase'
 
 const diagramItemsCollection = db.collection('diagram-items')
 
-const diagrams = {
-  state: {
+function initialState() {
+  return {
     diagramRelationships: [],
     diagramItems: [],
     diagramGroups: []
-  },
+  }
+}
+
+const diagrams = {
+  state: initialState(),
   getters: {
     // Returns which components are included in the diagram of a story
     componentsFromStoryDiagram: (state, getters) => story => {
@@ -57,6 +61,9 @@ const diagrams = {
     addDiagramRelationShip(state, relationship) {
       state.diagramRelationships.push(relationship)
     },
+    reset(state) {
+      Object.assign(state, initialState())
+    },
     updateDiagramItem(state, {item, newProperties}) {
       Object.assign(item, newProperties)
     },
@@ -81,6 +88,9 @@ const diagrams = {
             context.commit('addDiagramItem', diagramItem)
           })
         })
+    },
+    reset(context) {
+      return context.commit('reset')
     },
     updateDiagramItem(context, {item, newProperties}) {
       return diagramItemsCollection

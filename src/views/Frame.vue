@@ -1,6 +1,6 @@
 <template>
   <div class="view frame-view" @click="toggleSelection(false)">
-    <top-bar :story="story" :back-url="'/story/' + story.id"></top-bar>
+    <top-bar :story="story" :back-url="backUrl"></top-bar>
     <div v-if="frame" class="main top">
       <image-upload @upload="handleFile" :image-url="frame.imageUrl"></image-upload>
       <div class="text">
@@ -118,6 +118,13 @@ export default {
     TopBar
   },
   computed: {
+    backUrl () {
+      if (this.story) {
+        return '/story/' + this.story.id
+      } else {
+        return '/'
+      }
+    },
     components() {
       return {
         list: store.getters.componentsFromStory(this.story)
