@@ -1,8 +1,8 @@
 <template>
-  <div class="diagram-item" :title="componentName" @click="openComponent" draggable="true">
+  <div class="diagram-item" :title="componentName" :style="componentStyle">
     <label class="component-name">{{componentName}}</label>
-    <div class="component-image">
-      <img v-if="imageUrl" :src="imageUrl">
+    <div class="component-image" draggable="false">
+      <img v-if="imageUrl" :src="imageUrl" draggable="false">
     </div>
   </div>
 </template>
@@ -65,15 +65,16 @@
 <script>
 import store from '@/store'
 
-// Use transparent ghost image for drag
-// https://stackoverflow.com/a/49535378
-const img = new Image();
-img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
-
 export default {
   name: 'diagram-item',
   props: {
     item: {
+      type: Object
+    },
+    focusOut: {
+      type: Boolean
+    },
+    parentElement: {
       type: Object
     }
   },
@@ -81,7 +82,6 @@ export default {
     const component = this.item ? store.getters.componentById(this.item.componentId) : null
     const currentCoords = this.item ? Object.assign({}, this.item.position) : null
     const imageUrl = component ? component.imageUrl : null
-    const initialCoords = currentCoords
     return {
       component,
       currentCoords,
@@ -89,26 +89,16 @@ export default {
         x: 0,
         y: 0
       },
+      dragging: false,
       imageUrl,
       initialDragCoords: null,
-      initialCoords
+      initialCoords: currentCoords,
+      mouseDown: false
     }
   },
   methods: {
-    componentStyle() {
-      const position = this.currentCoords
-      if (typeof position === 'object' && position !== null) {
-        return {
-          transform: `translate(${position.x}px, ${position.y}px)`
-        }
-      } else {
-        return {}
-      }
-    },
     drag(event) {
-      if (event.x === 0 && event.y === 0) {
-        return false
-      }
+      this.dragging = true
       this.currentDrag = {
         x: event.x - this.initialDragCoords.x,
         y: event.y - this.initialDragCoords.y
@@ -121,12 +111,16 @@ export default {
         item: this.item,
         newPosition: this.currentCoords
       })
-      this.updateElementPosition()
       return false
     },
     dragend() {
       this.initialDragCoords = null
       this.initialCoords = this.currentCoords
+      console.log('dragend')
+      this.currentDrag = {
+        x: 0,
+        y: 0
+      }
       store.dispatch('updateDiagramItem', {
         item: this.item,
         newProperties: {
@@ -136,35 +130,37 @@ export default {
       return false
     },
     dragstart(event) {
-      // Use transparent ghost image for drag
-      // https://stackoverflow.com/a/49535378
-      event.dataTransfer.setDragImage(img, 0, 0);
+      store.dispatch('setFocus', 'diagram')
+      this.mouseDown = true
       this.initialDragCoords = {
         x: event.x,
         y: event.y
       }
-      this.currentCoords = this.initialDragCoords
       return false
     },
     openComponent() {
       store.dispatch("openComponent", this.component);
-    },
-    updateElementPosition() {
-      const style = this.componentStyle()
-      Object.assign(this.$el.style, style)
     }
   },
   mounted() {
-    this.$el.addEventListener('dragstart', event => {
+    this.$el.addEventListener('mousedown', event => {
       this.dragstart(event)
     })
-    this.$el.addEventListener('drag', event => {
-      this.drag(event)
+    this.$el.parentElement.addEventListener('mousemove', event => {
+      if(this.mouseDown) {
+        this.drag(event)
+      }
     })
-    this.$el.addEventListener('dragend', event => {
-      this.dragend(event)
+    this.$el.addEventListener('mouseup', event => {
+      console.log(this.dragging)
+      if (this.dragging) {
+        this.dragend(event)
+      } else {
+        this.openComponent()
+      }
+      this.mouseDown = false
+      this.dragging = false
     })
-    this.updateElementPosition()
   },
   computed: {
     componentName() {
@@ -172,6 +168,19 @@ export default {
         return this.component.name
       }
       return ''
+    },
+    componentStyle() {
+      const position = this.currentCoords
+      if (typeof position === 'object' && position !== null) {
+        return {
+          transform: `translate(${position.x}px, ${position.y}px)`
+        }
+      } else {
+        return {}
+      }
+    },
+    focusedElement() {
+      return store.getters.focusedElement
     }
   }
 }

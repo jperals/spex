@@ -4,7 +4,7 @@
       <diagram-relationship :relationship="relationship" v-for="relationship in relationships" :key="relationship.id"></diagram-relationship>
     </div>
     <div class="diagram-items">
-      <diagram-item :item="item" v-for="item in items" :key="item.id" ></diagram-item>
+      <diagram-item :item="item" v-for="item in items" :key="item.id"></diagram-item>
     </div>
   </div>
 </template>
@@ -13,7 +13,11 @@
 
 // Layout
 .system-diagram {
+  height: 100%;
   position: relative;
+  .diagram-items {
+    height: 100%;
+  }
   .diagram-item,
   .diagram-relationship {
     display: block;
