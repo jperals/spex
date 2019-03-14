@@ -25,7 +25,7 @@ const diagrams = {
       return state.diagramItems.filter(item => item && typeof item.componentId === 'string' && getters.componentById(item.componentId).storyId === story.id)
     },
     diagramRelationshipsFromItem: state => item => {
-      return state.diagramRelationships.filter(relationship => relationship.from.itemId === item.id)
+      return state.diagramRelationships instanceof Array && state.diagramRelationships.filter(relationship => relationship.from.itemId === item.id)
     },
     diagramRelationshipsFromStory: (state, getters) => story => {
       const relationships = []
