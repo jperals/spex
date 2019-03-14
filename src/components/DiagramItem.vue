@@ -1,9 +1,9 @@
 <template>
-  <div class="diagram-item" :title="component.name" @click="openComponent" draggable="true">
+  <div class="diagram-item" :title="componentName" @click="openComponent" draggable="true">
+    <label class="component-name">{{componentName}}</label>
     <div class="component-image">
-      <img v-if="component.imageUrl" :src="component.imageUrl">
+      <img v-if="imageUrl" :src="imageUrl">
     </div>
-    <label class="component-name">{{component.name}}</label>
   </div>
 </template>
 
@@ -11,13 +11,14 @@
 
 // Layout
 .diagram-item {
-  $side : 50px;
+  $side: 50px;
   width: $side;
   margin-left: - $side/2;
   margin-top: - $side/2;
   .component-image {
     width: 100%;
     height: $side;
+    position: relative;
     img {
       display: block;
       position: absolute;
@@ -28,13 +29,16 @@
     }
   }
   .component-name {
-    margin-top: 2px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
     font-size: 12px;
-    hyphens: auto;
-    border-radius: 3px;
-    display: block;
-    padding-left: 7%;
-    padding-right: 5%;
+    padding-left: $side + 5px;
+    padding-right: 5px;
+    display: flex;
+    align-items: center;
+    border-radius: $side/2 0 0 $side/2;
   }
 }
 
@@ -44,8 +48,9 @@
     background-color: #ddd;
   }
   .component-name {
-    color: #999;
-    background-color: #e7e7e7;
+    color: #1F2122;
+    background-color: white;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -66,27 +71,33 @@ const img = new Image();
 img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 
 export default {
-  name: 'diagram-component',
+  name: 'diagram-item',
   props: {
     item: {
       type: Object
     }
   },
   data() {
+    const component = this.item ? store.getters.componentById(this.item.componentId) : null
+    const currentCoords = this.item ? Object.assign({}, this.item.position) : null
+    const imageUrl = component ? component.imageUrl : null
+    const initialCoords = currentCoords
     return {
-      currentCoords: Object.assign({}, this.item.position),
+      component,
+      currentCoords,
       currentDrag: {
         x: 0,
         y: 0
       },
+      imageUrl,
       initialDragCoords: null,
-      initialCoords: Object.assign({}, this.item.position)
+      initialCoords
     }
   },
   methods: {
     componentStyle() {
       const position = this.currentCoords
-      if (typeof position === 'object') {
+      if (typeof position === 'object' && position !== null) {
         return {
           transform: `translate(${position.x}px, ${position.y}px)`
         }
@@ -156,9 +167,18 @@ export default {
     this.updateElementPosition()
   },
   computed: {
-    component() {
-      return store.getters.componentById(this.item.componentId)
+    componentName() {
+      if (typeof this.component === 'object' && this.component !== null) {
+        return this.component.name
+      }
+      return ''
     }
   }
 }
 </script>
+
+<docs>
+  ```jsx
+  <diagram-item></diagram-item>
+  ```
+</docs>
