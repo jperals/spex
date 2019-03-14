@@ -29,6 +29,8 @@
 </template>
 
 <style lang="scss">
+@import '../common-styles/headings';
+
 $fontSize: 20px;
 .smart-text {
   font-weight: 400;
@@ -62,8 +64,6 @@ $fontSize: 20px;
 }
 
 .smart-text-container {
-  max-width: 720px;
-  margin: auto;
   $blank-space: 8px;
   position: relative;
   .tooltip {
@@ -73,24 +73,31 @@ $fontSize: 20px;
     left: 0;
     width: 500px;
     padding-top: $blank-space;
+    border-radius: 16px;
 
     .tooltip-text {
-      background-color: #979c9e;
-      color: #fff;
-      text-align: left;
-      font-size: 20px;
-      padding: 16px 16px;
-      border-radius: 2px;
+      @extend %body;
+      /*background-color: #979c9e;*/
+      background-color: white;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      /*color: #fff;*/
+      /*text-align: left;*/
+      /*font-size: 20px;*/
+      padding: 16px;
+      /*border-radius: 2px;*/
       position: absolute;
       bottom: $blank-space;
       left: 0;
-      box-shadow: 12px 13px 86px -24px rgba(0, 0, 0, 0.87);
+      /*box-shadow: 12px 13px 86px -24px rgba(0, 0, 0, 0.87);*/
       transform: translateX(-50%);
       width: 100%;
+
       .tooltip-title {
-        font-size: 24px;
-        font-weight: 800;
+        @extend %h3;
+        /*font-size: 24px;*/
+        /*font-weight: 800;*/
         cursor: pointer;
+
         &:hover {
           text-decoration: underline;
         }
@@ -98,18 +105,19 @@ $fontSize: 20px;
     }
 
     .delete-icon {
-      background-image: url("../assets/icons/delete-white.png");
+      background-image: url("../assets/icons/button-delete-small.png");
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
       position: absolute;
       width: 24px;
       height: 24px;
-      margin-right: 24px;
-      margin-top: 8px;
-      right: 0;
-      opacity: 0.5;
+      /*margin-right: 24px;*/
+      /*margin-top: 8px;*/
+      top:16px;
+      right: 16px;
       cursor: pointer;
+      opacity: 0.9;
     }
 
     .delete-icon:hover {
