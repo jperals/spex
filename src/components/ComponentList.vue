@@ -8,7 +8,7 @@
         :key="component.id"
         :class="{missing: isMissing(component)}"
       >
-        <label v-if="selecting" class="container" @click="select(component, $event)">
+        <label v-if="selecting" class="component-entry" @click="select(component, $event)">
           <input
             type="radio"
             :checked="isSelected(component)"
@@ -47,13 +47,14 @@ input:checked {
 }
 
 /* Customize the label (the container) */
-.container {
+.component-entry {
   display: block;
   /* position: absolute; */
-  padding-left: 40px;
-  margin-bottom: 16px;
+  /*padding-left: 40px;*/
+  /*margin-bottom: 16px;*/
+  border-bottom: $border-default;
   cursor: pointer;
-  font-size: 20px;
+  /*font-size: 16px;*/
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -61,7 +62,7 @@ input:checked {
 }
 
 /* Hide the browser's default radio button */
-.container input[type="radio"] {
+.component-entry input[type="radio"] {
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -82,12 +83,12 @@ input:checked {
 }
 
 /* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
+.component-entry:hover input ~ .checkmark {
   background-color: #818c92;
 }
 
 /* When the radio button is checked, add a blue background */
-.container input:checked ~ .checkmark {
+.component-entry input:checked ~ .checkmark {
   background-color: #56a8d1;
 }
 
@@ -99,12 +100,12 @@ input:checked {
 }
 
 /* Show the indicator (dot/circle) when checked */
-.container input:checked ~ .checkmark:after {
+.component-entry input:checked ~ .checkmark:after {
   display: block;
 }
 
 /* Style the indicator (dot/circle) */
-.container .checkmark:after {
+.component-entry .checkmark:after {
   top: 9px;
   left: 9px;
   width: 8px;
@@ -114,6 +115,9 @@ input:checked {
 }
 
 .component-list {
+  position: absolute;
+  top: 64px;
+  right: 0px;
   background-color: #f2f6f7;
   width: 250px;
   min-height: 100%;
@@ -141,20 +145,25 @@ input:checked {
 
 .component-name {
   display: block;
-  box-sizing: border-box;
-  margin-left: 8px;
-  padding-left: 8px;
-  padding-right: 20px;
-  margin-right: 8px;
   position: relative;
-  margin-bottom: 16px;
+  box-sizing: border-box;
+  padding: 6px 16px 8px 0;
+  margin-left: 16px;
+  border-bottom: $border-default;
+  /*margin-left: 8px;*/
+  /*padding-left: 8px;*/
+  /*padding-right: 20px;*/
+  /*margin-right: 8px;*/
+
+  /*margin-bottom: 16px;*/
   cursor: pointer;
-  font-size: 20px;
+  font-size: 15px;
+  line-height: 26px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  border-radius: 3px;
+  /*border-radius: 3px;*/
   &:hover {
     background-color: rgba(0, 0, 150, 0.05);
   }
