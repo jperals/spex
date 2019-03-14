@@ -1,9 +1,9 @@
 <template>
   <div class="diagram-item" :class="{dragging}" :style="componentStyle">
-    <div class="arrow-attachment-area"></div>
     <div class="component-name">
       <label>{{componentName}}</label>
-      <div class="remove-button" @click="removeItem" ref="removeButton">&times;</div>
+      <div class="tiny-button remove-button" title="Remove item" @click="removeItem" ref="removeButton">&times;</div>
+      <div class="tiny-button add-relationship-button" title="Add relationship">+</div>
     </div>
     <div class="component-image" draggable="false">
       <img v-if="imageUrl" :src="imageUrl" draggable="false">
@@ -20,59 +20,61 @@ $square-side: 50px;
   width: $square-side;
   margin-left: - $square-side/2;
   margin-top: - $square-side/2;
-  .component-image {
+}
+
+.component-image {
+  width: 100%;
+  height: $square-side;
+  position: relative;
+  img {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: $square-side;
-    position: relative;
-    img {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: $square-side;
-    }
-  }
-  .component-name {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    border-radius: $square-side/2 0 0 $square-side/2;
-    box-sizing: border-box;
-    padding-left: $square-side + 5px;
-    padding-right: 5px;
-    min-width: $square-side * 2;
-  }
-  .remove-button {
-    $side: 12px;
-    position: absolute;
-    top: - $side/2;
-    right: - $side/2;
-    width: $side;
-    height: $side;
-    border-radius: 50%;
-    text-align: center;
-    line-height: $side;
-    font-weight: bold;
   }
 }
 
-.arrow-attachment-area {
-  $diameter: $square-side*1.75;
-  border-radius :50%;
-  width: $diameter;
-  height: $diameter;
+.component-name {
   position: absolute;
-  top: ($square-side - $diameter)/2;
-  left: ($square-side - $diameter)/2;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  border-radius: $square-side/2 0 0 $square-side/2;
+  box-sizing: border-box;
+  padding-left: $square-side + 5px;
+  padding-right: 12px;
+  min-width: $square-side * 2;
+}
+
+$tiny-button-side: 12px;
+.tiny-button {
+  position: absolute;
+  width: $tiny-button-side;
+  height: $tiny-button-side;
+  border-radius: 50%;
+  text-align: center;
+  line-height: $tiny-button-side;
+  font-weight: bold;
+
+}
+
+.remove-button {
+  top: - $tiny-button-side/2;
+  right: - $tiny-button-side/2;
+}
+
+.add-relationship-button {
+  top: $square-side/2 - $tiny-button-side/2;
+  right: - $tiny-button-side/2;
 }
 
 // Colors
-.arrow-attachment-area {
+.add-relationship-button {
   background-color: hsl(0, 0, 95%);
   border: 1px dashed hsl(200, 30, 80%);
 }
@@ -84,33 +86,27 @@ $square-side: 50px;
   background-color: white;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
-.remove-button {
+.tiny-button {
   background-color: gray;
   border: 1px solid white;
   color: white;
 }
 
 // UX
-.arrow-attachment-area {
-  opacity: 0;
-}
-.diagram-item:not(.dragging):hover .arrow-attachment-area {
-  opacity: 1;
-}
 .diagram-item,
 .component-name {
   cursor: pointer;
   user-select: none;
 }
-.remove-button {
+
+.tiny-button {
   opacity: 0;
 }
-.diagram-item:not(.dragging):hover {
-  .remove-button {
-    opacity: 0.5;
-    &:hover {
-      opacity: 1;
-    }
+
+.diagram-item:not(.dragging):hover .tiny-button {
+  opacity: 0.35;
+  &:hover {
+    opacity: 1;
   }
 }
 
@@ -204,7 +200,7 @@ export default {
       this.dragstart(event)
     })
     this.$el.parentElement.addEventListener('mousemove', event => {
-      if(this.mouseDown) {
+      if (this.mouseDown) {
         this.drag(event)
       }
     })
