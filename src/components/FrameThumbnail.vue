@@ -33,7 +33,7 @@
     margin-top: 8px;
     font-size: 24px;
     font-weight: 400;
-    color: #031b26;
+    color: #00ff00;
     line-height: 32px;
     height: 64px;
     max-width: 180px;

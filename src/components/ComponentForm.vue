@@ -142,7 +142,6 @@ textarea:not([readonly=readonly]):focus {
 .label {
   font-weight: 800;
   padding-top: 16px;
-  font-family: TitilliumWeb-Bold;
   font-size: 14px;
   color: #707679;
   letter-spacing: 1px;

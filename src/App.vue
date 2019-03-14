@@ -17,11 +17,25 @@ a {
 }
 
 #app {
-  font-family: Titillium Web;
+  font-family: 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
+
+h3{
+  color: #031b26;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.button-secondary{
+
+}
+
+
+
 </style>
 
 <script>

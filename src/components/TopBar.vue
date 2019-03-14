@@ -2,67 +2,99 @@
   <div class="TopBar">
     <div class="left-items">
       <router-link :to="backUrl || '/'" class="link-back">
-        <div class="BackIcon" v-if="backUrl"></div>
-        <span class="PageTitle" v-if="title">{{ title }}</span>
-        <span class="PageTitle" v-else-if="story">{{ story.title }}</span>
+        <div class="HomeIcon" v-if="backUrl"></div>
+        <div class="Logo" v-if="title"></div>
+        <!-- <span class="PageTitle" v-if="title">{{ title }}</span> -->
+        <h3 class="PageTitle" v-else-if="story">{{ story.title }}</h3>
       </router-link>
     </div>
-    <SuggestionsIndicator :number-of-suggestions="numberOfSuggestions"></SuggestionsIndicator>
-    <div v-if="story"
-         class="tooltip"
-         @click="toggleComponents($event)"
-         :class="{active: showComponents, warning: componentsMissing}"
-    >
-      <div class="Components"></div>
-      <span class="tooltiptext">Components</span>
+
+    <div class="center-items">
+      <h3 v-if="title" class="PageTitle">Stories</h3>
+      <div v-else-if="story" class="NavToggle">
+        <router-link :to="storyLink" class="tooltip" v-if="story">
+          <div class="StoryIcon"></div>
+          <span>Story</span>
+          <!-- <span class="tooltiptext">Story</span> -->
+        </router-link>
+
+        <router-link :to="systemLink" class="tooltip" v-if="story">
+          <div class="SystemIcon"></div>
+          <span>System</span>
+          <!-- <span class="tooltiptext">System</span> -->
+        </router-link>
+
+      </div>
+
     </div>
 
-    <div class="Divider" v-if="story"></div>
+    <div class="right-items">
+      <div class="Divider" v-if="story"></div>
 
-    <router-link :to="storyLink" class="tooltip" v-if="story">
-      <div class="StoryIcon"></div>
-      <span class="tooltiptext">Story</span>
-    </router-link>
 
-    <router-link :to="systemLink" class="tooltip" v-if="story">
-      <div class="SystemIcon"></div>
-      <span class="tooltiptext">System</span>
-    </router-link>
+
+      <SuggestionsIndicator :number-of-suggestions="numberOfSuggestions"></SuggestionsIndicator>
+
+      <div v-if="story"
+           class="tooltip"
+           @click="toggleComponents($event)"
+           :class="{active: showComponents, warning: componentsMissing}"
+      >
+        <div class="Components"></div>
+        <span class="tooltiptext">Components</span>
+      </div>
+
+      <div class="ProfileThumbnail"></div>
+    </div>
   </div>
 </template>
 
+
 <style scoped lang="scss">
+@import "./vars";
+.Logo{
+    width: 78px;
+    height: 40px;
+    background-image: url("../assets/icons/logo.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .TopBar {
   display: flex;
   flex-direction: row;
   background-color: white;
-  border-bottom: 1px solid #c6c8c9;
+  // padding: 0 16px;
+  border-bottom: $border;
   width: 100%;
   height: 64px;
   overflow: inherit;
+  // vertical-center: middle;
 
-  .BackIcon {
-    width: 24px;
-    height: 24px;
-    background-image: url("../assets/icons/back.png");
+  .HomeIcon {
+    width: 18px;
+    height: 20px;
+    background-image: url("../assets/icons/home.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    margin-left: 16px;
-    /* margin-right: 16px; */
-    margin-top: 20px;
-    margin-bottom: 20px;
+    /*margin-left: 16px;*/
+    /*margin-top: 22px;*/
+    /*margin-bottom: 22px;*/
   }
 
   .Components {
+    display:flex;
     justify-content: flex-end;
+    align-items: center;
     width: 24px;
     height: 24px;
     margin-left: 16px;
     margin-right: 16px;
     margin-top: 20px;
     margin-bottom: 20px;
-    background-image: url("../assets/icons/components-idle.png");
+    background-image: url("../assets/icons/component-list-default.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -86,15 +118,14 @@
   }
 
   .PageTitle {
-    font-size: 20px;
-    color: #031b26;
-    line-height: 32px;
     vertical-align: middle;
-    margin-top: 16px;
-    margin-bottom: 16px;
-    margin-left: 16px;
+    margin: auto 16px;
   }
 
+  .NavToggle{
+    vertical-align: middle;
+    margin: auto 16px;
+  }
   .StoryIcon {
     justify-content: flex-end;
     width: 24px;
@@ -127,6 +158,19 @@
     margin-top: 20px;
     margin-bottom: 20px;
   }
+
+  .ProfileThumbnail {
+    width: 44px;
+    height: 44px;
+    background-image: url("../assets/icons/profile-thumbnail.png");
+    background-size: contain;
+    border-radius: 50%;
+    border: $border;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: 16px;
+  }
+
   .tooltip.router-link-active .SystemIcon {
     background-image: url("../assets/icons/system-active.png");
   }
@@ -186,13 +230,27 @@
     border-color: transparent transparent #707679 transparent;
   }
 
-  .left-items {
+  .left-items, .right-items {
     display: flex;
-    flex-grow: 1;
+    width: 40%;
+    align-items: center;
+
+  }
+  .right-items {
+     justify-content: flex-end;
+     align-items: center;
+  }
+
+  .center-items {
+    display: flex;
+    width: 20%;
+    justify-content: center;
   }
 
   .link-back {
     display: flex;
+    align-items: center;
+    padding: 0 16px;
     &:not(:hover) {
       text-decoration: none;
     }

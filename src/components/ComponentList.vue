@@ -39,7 +39,6 @@ input:checked {
   margin-bottom: 8px;
   padding-top: 16px;
   margin-left: 16px;
-  font-family: TitilliumWeb-Bold;
   font-size: 14px;
   color: #707679;
   letter-spacing: 1px;
