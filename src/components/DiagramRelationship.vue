@@ -1,12 +1,17 @@
 <template>
-  <svg class="diagram-relationship" :viewBox="viewBox" :style="style">
-    <line :x1="x1" :y1="y1" :x2="x2" :y2="y2" stroke="lightgray" stroke-width="2"/>
-  </svg>
+  <div class="diagram-relationship" :style="relationshipStyle">
+    <div class="line" :style="lineStyle"></div>
+  </div>
 </template>
 
-<style>
+<style lang="scss" scoped>
 .diagram-relationship {
   position: absolute;
+  left: 0;
+  right: 0;
+  .line {
+    background-color: #979C9E;
+  }
 }
 </style>
 
@@ -53,8 +58,20 @@ export default {
     left() {
       return Math.min(this.position1.x, this.position2.x) - strokeWidth/2
     },
+    lineStyle() {
+      return {
+
+      }
+    },
     top() {
       return Math.min(this.position1.y, this.position2.y) - strokeWidth/2
+    },
+    relationshipStyle() {
+      return {
+        height: this.height,
+        transform: `translate(${this.left}, ${this.top})`,
+        width: this.width
+      }
     },
     strokeWidth() {
       return strokeWidth

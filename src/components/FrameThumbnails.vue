@@ -8,7 +8,7 @@
 <style scoped>
 .frames {
   flex-direction: row;
-  max-width: 1066px;
+  max-width: 720px;
   margin-left: auto;
   margin-right: auto;
 }

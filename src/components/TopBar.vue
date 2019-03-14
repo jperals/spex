@@ -65,8 +65,8 @@
   display: flex;
   flex-direction: row;
   background-color: white;
-  // padding: 0 16px;
-  border-bottom: $border;
+  /*padding: 0 16px;*/
+  border-bottom: $border-default;
   width: 100%;
   height: 64px;
   overflow: inherit;
@@ -169,7 +169,7 @@
     background-image: url("../assets/icons/profile-thumbnail.png");
     background-size: contain;
     border-radius: 50%;
-    border: $border;
+    border: $border-default;
     background-repeat: no-repeat;
     background-position: center;
     margin-right: 16px;

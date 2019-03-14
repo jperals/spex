@@ -24,8 +24,11 @@ a {
   overflow-x: hidden;
 }
 
-h3{
+h3, .h3{
   @extend %h3;
+}
+textarea, input{
+  font-family: 'Open Sans', sans-serif;
 }
 
 .button-secondary{

@@ -29,6 +29,7 @@
 </template>
 
 <style scoped lang="scss">
+@import "./vars";
 
 input:checked {
   background-color: pink;
