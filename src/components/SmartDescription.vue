@@ -62,6 +62,8 @@ $fontSize: 20px;
 }
 
 .smart-text-container {
+  max-width: 720px;
+  margin: auto;
   $blank-space: 8px;
   position: relative;
   .tooltip {

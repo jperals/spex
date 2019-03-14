@@ -47,7 +47,7 @@
     </div>
     <div class="row mentioned-field">
       <label class="label">Frames using this</label>
-      <frame-selector :frames="framesThatLinkToComponent"></frame-selector>
+      <frame-selector class="inline" :frames="framesThatLinkToComponent"></frame-selector>
     </div>
     <div class="row buttons" :class="{hidden: !editing}">
       <button @click="save" class="primaryButton">SAVE</button>
@@ -60,7 +60,7 @@
 </template>
 
 <style lang="scss" scoped>
-@import "./vars";
+@import "../common-styles/vars";
 
 .component-form {
   background-color: #f2f6f7;

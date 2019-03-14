@@ -50,7 +50,7 @@
 
 
 <style scoped lang="scss">
-@import "./vars";
+@import "../common-styles/vars";
 @import '../common-styles/headings';
 .Logo{
     width: 78px;
