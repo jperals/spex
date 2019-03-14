@@ -24,10 +24,10 @@ export default {
   },
   computed: {
     position1() {
-      return store.getters.diagramItemById(this.relationship.from).position
+      return store.getters.diagramItemById(this.relationship.from.itemId).position
     },
     position2() {
-      return store.getters.diagramItemById(this.relationship.to).position
+      return store.getters.diagramItemById(this.relationship.to.itemId).position
     },
     x1() {
       return this.position1.x - this.left
