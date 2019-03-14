@@ -9,8 +9,15 @@
   position: absolute;
   left: 0;
   right: 0;
+  transform-origin: left center;
+  width: 0;
+  height: 0;
+  overflow: visible;
   .line {
     background-color: #979C9E;
+    transform-origin: left center;
+    width: 1px;
+    height: 1px;
   }
 }
 </style>
@@ -18,7 +25,7 @@
 <script>
 import store from '@/store'
 
-const strokeWidth = 2
+const strokeWidth = 1
 
 export default {
   name: 'diagram-relationship',
@@ -34,54 +41,32 @@ export default {
     position2() {
       return store.getters.diagramItemById(this.relationship.to.itemId).position
     },
-    x1() {
-      return this.position1.x - this.left
-    },
-    y1() {
-      return this.position1.y - this.top
-    },
-    x2() {
-      return this.position2.x - this.left
-    },
-    y2() {
-      return this.position2.y - this.top
-    },
-    viewBox() {
-      return `0 0 ${this.width} ${this.height}`
-    },
     width() {
-      return Math.abs(this.position2.x - this.position1.x) + strokeWidth
+      return Math.abs(this.position2.x - this.position1.x)
     },
     height() {
-      return Math.abs(this.position2.y - this.position1.y) + strokeWidth
-    },
-    left() {
-      return Math.min(this.position1.x, this.position2.x) - strokeWidth/2
+      return Math.abs(this.position2.y - this.position1.y)
     },
     lineStyle() {
+      const distance = Math.sqrt(this.width * this.width + this.height * this. height)
+      const scaleFactor = distance / strokeWidth
       return {
-
+        transform: `scaleX(${scaleFactor})`
       }
     },
-    top() {
-      return Math.min(this.position1.y, this.position2.y) - strokeWidth/2
+    rotationInDegrees() {
+      return this.rotationInRadians * 180 / Math.PI
+    },
+    rotationInRadians() {
+      let angle = Math.atan((this.position2.y - this.position1.y) / (this.position2.x - this.position1.x))
+      if (this.position2.x < this.position1.x) {
+        angle += Math.PI
+      }
+      return angle
     },
     relationshipStyle() {
       return {
-        height: this.height,
-        transform: `translate(${this.left}, ${this.top})`,
-        width: this.width
-      }
-    },
-    strokeWidth() {
-      return strokeWidth
-    },
-    style() {
-      return {
-        left: this.left,
-        top: this.top,
-        width: this.width,
-        height: this.height
+        transform: `translate(${this.position1.x}px, ${this.position1.y}px) rotate(${this.rotationInDegrees}deg)`
       }
     }
   }
