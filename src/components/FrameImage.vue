@@ -3,20 +3,24 @@
 </template>
 
 <style lang="scss" scoped>
+@import "./vars";
+
 .frame-image {
   background-size: cover;
   background-position: center;
   height: 100%;
-  border: 2px solid #979c9e;
+  border: 2px solid #FAFAFA;
   box-sizing: border-box;
-  border-radius: 2px;
+  border-radius: 4px;
   position: relative;
   &.empty {
+    border: $border-default;
+    border-width: 2px;
     background-image: url("../assets/icons/noImage.png");
     background-size: 24px;
     background-repeat: no-repeat;
-    background-color: #f2f6f7;
-    border-radius: 2px;
+    /*background-color: #f2f6f7;*/
+
   }
 }
 </style>

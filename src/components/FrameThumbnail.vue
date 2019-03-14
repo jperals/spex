@@ -4,57 +4,65 @@
       <frame-image class="picture" :imageUrl="frame.imageUrl"></frame-image>
       <div class="delete-icon" @click="remove($event)"></div>
     </router-link>
-    <textarea class="title" v-model="frame.title" placeholder="Frame Title" rows="2" maxlength="27"></textarea>
+    <textarea class="h3 title" v-model="frame.title" placeholder="Frame Title" rows="2" maxlength="27"></textarea>
   </div>
 </template>
 
 <style scoped lang="scss">
 @import "./frame-thumbnail-size";
+@import "./vars";
 .frame-thumbnail {
-  display: inline-block;
-  width: $frame-thumbnail-width;
-  margin-right: 20px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  /*width: $frame-thumbnail-width;*/
+  /*margin-right: 20px;*/
   position: relative;
+  padding: 17px 0;
   input::placeholder {
     opacity: 0.7;
   }
   .picture {
+    /*display: flex;*/
     height: $frame-thumbnail-height;
-    width: 100%;
+    /*width: 100%;*/
+    width: $frame-thumbnail-width;
     box-sizing: border-box;
+    border-radius: 8px;
   }
   .title {
     resize: none;
-    display: block;
+    /*display: flex;*/
     /* width: 100%; */
-    margin-bottom: 48px;
+
+    margin: 8px 0 0 20px;
     padding: 0;
     border: none;
-    margin-top: 8px;
-    font-size: 24px;
-    font-weight: 400;
-    color: #00ff00;
-    line-height: 32px;
+    /*margin-top: 8px;*/
+    /*font-size: 24px;*/
+    /*font-weight: 400;*/
+    /*color: #00ff00;*/
+    /*line-height: 32px;*/
     height: 64px;
-    max-width: 180px;
+    /*max-width: 180px;*/
     /* overflow: hidden; */
   }
 
   &:hover .picture,
   &:focus-within .picture {
-    border-color: #56a8d1;
+    border-color: #099FEA;
   }
 
   .delete-icon {
-    background-image: url("../assets/icons/delete.png");
+    background-image: url("../assets/icons/button-delete-small.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     position: absolute;
-    width: 24px;
-    height: 24px;
-    margin-left: 150px;
-    top: 8px;
+    width: 20px;
+    height: 20px;
+    left: 8px;
+    top: 17px + 8px;
     z-index: 40;
     display: none;
     cursor: pointer;
@@ -69,6 +77,7 @@
   input:focus {
     outline: none;
     text-overflow: ellipsis;
+
   }
 }
 </style>

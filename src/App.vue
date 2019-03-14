@@ -23,11 +23,14 @@ a {
   overflow-x: hidden;
 }
 
-h3{
+h3, .h3{
   color: #031b26;
   font-size: 24px;
   font-weight: 600;
   line-height: 28px;
+}
+textarea, input{
+  font-family: 'Open Sans', sans-serif;
 }
 
 .button-secondary{
