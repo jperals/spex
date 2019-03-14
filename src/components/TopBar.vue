@@ -9,7 +9,7 @@
     </div>
 
     <div class="center-items">
-      <h3 v-if="title" class="PageTitle">Stories</h3>
+      <h3 v-if="title" class="PageTitle">{{title}}</h3>
       <div v-else-if="story" class="NavToggle">
         <router-link :to="storyLink" class="tooltip" v-if="story">
           <div class="StoryIcon"></div>

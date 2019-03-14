@@ -1,6 +1,6 @@
 <template>
   <div class="view home-view">
-    <top-bar title="ProFi MVP"></top-bar>
+    <top-bar title="Stories"></top-bar>
     <div class="main">
       <div class="welcome-text">👋 Welcome to Profi</div>
 
