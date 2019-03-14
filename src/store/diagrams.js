@@ -1,6 +1,7 @@
 import {db} from './firebase'
 
 const diagramItemsCollection = db.collection('diagram-items')
+const diagramRelationshipsCollection = db.collection('diagram-relationships')
 
 const diagrams = {
   state: {
@@ -24,7 +25,7 @@ const diagrams = {
       return state.diagramItems.filter(item => item && typeof item.componentId === 'string' && getters.componentById(item.componentId).storyId === story.id)
     },
     diagramRelationshipsFromItem: state => item => {
-      return state.diagramRelationships.filter(relationship => relationship.from === item.id)
+      return state.diagramRelationships.filter(relationship => relationship.from.itemId === item.id)
     },
     diagramRelationshipsFromStory: (state, getters) => story => {
       const relationships = []
@@ -44,9 +45,6 @@ const diagrams = {
     }
   },
   mutations: {
-    addDiagramRelationship(state, relationship) {
-      state.diagramRelationships.push(relationship)
-    },
     addDiagramItem(state, props = {}) {
       const newItem = Object.assign({
         componentId: null,
@@ -54,7 +52,7 @@ const diagrams = {
       }, props)
       state.diagramItems.push(newItem)
     },
-    addDiagramRelationShip(state, relationship) {
+    addDiagramRelationship(state, relationship) {
       state.diagramRelationships.push(relationship)
     },
     updateDiagramItem(state, {item, newProperties}) {
@@ -68,7 +66,7 @@ const diagrams = {
     }
   },
   actions: {
-    loadDiagrams(context) {
+    loadDiagramItems(context) {
       return diagramItemsCollection.get()
         .catch(console.error)
         .then(documents => {
@@ -81,6 +79,26 @@ const diagrams = {
             context.commit('addDiagramItem', diagramItem)
           })
         })
+    },
+    loadDiagramRelationships(context) {
+      return diagramRelationshipsCollection.get()
+        .catch(console.error)
+        .then(documents => {
+          documents.forEach(document => {
+            const relationship = Object.assign({
+              id: document.id
+            },
+              document.data()
+            )
+            context.commit('addDiagramRelationship', relationship)
+          })
+        })
+    },
+    loadDiagrams(context) {
+      return Promise.all([
+        context.dispatch('loadDiagramItems'),
+        context.dispatch('loadDiagramRelationships')
+      ])
     },
     updateDiagramItem(context, {item, newProperties}) {
       return diagramItemsCollection
