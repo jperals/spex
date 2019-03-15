@@ -182,6 +182,20 @@ input:checked {
   position: relative;
 }
 
+.component.missing {
+  position: relative;
+  &:after {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    content: "";
+    width: 4px;
+    height: 100%;
+    border-radius: 0px;
+    background-color: $warning-color;
+  }
+}
+
 .add-item {
   position: absolute;
   left: 0;
@@ -195,21 +209,8 @@ input:checked {
   }
 }
 
-.component.missing {
-  position: relative;
-  &:after {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    content: "";
-    width: 4px;
-    height: 100%;
-    border-radius: 0px;
-    background-color: $warning-color;
-  }
-  &:hover .add-item {
-    transform: translateX(-100%);
-  }
+.component:hover .add-item {
+  transform: translateX(-100%);
 }
 
 </style>
