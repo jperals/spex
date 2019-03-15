@@ -106,21 +106,15 @@ $tiny-button-side: 12px;
 
 .diagram-item:not(.dragging):hover .tiny-button {
   opacity: 0.35;
-  transition-delay: 0.5s;
   &:hover {
-    transition-delay: 0s;
     opacity: 1;
   }
 }
 
-.diagram-arrow {
-  opacity: 0;
-}
-
-.diagram-item:not(.dragging):hover .diagram-arrow {
-  opacity: 0.35;
+.diagram-item:not(.dragging):hover .remove-button {
+  transition-delay: 0.5s;
   &:hover {
-    opacity: 1;
+    transition-delay: 0s;
   }
 }
 
