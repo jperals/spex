@@ -187,7 +187,6 @@ export default {
     dragend() {
       this.initialDragCoords = null
       this.initialCoords = this.currentCoords
-      console.log('dragend')
       this.currentDrag = {
         x: 0,
         y: 0
