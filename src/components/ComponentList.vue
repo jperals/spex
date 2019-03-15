@@ -18,7 +18,7 @@
           <span class="component-name">{{component.name}}</span>
         </label>
         <div v-else>
-          <div class="add-item" @click="addItemToDiagram(component)" v-if="systemMode && isMissing(component)"> < Add</div>
+          <div class="add-item" @click="addItemToDiagram(component)" v-if="systemMode"> &lt; Add</div>
           <span class="component-name" @click="openComponent(component)">
             {{component.name}}
           </span>
