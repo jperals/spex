@@ -51,7 +51,7 @@ export default {
     },
     distanceBefore: {
       type: Number,
-      default: 0
+      default: 100
     },
     distanceAfter: {
       type: Number,

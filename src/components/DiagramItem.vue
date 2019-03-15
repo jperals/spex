@@ -3,7 +3,7 @@
     <div class="component-name">
       <label>{{componentName}}</label>
       <div class="tiny-button remove-button" title="Remove item" @click="removeItem" ref="removeButton">&times;</div>
-      <div class="tiny-button add-relationship-button" title="Add relationship">+</div>
+      <div class="tiny-button add-relationship-button" ref="addRelationshipButton" @click="addRelationship" title="Add relationship">+</div>
     </div>
     <div class="component-image" draggable="false">
       <img v-if="imageUrl" :src="imageUrl" draggable="false">
@@ -155,6 +155,15 @@ export default {
     }
   },
   methods: {
+    addRelationship(event) {
+      store.dispatch('addNewDiagramRelationship', {
+        from: this.item.position,
+        to: {
+          x: event.x,
+          y: event.y
+        }
+      })
+    },
     drag(event) {
       this.dragging = true
       this.currentDrag = {
@@ -171,7 +180,7 @@ export default {
       })
       return false
     },
-    dragend() {
+    mouseup() {
       this.initialDragCoords = null
       this.initialCoords = this.currentCoords
       console.log('dragend')
@@ -214,10 +223,14 @@ export default {
     })
     this.$el.addEventListener('mouseup', event => {
       console.log(this.dragging)
+      event.stopPropagation()
       if (this.dragging) {
-        this.dragend(event)
-      } else if (event.target !== this.$refs.removeButton) {
-        this.openComponent()
+        this.mouseup(event)
+      } else {
+        if (event.target !== this.$refs.removeButton
+        && event.target !== this.$refs.addRelationshipButton) {
+          this.openComponent()
+        }
       }
       this.mouseDown = false
       this.dragging = false
