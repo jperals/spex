@@ -2,6 +2,7 @@ function initialState() {
   return {
     editingComponent: null,
     focusedElement: null,
+    hoveredDiagramItem: null,
     lastAddedRelationship: null,
     newDiagramRelationship: null,
     selecting: false,
@@ -17,6 +18,7 @@ const ui = {
       return state.editingComponent
     },
     focusedElement: (state) => state.focusedElement,
+    hoveredDiagramItem: (state) => state.hoveredDiagramItem,
     lastAddedRelationship: (state) => state.lastAddedRelationship,
     selecting(state, getters) {
       return state.selecting && getters.focusedElement === 'smartText' || getters.focusedElement === 'componentList'
@@ -34,6 +36,9 @@ const ui = {
   mutations: {
     openComponent(state, component) {
       state.editingComponent = component
+    },
+    hoverDiagramItem(state, item) {
+      state.hoveredDiagramItem = item
     },
     setFocus(state, elementId) {
       state.focusedElement = elementId
@@ -66,6 +71,9 @@ const ui = {
   actions: {
     addNewDiagramRelationship(context, value) {
       context.commit('setNewDiagramRelationship', value)
+    },
+    hoverDiagramItem(context, item) {
+      context.commit('hoverDiagramItem', item)
     },
     openComponent(context, component) {
       context.commit('openComponent', component)

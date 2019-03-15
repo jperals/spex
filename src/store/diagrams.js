@@ -83,6 +83,15 @@ const diagrams = {
           console.error("Error writing document: ", error);
         });
     },
+    addDiagramRelationship(context, relationship) {
+      diagramRelationshipsCollection.add(relationship)
+        .then(docRef => {
+          context.commit('addDiagramRelationship', Object.assign(relationship, {id: docRef.id}))
+        })
+        .catch(function (error) {
+          console.error("Error writing document: ", error);
+        })
+    },
     loadDiagramItems(context) {
       return diagramItemsCollection.get()
         .catch(console.error)

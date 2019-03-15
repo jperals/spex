@@ -1,5 +1,5 @@
 <template>
-  <div class="diagram-item" :class="{dragging}" :style="componentStyle">
+  <div class="diagram-item" :class="{dragging, relating}" :style="componentStyle" @mouseover="mouseover" @mouseleave="mouseleave">
     <div class="component-name">
       <label>{{componentName}}</label>
       <div class="tiny-button remove-button" title="Remove item" @click="removeItem" ref="removeButton">&times;</div>
@@ -104,18 +104,22 @@ $tiny-button-side: 12px;
   transition: opacity .3s;
 }
 
-.diagram-item:not(.dragging):hover .tiny-button {
+.diagram-item:not(.dragging):not(.relating):hover .tiny-button {
   opacity: 0.35;
   &:hover {
     opacity: 1;
   }
 }
 
-.diagram-item:not(.dragging):hover .remove-button {
+.diagram-item:not(.dragging):not(.relating):hover .remove-button {
   transition-delay: 0.5s;
   &:hover {
     transition-delay: 0s;
   }
+}
+
+.diagram-item.relating:hover .component-image {
+  box-shadow: 0 0 22px hsl(200, 80%, 80%);
 }
 
 </style>
@@ -157,7 +161,7 @@ export default {
   methods: {
     addRelationship(event) {
       store.dispatch('addNewDiagramRelationship', {
-        from: this.item.position,
+        from: this.item,
         to: {
           x: event.x,
           y: event.y
@@ -180,7 +184,7 @@ export default {
       })
       return false
     },
-    mouseup() {
+    dragend() {
       this.initialDragCoords = null
       this.initialCoords = this.currentCoords
       console.log('dragend')
@@ -196,7 +200,44 @@ export default {
       })
       return false
     },
+    mouseleave() {
+      if (store.getters.newDiagramRelationship) {
+        store.dispatch('hoverDiagramItem', false)
+      }
+    },
+    mouseover() {
+      if (store.getters.newDiagramRelationship && store.getters.newDiagramRelationship.from.id !== this.item.id) {
+        store.dispatch('hoverDiagramItem', this.item)
+      }
+    },
+    mouseup() {
+      event.stopPropagation()
+      if (this.relating) {
+        store.dispatch('addDiagramRelationship', {
+          from: {
+            itemId: store.getters.newDiagramRelationship.from.id
+          },
+          to: {
+            itemId: this.item.id
+          }
+        })
+        return
+      }
+      if (this.dragging) {
+        this.dragend()
+      } else {
+        if (event.target !== this.$refs.removeButton
+          && event.target !== this.$refs.addRelationshipButton) {
+          this.openComponent()
+        }
+      }
+      this.mouseDown = false
+      this.dragging = false
+    },
     dragstart(event) {
+      if(this.relating) {
+        return
+      }
       store.dispatch('setFocus', 'diagram')
       this.mouseDown = true
       this.initialDragCoords = {
@@ -222,18 +263,7 @@ export default {
       }
     })
     this.$el.addEventListener('mouseup', event => {
-      console.log(this.dragging)
-      event.stopPropagation()
-      if (this.dragging) {
-        this.mouseup(event)
-      } else {
-        if (event.target !== this.$refs.removeButton
-        && event.target !== this.$refs.addRelationshipButton) {
-          this.openComponent()
-        }
-      }
-      this.mouseDown = false
-      this.dragging = false
+      this.mouseup(event)
     })
   },
   computed: {
@@ -255,6 +285,9 @@ export default {
     },
     focusedElement() {
       return store.getters.focusedElement
+    },
+    relating() {
+      return !!(store.getters.newDiagramRelationship)
     }
   }
 }

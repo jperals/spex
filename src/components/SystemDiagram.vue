@@ -1,7 +1,7 @@
 <template>
   <div class="system-diagram" @mousemove="moveNewArrow" @click="setRelationship">
-    <diagram-arrow v-if="newRelationship" :from="newRelationship.from"
-                   :to="newRelationship.to"></diagram-arrow>
+    <diagram-arrow v-if="newRelationship" :from="newRelationship.from.position"
+                   :to="newRelationship.to" :distance-before="distanceBeforeNewArrow" :distanceAfter="distanceAfterNewArrow" :class="{dimmed: !arrowAttached}"></diagram-arrow>
     <div class="diagram-relationships">
       <diagram-relationship :relationship="relationship" v-for="relationship in relationships"
                             :key="relationship.id"></diagram-relationship>
@@ -36,6 +36,11 @@
   top: 0;
 }
 
+// UX
+.diagram-arrow.dimmed {
+  opacity: 0.5;
+}
+
 </style>
 
 <script>
@@ -63,6 +68,19 @@ export default {
     DiagramRelationship
   },
   computed: {
+    arrowAttached() {
+      return !!(store.getters.hoveredDiagramItem)
+    },
+    distanceAfterNewArrow() {
+      if (store.getters.hoveredDiagramItem) {
+        return 50
+      } else {
+        return 0
+      }
+    },
+    distanceBeforeNewArrow() {
+      return 100
+    },
     items() {
       return store.getters.diagramItemsFromStory(this.story)
     },
@@ -72,11 +90,17 @@ export default {
     newRelationship() {
       const newRelationship = store.getters.newDiagramRelationship
       if (typeof newRelationship === 'object' && newRelationship !== null && typeof newRelationship.from === 'object') {
-        const arrow = Object.assign(newRelationship, {
-          to: {
+        let targetCoordinates
+        if (store.getters.hoveredDiagramItem) {
+          targetCoordinates = store.getters.hoveredDiagramItem.position
+        } else {
+          targetCoordinates = {
             x: this.mouseCoordinates.x - this.baseCoordinates.x,
             y: this.mouseCoordinates.y - this.baseCoordinates.y
           }
+        }
+        const arrow = Object.assign(newRelationship, {
+          to: targetCoordinates
         })
         return arrow
       }

@@ -20,12 +20,13 @@
 }
 
 .arrow-line {
+  $stroke-width: 1px;
   background-color: #979C9E;
   transform-origin: left center;
   width: 1px;
-  height: 1px;
+  height: $stroke-width;
   position: absolute;
-  top: 0;
+  top: - $stroke-width/2;
   &.arrow-stroke {
     transform-origin: right center;
   }
