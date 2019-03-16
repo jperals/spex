@@ -11,7 +11,10 @@
 
 <style lang="scss" scoped>
 
+$gray: #979C9E;
+
 // Layout
+
 $stroke-width: 1px;
 .diagram-arrow {
   position: absolute;
@@ -41,7 +44,7 @@ $stroke-width: 1px;
 }
 
 .remove-element {
-  $side: 15px;
+  $side: 16px;
   width: $side;
   height: $side;
   border-radius: 50%;
@@ -49,19 +52,29 @@ $stroke-width: 1px;
   top: - $side/2;
   position: absolute;
   cursor: pointer;
+  &:before,
+  &:after {
+    $stroke-width: 1px;
+    $width: $side*0.75;
+    height: $stroke-width;
+    width: $width;
+    content: '';
+    display: block;
+    position: absolute;
+    top: $side/2 - $stroke-width/2;
+    left: ($side - $width)/2;
+  }
+  &:before {
+    transform: rotate(45deg);
+  }
+  &:after {
+    transform: rotate(-45deg);
+  }
 }
 
-// Colors
-
-.arrow-line {
-  background-color: #979C9E;
-}
-
-.remove-element {
-  background-color: pink;
-}
 
 // UX
+
 .arrow-line:after {
   $height: 10px;
   content: '';
@@ -78,7 +91,25 @@ $stroke-width: 1px;
 
 .diagram-arrow:hover .remove-element {
   opacity: 1;
+  &:hover {
+    background-color: hsl(0, 0, 90%);
+  }
 }
+
+
+// Colors
+
+.arrow-line {
+  background-color: $gray;
+}
+
+.remove-element {
+  &:before,
+  &:after {
+    background-color: red;
+  }
+}
+
 </style>
 
 <script>
