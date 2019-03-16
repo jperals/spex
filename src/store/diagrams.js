@@ -25,7 +25,18 @@ const diagrams = {
       return state.diagramItems.filter(item => item && typeof item.componentId === 'string' && getters.componentById(item.componentId).storyId === story.id)
     },
     diagramRelationshipsFromItem: state => item => {
-      return state.diagramRelationships instanceof Array && state.diagramRelationships.filter(relationship => relationship.from.itemId === item.id)
+      if (state.diagramRelationships instanceof Array) {
+        return state.diagramRelationships.filter(relationship => relationship.from.itemId === item.id)
+      } else {
+        return []
+      }
+    },
+    diagramRelationshipsToItem: state => item => {
+      if (state.diagramRelationships instanceof Array) {
+        return state.diagramRelationships.filter(relationship => relationship.to.itemId === item.id)
+      } else {
+        return []
+      }
     },
     diagramRelationshipsFromStory: (state, getters) => story => {
       const relationships = []
@@ -135,11 +146,10 @@ const diagrams = {
       ])
     },
     removeDiagramItem(context, item) {
-      return diagramItemsCollection.doc(item.id)
-        .delete()
-        .then(() => {
-          context.commit('removeDiagramItem', item)
-        })
+      return context.dispatch('removeDiagramRelationshipsFromItem', item)
+        .then(() => context.dispatch('removeDiagramRelationshipsToItem', item))
+        .then(() => diagramItemsCollection.doc(item.id).delete())
+        .then(() => context.commit('removeDiagramItem', item))
         .catch(console.warn)
     },
     removeDiagramRelationship(context, relationship) {
@@ -149,6 +159,14 @@ const diagrams = {
           context.commit('removeDiagramRelationship', relationship)
         })
         .catch(console.warn)
+    },
+    removeDiagramRelationshipsFromItem(context, item) {
+      const relationships = context.getters.diagramRelationshipsFromItem(item)
+      return Promise.all(relationships.map(relationship => context.dispatch('removeDiagramRelationship', relationship)))
+    },
+    removeDiagramRelationshipsToItem(context, item) {
+      const relationships = context.getters.diagramRelationshipsToItem(item)
+      return Promise.all(relationships.map(relationship => context.dispatch('removeDiagramRelationship', relationship)))
     },
     updateDiagramItem(context, {item, newProperties}) {
       return diagramItemsCollection
