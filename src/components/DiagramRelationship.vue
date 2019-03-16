@@ -1,6 +1,19 @@
 <template>
-  <DiagramArrow :from="position1" :to="position2" :distance-before="100" :distance-after="50"></DiagramArrow>
+  <div class="diagram-relationship">
+    <DiagramArrow :from="position1" :to="position2" :distance-before="distanceBeforeArrow" :distance-after="distanceAfterArrow"
+                  @removeRelationship="removeRelationship"></DiagramArrow>
+  </div>
 </template>
+
+<style scoped>
+.diagram-relationship {
+
+}
+
+.remove-element {
+
+}
+</style>
 
 <script>
 import DiagramArrow from '@/components/DiagramArrow'
@@ -13,6 +26,12 @@ export default {
       type: Object
     }
   },
+  data() {
+    return {
+      distanceAfterArrow: 50,
+      distanceBeforeArrow: 100
+    }
+  },
   components: {
     DiagramArrow
   },
@@ -23,6 +42,11 @@ export default {
     position2() {
       return store.getters.diagramItemById(this.relationship.to.itemId).position
     },
+  },
+  methods: {
+    removeRelationship() {
+      store.dispatch('removeDiagramRelationship', this.relationship)
+    }
   }
 }
 </script>

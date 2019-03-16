@@ -63,6 +63,14 @@ const diagrams = {
       }
       state.diagramItems.splice(index, 1)
     },
+    removeDiagramRelationship(state, relationship) {
+      const index = state.diagramRelationships.findIndex(diagramRelationship => diagramRelationship.id === relationship.id)
+      if (index === -1) {
+        console.warn(`Relationship with id ${relationship.id} not found.`)
+        return
+      }
+      state.diagramRelationships.splice(index, 1)
+    },
     updateDiagramItem(state, {item, newProperties}) {
       Object.assign(item, newProperties)
     },
@@ -131,6 +139,14 @@ const diagrams = {
         .delete()
         .then(() => {
           context.commit('removeDiagramItem', item)
+        })
+        .catch(console.warn)
+    },
+    removeDiagramRelationship(context, relationship) {
+      return diagramRelationshipsCollection.doc(relationship.id)
+        .delete()
+        .then(() => {
+          context.commit('removeDiagramRelationship', relationship)
         })
         .catch(console.warn)
     },
