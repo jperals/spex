@@ -75,11 +75,12 @@ $stroke-width: 1px;
 
 // UX
 
+// Just for hover purposes
 .arrow-line:after {
   $height: 10px;
   content: '';
   display: block;
-  width: 100%;
+  width: 110%;
   height: calc(100% + #{$height});
   position: relative;
   top: - $height/2 - $stroke-width/2;
