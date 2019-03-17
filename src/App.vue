@@ -6,6 +6,7 @@
 </template>
 
 <style lang="scss">
+@import './common-styles/headings';
 body {
   margin: 0;
   verflow-x: hidden;
@@ -17,11 +18,25 @@ a {
 }
 
 #app {
-  font-family: Titillium Web;
+  font-family: 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
+
+h3, .h3{
+  @extend %h3;
+}
+textarea, input{
+  font-family: 'Open Sans', sans-serif;
+}
+
+.button-secondary{
+
+}
+
+
+
 </style>
 
 <script>

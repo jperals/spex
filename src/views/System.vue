@@ -1,10 +1,10 @@
 <template>
   <div class="view system-view">
-    <top-bar :back-url="backUrl" :title="topBarTitle" :story="story"></top-bar>
+    <top-bar :back-url="backUrl" :story="story"></top-bar>
     <div class="main" :class="{'with-sidebar': showComponents}">
       <system-diagram :story="story"></system-diagram>
       <component-list :components="components" :missing="missingComponents" :story="story"
-                      :class="{active:showComponents}"></component-list>
+                      :system-mode="true" :class="{active:showComponents}"></component-list>
     </div>
   </div>
 </template>
@@ -52,12 +52,6 @@ export default {
     },
     story() {
       return store.getters.storyById(this.$route.params.storyId)
-    },
-    topBarTitle() {
-      if (!(this.story)) {
-        return ''
-      }
-      return this.story.title
     }
   }
 }

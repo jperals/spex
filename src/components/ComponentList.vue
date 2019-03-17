@@ -8,7 +8,7 @@
         :key="component.id"
         :class="{missing: isMissing(component)}"
       >
-        <label v-if="selecting" class="container" @click="select(component, $event)">
+        <label v-if="selecting" class="component-entry" @click="select(component, $event)">
           <input
             type="radio"
             :checked="isSelected(component)"
@@ -18,6 +18,7 @@
           <span class="component-name">{{component.name}}</span>
         </label>
         <div v-else>
+          <div class="add-item" @click="addItemToDiagram(component)" v-if="systemMode"> &lt; Add</div>
           <span class="component-name" @click="openComponent(component)">
             {{component.name}}
           </span>
@@ -29,6 +30,11 @@
 </template>
 
 <style scoped lang="scss">
+@import "./vars";
+
+$light-bg-color: #f2f6f7;
+$highlighted-bg-color: #e6eaf1;
+$warning-color: #db4141;
 
 input:checked {
   background-color: pink;
@@ -39,7 +45,6 @@ input:checked {
   margin-bottom: 8px;
   padding-top: 16px;
   margin-left: 16px;
-  font-family: TitilliumWeb-Bold;
   font-size: 14px;
   color: #707679;
   letter-spacing: 1px;
@@ -47,13 +52,14 @@ input:checked {
 }
 
 /* Customize the label (the container) */
-.container {
+.component-entry {
   display: block;
   /* position: absolute; */
-  padding-left: 40px;
-  margin-bottom: 16px;
+  /*padding-left: 40px;*/
+  /*margin-bottom: 16px;*/
+  border-bottom: $border-default;
   cursor: pointer;
-  font-size: 20px;
+  /*font-size: 16px;*/
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -61,7 +67,7 @@ input:checked {
 }
 
 /* Hide the browser's default radio button */
-.container input[type="radio"] {
+.component-entry input[type="radio"] {
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -82,12 +88,12 @@ input:checked {
 }
 
 /* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
+.component-entry:hover input ~ .checkmark {
   background-color: #818c92;
 }
 
 /* When the radio button is checked, add a blue background */
-.container input:checked ~ .checkmark {
+.component-entry input:checked ~ .checkmark {
   background-color: #56a8d1;
 }
 
@@ -99,12 +105,12 @@ input:checked {
 }
 
 /* Show the indicator (dot/circle) when checked */
-.container input:checked ~ .checkmark:after {
+.component-entry input:checked ~ .checkmark:after {
   display: block;
 }
 
 /* Style the indicator (dot/circle) */
-.container .checkmark:after {
+.component-entry .checkmark:after {
   top: 9px;
   left: 9px;
   width: 8px;
@@ -114,7 +120,10 @@ input:checked {
 }
 
 .component-list {
-  background-color: #f2f6f7;
+  position: absolute;
+  top: 64px;
+  right: 0px;
+  background-color: $light-bg-color;
   width: 250px;
   min-height: 100%;
 }
@@ -139,30 +148,43 @@ input:checked {
   background-color: #417f9e;
 }
 
+.component-name,
+.add-item {
+  padding: 6px 16px;
+  font-size: 15px;
+  line-height: 26px;
+}
+
 .component-name {
   display: block;
-  box-sizing: border-box;
-  margin-left: 8px;
-  padding-left: 8px;
-  padding-right: 20px;
-  margin-right: 8px;
   position: relative;
-  margin-bottom: 16px;
+  box-sizing: border-box;
+  border-bottom: $border-default;
+  /*margin-left: 8px;*/
+  /*padding-left: 8px;*/
+  /*padding-right: 20px;*/
+  /*margin-right: 8px;*/
+
+  /*margin-bottom: 16px;*/
   cursor: pointer;
-  font-size: 20px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  border-radius: 3px;
+  /*border-radius: 3px;*/
+  background-color: $light-bg-color;
   &:hover {
-    background-color: rgba(0, 0, 150, 0.05);
+    background-color: $highlighted-bg-color;
   }
+}
+
+.component {
+  position: relative;
 }
 
 .component.missing {
   position: relative;
-  &:before {
+  &:after {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -170,8 +192,25 @@ input:checked {
     width: 4px;
     height: 100%;
     border-radius: 0px;
-    background-color: #db4141;
+    background-color: $warning-color;
   }
+}
+
+.add-item {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  transition: transform .3s;
+  border-radius: 3px 0 0 3px;
+  background-color: $light-bg-color;
+  &:hover {
+    background-color: $highlighted-bg-color;
+  }
+}
+
+.component:hover .add-item {
+  transform: translateX(-100%);
 }
 
 </style>
@@ -186,6 +225,10 @@ export default {
     components: {
       type: Object
     },
+    systemMode: {
+      type: Boolean,
+      default: false
+    },
     story: {
       type: Object
     },
@@ -195,6 +238,11 @@ export default {
     }
   },
   methods: {
+    addItemToDiagram(component) {
+      store.dispatch('addDiagramItem', {
+        componentId: component.id
+      })
+    },
     createNewComponent() {
       const component = store.getters.newComponent({ story: this.story });
       this.openComponent(component);

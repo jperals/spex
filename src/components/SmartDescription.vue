@@ -39,7 +39,6 @@ $fontSize: 20px;
   line-height: 28px;
   position: relative;
   border: none;
-  font-family: "Titillium Web";
   font-size: $fontSize;
   outline: none;
   padding: 0;

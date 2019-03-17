@@ -1,19 +1,23 @@
 <template>
-  <svg class="diagram-relationship" :viewBox="viewBox" :style="style">
-    <line :x1="x1" :y1="y1" :x2="x2" :y2="y2" stroke="lightgray" stroke-width="2"/>
-  </svg>
+  <div class="diagram-relationship">
+    <DiagramArrow :from="position1" :to="position2" :distance-before="distanceBeforeArrow" :distance-after="distanceAfterArrow"
+                  @removeRelationship="removeRelationship"></DiagramArrow>
+  </div>
 </template>
 
-<style>
+<style scoped>
 .diagram-relationship {
-  position: absolute;
+
+}
+
+.remove-element {
+
 }
 </style>
 
 <script>
+import DiagramArrow from '@/components/DiagramArrow'
 import store from '@/store'
-
-const strokeWidth = 2
 
 export default {
   name: 'diagram-relationship',
@@ -22,50 +26,26 @@ export default {
       type: Object
     }
   },
+  data() {
+    return {
+      distanceAfterArrow: 50,
+      distanceBeforeArrow: 100
+    }
+  },
+  components: {
+    DiagramArrow
+  },
   computed: {
     position1() {
-      return store.getters.diagramItemById(this.relationship.from).position
+      return store.getters.diagramItemById(this.relationship.from.itemId).position
     },
     position2() {
-      return store.getters.diagramItemById(this.relationship.to).position
+      return store.getters.diagramItemById(this.relationship.to.itemId).position
     },
-    x1() {
-      return this.position1.x - this.left
-    },
-    y1() {
-      return this.position1.y - this.top
-    },
-    x2() {
-      return this.position2.x - this.left
-    },
-    y2() {
-      return this.position2.y - this.top
-    },
-    viewBox() {
-      return `0 0 ${this.width} ${this.height}`
-    },
-    width() {
-      return Math.abs(this.position2.x - this.position1.x) + strokeWidth
-    },
-    height() {
-      return Math.abs(this.position2.y - this.position1.y) + strokeWidth
-    },
-    left() {
-      return Math.min(this.position1.x, this.position2.x) - strokeWidth/2
-    },
-    top() {
-      return Math.min(this.position1.y, this.position2.y) - strokeWidth/2
-    },
-    strokeWidth() {
-      return strokeWidth
-    },
-    style() {
-      return {
-        left: this.left,
-        top: this.top,
-        width: this.width,
-        height: this.height
-      }
+  },
+  methods: {
+    removeRelationship() {
+      store.dispatch('removeDiagramRelationship', this.relationship)
     }
   }
 }

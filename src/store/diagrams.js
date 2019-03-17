@@ -1,6 +1,7 @@
 import {db} from './firebase'
 
 const diagramItemsCollection = db.collection('diagram-items')
+const diagramRelationshipsCollection = db.collection('diagram-relationships')
 
 function initialState() {
   return {
@@ -28,7 +29,18 @@ const diagrams = {
       return state.diagramItems.filter(item => item && typeof item.componentId === 'string' && getters.componentById(item.componentId).storyId === story.id)
     },
     diagramRelationshipsFromItem: state => item => {
-      return state.diagramRelationships.filter(relationship => relationship.from === item.id)
+      if (state.diagramRelationships instanceof Array) {
+        return state.diagramRelationships.filter(relationship => relationship.from.itemId === item.id)
+      } else {
+        return []
+      }
+    },
+    diagramRelationshipsToItem: state => item => {
+      if (state.diagramRelationships instanceof Array) {
+        return state.diagramRelationships.filter(relationship => relationship.to.itemId === item.id)
+      } else {
+        return []
+      }
     },
     diagramRelationshipsFromStory: (state, getters) => story => {
       const relationships = []
@@ -48,18 +60,31 @@ const diagrams = {
     }
   },
   mutations: {
-    addDiagramRelationship(state, relationship) {
-      state.diagramRelationships.push(relationship)
-    },
     addDiagramItem(state, props = {}) {
       const newItem = Object.assign({
         componentId: null,
-        position: {x: null, y: null}
+        position: {x: 35, y: 35}
       }, props)
       state.diagramItems.push(newItem)
     },
-    addDiagramRelationShip(state, relationship) {
+    addDiagramRelationship(state, relationship) {
       state.diagramRelationships.push(relationship)
+    },
+    removeDiagramItem(state, item) {
+      const index = state.diagramItems.findIndex(diagramItem => diagramItem.id === item.id)
+      if (index === -1) {
+        console.warn(`Diagram with id ${item.id} not found.`)
+        return
+      }
+      state.diagramItems.splice(index, 1)
+    },
+    removeDiagramRelationship(state, relationship) {
+      const index = state.diagramRelationships.findIndex(diagramRelationship => diagramRelationship.id === relationship.id)
+      if (index === -1) {
+        console.warn(`Relationship with id ${relationship.id} not found.`)
+        return
+      }
+      state.diagramRelationships.splice(index, 1)
     },
     reset(state) {
       Object.assign(state, initialState())
@@ -75,7 +100,25 @@ const diagrams = {
     }
   },
   actions: {
-    loadDiagrams(context) {
+    addDiagramItem(context, item) {
+      diagramItemsCollection.add(item)
+        .then(docRef => {
+          context.commit('addDiagramItem', Object.assign(item, {id: docRef.id}))
+        })
+        .catch(function (error) {
+          console.error("Error writing document: ", error);
+        });
+    },
+    addDiagramRelationship(context, relationship) {
+      diagramRelationshipsCollection.add(relationship)
+        .then(docRef => {
+          context.commit('addDiagramRelationship', Object.assign(relationship, {id: docRef.id}))
+        })
+        .catch(function (error) {
+          console.error("Error writing document: ", error);
+        })
+    },
+    loadDiagramItems(context) {
       return diagramItemsCollection.get()
         .catch(console.error)
         .then(documents => {
@@ -88,6 +131,49 @@ const diagrams = {
             context.commit('addDiagramItem', diagramItem)
           })
         })
+    },
+    loadDiagramRelationships(context) {
+      return diagramRelationshipsCollection.get()
+        .catch(console.error)
+        .then(documents => {
+          documents.forEach(document => {
+            const relationship = Object.assign({
+              id: document.id
+            },
+              document.data()
+            )
+            context.commit('addDiagramRelationship', relationship)
+          })
+        })
+    },
+    loadDiagrams(context) {
+      return Promise.all([
+        context.dispatch('loadDiagramItems'),
+        context.dispatch('loadDiagramRelationships')
+      ])
+    },
+    removeDiagramItem(context, item) {
+      return context.dispatch('removeDiagramRelationshipsFromItem', item)
+        .then(() => context.dispatch('removeDiagramRelationshipsToItem', item))
+        .then(() => diagramItemsCollection.doc(item.id).delete())
+        .then(() => context.commit('removeDiagramItem', item))
+        .catch(console.warn)
+    },
+    removeDiagramRelationship(context, relationship) {
+      return diagramRelationshipsCollection.doc(relationship.id)
+        .delete()
+        .then(() => {
+          context.commit('removeDiagramRelationship', relationship)
+        })
+        .catch(console.warn)
+    },
+    removeDiagramRelationshipsFromItem(context, item) {
+      const relationships = context.getters.diagramRelationshipsFromItem(item)
+      return Promise.all(relationships.map(relationship => context.dispatch('removeDiagramRelationship', relationship)))
+    },
+    removeDiagramRelationshipsToItem(context, item) {
+      const relationships = context.getters.diagramRelationshipsToItem(item)
+      return Promise.all(relationships.map(relationship => context.dispatch('removeDiagramRelationship', relationship)))
     },
     reset(context) {
       return context.commit('reset')

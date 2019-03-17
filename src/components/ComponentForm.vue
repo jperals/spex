@@ -60,10 +60,13 @@
 </template>
 
 <style lang="scss" scoped>
+@import "./vars";
 
 .component-form {
   background-color: #f2f6f7;
   width: 800px;
+  max-height: 100%;
+  overflow-y: auto;
   border-radius: 2px;
   box-shadow: 12px 13px 86px -24px rgba(0, 0, 0, 0.87);
   padding: 24px 24px 24px 32px;
@@ -127,8 +130,8 @@ textarea[readonly=readonly] {
 input:not([readonly=readonly]):focus,
 textarea:not([readonly=readonly]):focus {
   outline: none !important;
-  border-color: #56a8d1;
-  box-shadow: 0px 0px 10px #56a8d1;
+  border-color: $color-blue-highlight;
+  box-shadow: 0px 0px 10px $color-blue-highlight;
 }
 
 .title {
@@ -142,7 +145,6 @@ textarea:not([readonly=readonly]):focus {
 .label {
   font-weight: 800;
   padding-top: 16px;
-  font-family: TitilliumWeb-Bold;
   font-size: 14px;
   color: #707679;
   letter-spacing: 1px;
