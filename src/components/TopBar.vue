@@ -31,6 +31,8 @@
       <!-- <div class="Divider" v-if="story"></div> -->
       <!-- <SuggestionsIndicator :number-of-suggestions="numberOfSuggestions"></SuggestionsIndicator> -->
 
+      <slot name="right"></slot>
+
       <div v-if="story"
            class="toggle"
            @click="toggleComponents($event)"
