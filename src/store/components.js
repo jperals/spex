@@ -23,6 +23,7 @@ const components = {
         description: '',
         imageUrl: '',
         mandatory: false,
+        name: '',
         title: '',
       }
       if (story && typeof story.id === 'string') {
