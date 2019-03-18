@@ -1,5 +1,5 @@
 <template>
-  <div class="system-diagram" @mousemove="moveNewArrow" @click="setRelationship">
+  <div class="system-diagram" v-if="story" @mousemove="moveNewArrow" @click="setRelationship">
     <diagram-arrow v-if="newRelationship" :from="newRelationship.from.position"
                    :to="newRelationship.to" :distance-before="distanceBeforeNewArrow" :distanceAfter="distanceAfterNewArrow" :class="{dimmed: !arrowAttached}"></diagram-arrow>
     <div class="diagram-relationships">
@@ -108,8 +108,10 @@ export default {
     }
   },
   mounted() {
-    const box = this.$el.getBoundingClientRect()
-    this.baseCoordinates = {x: box.left, y: box.top}
+    if (this.$el && typeof this.$el.getBoundingClientRect === 'function') {
+      const box = this.$el.getBoundingClientRect()
+      this.baseCoordinates = {x: box.left, y: box.top}
+    }
   },
   methods: {
     moveNewArrow(event) {

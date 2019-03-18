@@ -16,6 +16,7 @@ const store = new Vuex.Store({
     components,
     diagrams,
     frames,
+    loadingContent: false,
     projects,
     stories,
     ui,
@@ -53,6 +54,25 @@ const store = new Vuex.Store({
         return Array.from(frameToComponentLinks[component.id])
       }
       return []
+    }
+  },
+  mutations: {
+    loadingContent(state, value=true) {
+      state.loadingContent = value
+    }
+  },
+  actions: {
+    loadContent(context) {
+      context.commit('loadingContent', true)
+      return Promise.all([
+        context.dispatch('loadComponents'),
+        context.dispatch('loadDiagrams'),
+        context.dispatch('loadFrames'),
+        context.dispatch('loadStories')
+      ])
+        .then(() => {
+          context.commit('loadingContent', false)
+        })
     }
   }
 })

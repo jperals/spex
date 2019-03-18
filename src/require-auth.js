@@ -5,27 +5,22 @@ import {firebase} from '@/store/firebase'
 import store from '@/store'
 import router from "./router";
 
+let nextUrl = null
+
 export default function requireAuth(router) {
-  router.beforeEach((to,from, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-      if (store.getters.signedIn) {
-        next()
-      }
-      else {
-        next({
-          path: '/login',
-          params: {nextUrl: to.fullPath}
-        })
-      }
-    } else {
-      next()
+  store.watch(() => store.getters.signedIn, signedIn => {
+    if (signedIn && nextUrl) {
+      router.push(nextUrl)
+      nextUrl = null
     }
   })
+  router.beforeEach(beforeNext)
 }
 
 // Load data when logged in,
 // and flush it when logged out.
 firebase.auth().onAuthStateChanged(function (user) {
+  console.log('auth', user)
   if (user) {
     // User is signed in.
     store.dispatch('signIn')
@@ -33,19 +28,39 @@ firebase.auth().onAuthStateChanged(function (user) {
   } else {
     // No user is signed in.
     // Flush the data and send the user to the login page.
-    store.dispatch('reset')
+    store.dispatch('signOut')
+      .then(() => store.dispatch('reset'))
       .then(() => router.push('/login'))
   }
 });
 
 function loadContent(context) {
-  return Promise.all([
-    context.dispatch('loadComponents'),
-    context.dispatch('loadDiagrams'),
-    context.dispatch('loadFrames'),
-    context.dispatch('loadStories')
-  ])
+  context.dispatch('loadContent')
     .then(() => {
       dummyData(context)
     })
+}
+
+function beforeNext(to, from, next) {
+  const pathRequiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  const signedIn = store.getters.signedIn
+  const waiting = typeof store.getters.signedIn === 'undefined'
+  if (pathRequiresAuth) {
+    if (waiting) {
+      nextUrl = to.fullPath
+    } else {
+      if (signedIn) {
+        next()
+        nextUrl = null
+      } else {
+        next({
+          path: '/login',
+          params: {nextUrl: to.fullPath}
+        })
+        nextUrl = null
+      }
+    }
+  } else {
+    next()
+  }
 }

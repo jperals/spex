@@ -19,7 +19,7 @@ export default new Router({
       }
     },
     {
-      path: '/login',
+      path: ':nextUrl?/login',
       name: 'login',
       component: Login
     },

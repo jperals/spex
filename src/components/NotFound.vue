@@ -1,7 +1,10 @@
 <template>
   <div class="not-found">
-    <p class="title">⚠️ Not found</p>
-    <router-link to="/">Back to home</router-link>
+    <div v-if="waitingForContent">Loading...</div>
+    <div v-else>
+      <p class="title">⚠️ Not found</p>
+      <router-link to="/">Back to home</router-link>
+    </div>
   </div>
 </template>
 
@@ -15,8 +18,14 @@
 </style>
 
 <script>
+import store from '@/store'
 export default {
-  name: 'not-found'
+  name: 'not-found',
+  computed: {
+    waitingForContent() {
+      return typeof store.getters.waitingForContent
+    }
+  }
 }
 </script>
 

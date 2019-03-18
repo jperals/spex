@@ -3,11 +3,19 @@ import dummyData from "@/generate-dummy-data";
 
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 
+// undefined here is not the same as null:
+// undefined is the state before we have retrieved the data.
+// After that, `user` becomes either the remote user object or null,
+// and `signedIn` is set to either true or false.
+function initialState() {
+  return {
+    user: undefined,
+    signedIn: undefined
+  }
+}
+
 const user = {
-  state: {
-    user: null,
-    signedIn: false
-  },
+  state: initialState(),
   getters: {
     signedIn: state => state.signedIn
   },

@@ -1,10 +1,10 @@
 <template>
   <div class="login view">
+    <top-bar title="Sign in"></top-bar>
     <div class="form" v-if="signedIn && !redirecting">
       <button @click="signOut">Sign out</button>
     </div>
     <div v-if="!signedIn" class="form">
-      <h1>Log in</h1>
       <div class="fields">
         <input type="text" v-model="email" placeholder="email">
         <input type="password" v-model="password" placeholder="password">
@@ -25,6 +25,18 @@
   align-items: center;
   flex-direction: column;
   margin: auto;
+  .fields {
+    min-width: 300px;
+    margin-top: 1em;
+  }
+  input,
+  button {
+    font-size: 18px;
+    display: block;
+    width: 100%;
+    margin-bottom: .5em;
+    box-sizing: border-box;
+  }
   .warning {
     padding: 20px;
     background-color: hsl(20, 70%, 60%);
@@ -34,6 +46,7 @@
 
 <script>
 import store from '@/store'
+import TopBar from '@/components/TopBar'
 export default {
   name: 'login-view',
   data() {
@@ -43,6 +56,9 @@ export default {
       redirecting: false,
       showWarning: false
     }
+  },
+  components: {
+    TopBar
   },
   computed: {
     signedIn() {
@@ -60,7 +76,8 @@ export default {
       })
         .then(() => {
           this.redirecting = true
-          const nextPath = this.$route.params.to && this.$route.params.to.fullPath || '/'
+          console.log(this.$route.params)
+          const nextPath = this.$route.params.nextUrl || '/'
           this.$router.push(nextPath)
         })
         .catch(() => {

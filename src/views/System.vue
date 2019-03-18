@@ -41,11 +41,11 @@ export default {
     },
     components() {
       return {
-        list: store.getters.componentsFromStory(this.story)
+        list: this.story ? store.getters.componentsFromStory(this.story) : []
       }
     },
     missingComponents() {
-      return store.getters.missingComponentsInStoryDiagram(this.story)
+      return this.story ? store.getters.missingComponentsInStoryDiagram(this.story) : []
     },
     showComponents() {
       return store.getters.showComponents;

@@ -2,8 +2,8 @@
   <div class="TopBar">
     <div class="left-items">
       <router-link :to="homeUrl || '/'" class="link-back">
-        <div class="HomeIcon" v-if="notAtRoot"></div>
-        <div class="Logo" v-else></div>
+        <div class="Logo" v-if="atRoot"></div>
+        <div class="HomeIcon" v-else></div>
       </router-link>
       <input type="text" class="PageTitle" v-if="story" v-model="story.title">
     </div>
@@ -42,7 +42,7 @@
         <!-- <span class="toggletext">Components</span> -->
       </div>
 
-      <div class="ProfileThumbnail"></div>
+      <router-link to="/login" v-if="signedIn" class="ProfileThumbnail"></router-link>
     </div>
   </div>
 </template>
@@ -302,6 +302,9 @@ export default {
     }
   },
   computed: {
+    atRoot() {
+      return this.$route && (this.$route.name === 'home' || this.$route.name === 'login')
+    },
     componentsMissing() {
       return this.story && store.getters.componentsMissing(this.story);
     },
@@ -311,11 +314,11 @@ export default {
     inStoryMode() {
       return this.$route && (this.$route.name === 'story' || this.$route.name === 'frame')
     },
-    notAtRoot() {
-      return this.$route && this.$route.name !== 'home'
-    },
     showComponents() {
       return store.getters.showComponents;
+    },
+    signedIn() {
+      return store.getters.signedIn
     },
     storyLink() {
       if (!this.inStoryMode && this.story) {
