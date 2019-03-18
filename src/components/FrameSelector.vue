@@ -1,6 +1,5 @@
 <template>
   <div class="frame-selector">
-    <div>Back to overview</div>
     <router-link
       :to="'/frame/' + frame.id"
       class="frame"

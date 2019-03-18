@@ -1,24 +1,27 @@
 <template>
   <div class="view frame-view" @click="toggleSelection(false)">
-    <top-bar :story="story" :back-url="'/story/' + story.id"></top-bar>
+    <top-bar :story="story"></top-bar>
 
     <div v-if="frame" class="main top">
-      <frame-selector v-if="storyFrames" :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
+      <div class="frame-selector-column">
+        <a :href="storyViewUrl">Back to overview</a>
+        <frame-selector v-if="storyFrames" :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
+      </div>
       <image-upload @upload="handleFile" :image-url="frame.imageUrl"></image-upload>
       <div class="text">
         <input class="title" v-model="frame.title" placeholder="Frame Title">
         <smart-description
-          v-model="frame.description"
-          :frame="frame"
-          :placeholder="'Describe what happens in this frame'"
+            v-model="frame.description"
+            :frame="frame"
+            :placeholder="'Describe what happens in this frame'"
         ></smart-description>
       </div>
       <component-list
-        :class="{active:showComponents}"
-        :components="components"
-        :frame="frame"
-        :missing="missingComponents"
-        :story="story"
+          :class="{active:showComponents}"
+          :components="components"
+          :frame="frame"
+          :missing="missingComponents"
+          :story="story"
       ></component-list>
     </div>
     <div v-else class="top not-found">
@@ -52,10 +55,10 @@
   margin: 24px auto;
 }
 
-.frame-selector {
+.frame-selector-column {
   position: absolute;
   overflow-y: auto;
-  top:0;
+  top: 0;
   bottom: 0;
   /*$frame-height: 60px;*/
   /*height: calc(100%-64px);;*/
@@ -71,18 +74,10 @@
   /*overflow-y: hidden;*/
 }
 
-.frame-selector.frames {
-  height: 100px;
-  width: 100%;
-  background-color: #f2f6f7;
-  position: fixed;
-  bottom: 0;
-}
-
 component-list {
   position: absolute;
   overflow-y: auto;
-  top:0;
+  top: 0;
   /*top: 64px;*/
   bottom: 0;
   right: 0;
@@ -96,6 +91,7 @@ component-list {
 .component-list:not(.active) {
   transform: translateX(100%);
 }
+
 .picture-input {
   top: 0px;
   left: 0px;
@@ -166,6 +162,9 @@ export default {
     },
     storyFrames() {
       return this.changeTrack && store.getters.framesFromSameStory(this.frame);
+    },
+    storyViewUrl() {
+      return '#/story/' + this.story.id
     }
   },
   methods: {
@@ -184,13 +183,13 @@ export default {
     "frame.description"(description) {
       store.dispatch("sendFrameProperties", {
         frame: this.frame,
-        props: { description }
+        props: {description}
       });
     },
     "frame.title"(title) {
       store.dispatch("sendFrameProperties", {
         frame: this.frame,
-        props: { title }
+        props: {title}
       });
     }
   }
