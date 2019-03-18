@@ -1,6 +1,6 @@
 <template>
   <div class="addNewFrame" @click="addNewFrame">
-    <div class="newFrame"></div>
+    <!-- <div class="newFrame"></div> -->
   </div>
 </template>
 
@@ -9,33 +9,24 @@
 @import '../common-styles/vars';
 
 .addNewFrame {
-  /*display: block;*/
   align-items: center;
   width: $frame-thumbnail-width;
-  height: $frame-thumbnail-height;
+  height: 24px;
+  /*height: $frame-thumbnail-height;*/
   cursor: pointer;
   vertical-align: 120px;
-  background-color: $gray-transparent-1;
+  border: 1px solid $gray-transparent-1;
   border-radius: 8px;
+  margin-top: 16px;
+  opacity: 0.5;
+  background-image: url("../assets/icons/add.png");
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-position: center;
 
-  .newFrame {
-    /*background-color: $gray-transparent-1;*/
-    /*width: $frame-thumbnail-width;*/
-    /*height: $frame-thumbnail-height;*/
-    margin: auto;
-    width: 24px;
-    height: 24px;
-    /*background-image: url("../assets/icons/add.png");*/
-
-    /*width: 2px;*/
-    /*height: 100px;*/
-  }
   &:hover {
-    background-image: url("../assets/icons/add.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    margin-bottom: 16px;
-
+    background-color:$gray-transparent-1;
+    opacity: 1;
   }
 }
 </style>
