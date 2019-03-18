@@ -40,10 +40,6 @@ textarea::placeholder {
   opacity: 0.7;
 }
 
-.main {
-  padding-top: 48px;
-}
-
 .story-fields {
   margin-left: auto;
   margin-right: auto;
