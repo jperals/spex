@@ -13,6 +13,7 @@
             {{ frame.description }}
       </div>-->
     </router-link>
+    <AddNewFrame v-if="addFrame" class="frame" :story="story"></AddNewFrame>
   </div>
 </template>
 
@@ -107,19 +108,28 @@ $vertical-padding: ($height - $frame-height)/2;
 </style>
 
 <script>
+import AddNewFrame from '@/components/AddNewFrame'
 import FrameImage from "@/components/FrameImage.vue";
 export default {
   name: "frame-selector",
   props: {
+    addFrame: {
+      type: Boolean,
+      default: false
+    },
     currentFrameId: {
       type: String
     },
     frames: {
       type: Array,
       default: () => []
+    },
+    story: {
+      type: Object
     }
   },
   components: {
+    AddNewFrame,
     FrameImage
   },
   methods: {

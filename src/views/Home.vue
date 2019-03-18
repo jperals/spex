@@ -1,6 +1,12 @@
 <template>
   <div class="view home-view">
-    <top-bar title="Projects"></top-bar>
+    <top-bar title="Projects">
+      <template slot="right">
+        <a @click="createNewStory">
+          <label class="new-story-button">New project</label>
+        </a>
+      </template>
+    </top-bar>
     <div class="main">
       <div class="welcome-banner">
         <div class="welcome-banner-left">
@@ -12,10 +18,6 @@
           <div class="welcome-image"></div>
         </div>
       </div>
-
-      <a @click="createNewStory">
-        <label class="new-story-button">NEW STORY</label>
-      </a>
 
       <router-link
           :to="'/story/' + story.id"
@@ -37,6 +39,47 @@
 @import './view';
 @import '../common-styles/headings';
 @import '../common-styles/vars';
+
+//
+// Layout
+
+.new-story-button {
+  font-size: 16px;
+  font-weight: 800;
+  padding-top: 4px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 4px;
+  letter-spacing: 0.5px;
+  display: block;
+  position: relative;
+  margin-right: 40px;
+  text-align: center;
+  min-width: 100px;
+  border-radius: 2px;
+  text-transform: capitalize;
+}
+
+//
+// User interaction
+
+.new-story-button {
+  cursor: pointer;
+  &:hover {
+    background-color: #4b93b8;
+  }
+}
+
+//
+// Visual styles
+
+.new-story-button {
+  color: white;
+  background-color: #56a8d1;
+}
+
+//
+// To be sorted
 
 .welcome-banner{
   display: flex;
@@ -81,31 +124,6 @@
   /*margin-left: auto;*/
   /*margin-right: auto;*/
   /*margin-top: 24px;*/
-}
-
-.new-story-button {
-  font-size: 16px;
-  font-weight: 800;
-  padding-top: 4px;
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-bottom: 4px;
-  letter-spacing: 0.5px;
-  color: white;
-  background-color: #56a8d1;
-  display: block;
-  position: relative;
-  margin-left: auto;
-  margin-right: 40px;
-  top: 270px;
-  text-align: center;
-  width: 100px;
-  border-radius: 2px;
-}
-
-.new-story-button:hover {
-  background-color: #4b93b8;
-  cursor: pointer;
 }
 
 hr.divider {

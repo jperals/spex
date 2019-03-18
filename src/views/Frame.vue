@@ -5,7 +5,7 @@
     <div v-if="frame" class="main top">
       <div class="frame-selector-column">
         <a :href="storyViewUrl" class="button-back">← Overview</a>
-        <frame-selector v-if="storyFrames" :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
+        <frame-selector v-if="storyFrames" :add-frame="true" :currentFrameId="frameId" :frames="storyFrames" :story="story"></frame-selector>
       </div>
       <image-upload @upload="handleFile" :image-url="frame.imageUrl"></image-upload>
       <div class="text">
