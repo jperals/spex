@@ -26,6 +26,7 @@ const components = {
         description: '',
         imageUrl: '',
         mandatory: false,
+        name: '',
         title: '',
       }
       if (story && typeof story.id === 'string') {
@@ -120,11 +121,14 @@ const components = {
       }
     },
     updateComponent(context, {component, newProperties}) {
-      if(component.id) {
+      if (component.id) {
         // If the component exists it will be modified upstream.
         return collection
           .doc(component.id)
-          .set(newProperties)
+          .set(newProperties,
+            {
+              merge: true
+            })
           .then(() => {
             context.commit('updateComponent', {
               component,

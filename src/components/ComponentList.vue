@@ -1,69 +1,122 @@
 <template>
   <div class="component-list">
-    <div class="header">COMPONENTS</div>
-      <div class="components">
-        <div
-        class="component"
-        v-for="component in components.list"
-        :key="component.id"
-        :class="{missing: isMissing(component)}"
+    <div class="header">Components
+      <button @click="createNewComponent" class="newButton"></button>
+    </div>
+
+    <div class="components">
+      <div
+          class="component"
+          v-for="component in components.list"
+          :key="component.id"
+          :class="{missing: isMissing(component)}"
       >
         <label v-if="selecting" class="component-entry" @click="select(component, $event)">
           <input
-            type="radio"
-            :checked="isSelected(component)"
-            :class="{checked: isSelected(component) }"
+              type="radio"
+              :checked="isSelected(component)"
+              :class="{checked: isSelected(component) }"
           >
           <span class="checkmark"></span>
+          <span class="component-image">
+            <img :src="component.imageUrl">
+          </span>
           <span class="component-name">{{component.name}}</span>
         </label>
-        <div v-else>
-          <div class="add-item" @click="addItemToDiagram(component)" v-if="systemMode"> &lt; Add</div>
+        <div v-else class="component-entry">
+          <span class="component-image">
+            <img :src="component.imageUrl">
+          </span>
           <span class="component-name" @click="openComponent(component)">
             {{component.name}}
           </span>
+          <div class="add-item" @click="addItemToDiagram(component)" v-if="systemMode">Add</div>
         </div>
       </div>
     </div>
-    <button @click="createNewComponent" class="newButton">NEW</button>
+
   </div>
 </template>
 
 <style scoped lang="scss">
-@import "./vars";
+@import "../common-styles/vars";
 
-$light-bg-color: #f2f6f7;
-$highlighted-bg-color: #e6eaf1;
+/*$light-bg-color: #f2f6f7;*/
+/*$highlighted-bg-color: #e6eaf1;*/
 $warning-color: #db4141;
 
-input:checked {
-  background-color: pink;
+//
+// Colors and borders
+
+.component-list {
+  background-color: $bg-light;
+  border-left: $border-default;
+}
+
+.component {
+  background-color: $bg-light;
+  border-bottom: $border-default;
 }
 
 .header {
-  font-weight: 800;
-  margin-bottom: 8px;
-  padding-top: 16px;
-  margin-left: 16px;
-  font-size: 14px;
   color: #707679;
-  letter-spacing: 1px;
-  line-height: 32px;
+  border-bottom: $border-default;
+  background-color: rgba(221, 223, 223, 0.1);
 }
 
-/* Customize the label (the container) */
+.checkmark {
+  background-color: #e5e8e9;
+  &:after {
+    background: white;
+  }
+}
+
+.add-item {
+  background-color: $bg-light;
+  border-radius: 3px;
+  border: $border-default;
+  color: $gray-transparent-4;
+}
+
+.component.missing:after {
+  background-color: #7C3AFF;
+  border-radius: 0 2px 2px 0;
+}
+
+.component-image {
+  background-color: $gray-transparent-1;
+  border-radius: 3px;
+}
+
+//
+// Layout and fonts
+
+.component-list {
+  min-height: 100%;
+  min-width: 250px;
+}
+
 .component-entry {
-  display: block;
-  /* position: absolute; */
-  /*padding-left: 40px;*/
-  /*margin-bottom: 16px;*/
-  border-bottom: $border-default;
-  cursor: pointer;
-  /*font-size: 16px;*/
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  .component-name {
+    flex-grow: 1;
+  }
+}
+
+.component-image {
+  $side: 25px;
+  display: inline-block;
+  font-size: 0;
+  margin-left: 16px;
+  height: $side;
+  width: $side;
+  overflow: hidden;
+  img {
+    display: inline-block;
+    width: 100%;
+  }
 }
 
 /* Hide the browser's default radio button */
@@ -77,14 +130,96 @@ input:checked {
 
 /* Create a custom radio button */
 .checkmark {
-  position: absolute;
-  left: 0;
-  height: 25px;
-  width: 25px;
-  background-color: #e5e8e9;
+  display: flex;
+  height: 18px;
+  width: 18px;
   border-radius: 50%;
-  margin-top: 5px;
   margin-left: 16px;
+  padding: 6px;
+  box-sizing: border-box;
+  /* Create the indicator (the dot/circle - hidden when not checked) */
+  &:after {
+    content: '';
+    display: block;
+    border-radius: 50%;
+    background: white;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.header {
+  font-size: 12px;
+  line-height: 24px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.25px;
+  padding: 8px 16px 6px;
+}
+
+.component-name {
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  padding: 6px 16px 6px 8px;
+  font-size: 15px;
+  line-height: 26px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.newButton {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background-color: transparent;
+  width: 16px;
+  height: 16px;
+  background-image: url("../assets/icons/add.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+  border: none;
+  outline: none;
+  border-radius: 2px;
+}
+
+.add-item {
+  font-size: 12px;
+  height: 1em;
+  margin-right: 10px;
+  line-height: 1em;
+  padding: 4px;
+}
+
+.component.missing {
+  position: relative;
+  &:after {
+    position: absolute;
+    top: 13px;
+    left: 0;
+    content: "";
+    width: 4px;
+    height: 14px;
+  }
+}
+
+//
+// UX
+
+/* Customize the label (the container) */
+.component-entry {
+  cursor: pointer;
+  user-select: none;
+  &:hover {
+    background-color: $bg-highlighted;
+  }
+}
+
+.add-item:hover {
+  background-color: $gray-transparent-1;
+  color: $gray-transparent-5;
 }
 
 /* On mouse-over, add a grey background color */
@@ -92,126 +227,20 @@ input:checked {
   background-color: #818c92;
 }
 
-/* When the radio button is checked, add a blue background */
-.component-entry input:checked ~ .checkmark {
-  background-color: #56a8d1;
-}
-
 /* Create the indicator (the dot/circle - hidden when not checked) */
 .checkmark:after {
-  content: "";
-  position: absolute;
   display: none;
 }
 
-/* Show the indicator (dot/circle) when checked */
-.component-entry input:checked ~ .checkmark:after {
-  display: block;
-}
-
-/* Style the indicator (dot/circle) */
-.component-entry .checkmark:after {
-  top: 9px;
-  left: 9px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: white;
-}
-
-.component-list {
-  position: absolute;
-  top: 64px;
-  right: 0px;
-  background-color: $light-bg-color;
-  width: 250px;
-  min-height: 100%;
-}
-
-.newButton {
+/* When the radio button is checked, add a blue background */
+.component-entry input:checked ~ .checkmark {
   background-color: #56a8d1;
-  border: none;
-  color: white;
-  padding: 8px 24px;
-  font-weight: 600;
-  text-align: center;
-  text-decoration: none;
-  display: block;
-  font-size: 16px;
-  margin: 12px auto;
-  transition: all 0.3s;
-  outline: none;
-  border-radius: 2px;
-}
-
-.newButton:hover {
-  background-color: #417f9e;
-}
-
-.component-name,
-.add-item {
-  padding: 6px 16px;
-  font-size: 15px;
-  line-height: 26px;
-}
-
-.component-name {
-  display: block;
-  position: relative;
-  box-sizing: border-box;
-  border-bottom: $border-default;
-  /*margin-left: 8px;*/
-  /*padding-left: 8px;*/
-  /*padding-right: 20px;*/
-  /*margin-right: 8px;*/
-
-  /*margin-bottom: 16px;*/
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  /*border-radius: 3px;*/
-  background-color: $light-bg-color;
-  &:hover {
-    background-color: $highlighted-bg-color;
-  }
-}
-
-.component {
-  position: relative;
-}
-
-.component.missing {
-  position: relative;
+  /* Show the indicator (dot/circle) when checked */
   &:after {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    content: "";
-    width: 4px;
-    height: 100%;
-    border-radius: 0px;
-    background-color: $warning-color;
+    display: block;
   }
 }
 
-.add-item {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  transition: transform .3s;
-  border-radius: 3px 0 0 3px;
-  background-color: $light-bg-color;
-  &:hover {
-    background-color: $highlighted-bg-color;
-  }
-}
-
-.component:hover .add-item {
-  transform: translateX(-100%);
-}
 
 </style>
 
@@ -244,7 +273,7 @@ export default {
       })
     },
     createNewComponent() {
-      const component = store.getters.newComponent({ story: this.story });
+      const component = store.getters.newComponent({story: this.story});
       this.openComponent(component);
     },
     openComponent(component) {
@@ -262,7 +291,7 @@ export default {
       // Use stopPropagation
       // to avoid losing the text selection if the smart text field is focused.
       // https://stackoverflow.com/a/20759988
-      if(store.getters.focusedElement === 'smartText') {
+      if (store.getters.focusedElement === 'smartText') {
         event.preventDefault()
       }
       store.dispatch("setFocus", "componentList");

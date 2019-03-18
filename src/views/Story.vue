@@ -2,18 +2,18 @@
   <div class="view story-view">
     <top-bar :story="story" :back-url="'/'"></top-bar>
     <div class="main" v-if="story">
-      <div class="story-fields">
-        <textarea
-            v-model="story.description"
-            placeholder="Write a short description"
-            maxlength="95"
-        ></textarea>
-      </div>
-      <div class="thumbnails">
+      <div class="column center">
+        <div class="story-fields">
+          <textarea
+              v-model="story.description"
+              placeholder="Write a short description"
+              maxlength="95"
+          ></textarea>
         <FrameThumbnails :story-id="storyId" :frames="frames" v-if="frames"></FrameThumbnails>
+        </div>
       </div>
       <component-list :components="components" :missing="missingComponents" :story="story"
-                      :class="{active:showComponents}"></component-list>
+                      :class="{active:showComponents}" class="column right"></component-list>
     </div>
     <div v-else>
       <not-found></not-found>
@@ -38,10 +38,6 @@ input {
 input::placeholder,
 textarea::placeholder {
   opacity: 0.7;
-}
-
-.main {
-  padding-top: 48px;
 }
 
 .story-fields {

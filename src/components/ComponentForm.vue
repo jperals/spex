@@ -1,6 +1,9 @@
 <template>
   <div class="component-form">
-    <div class="edit-button" title="Edit" v-if="exists" :class="{active: editing}" @click="toggleEdit"></div>
+    <div class="main-buttons">
+      <div class="button edit-button" title="Edit" v-if="exists" :class="{active: editing}" @click="toggleEdit"></div>
+      <div class="button close-button" title="Close" @click="cancel"></div>
+    </div>
     <span class="title" v-if="!exists">New Component</span>
     <div class="row name-field">
       <label class="label">NAME</label>
@@ -47,7 +50,7 @@
     </div>
     <div class="row mentioned-field">
       <label class="label">Frames using this</label>
-      <frame-selector :frames="framesThatLinkToComponent"></frame-selector>
+      <frame-selector class="inline" :frames="framesThatLinkToComponent" :add-frame="false"></frame-selector>
     </div>
     <div class="row buttons" :class="{hidden: !editing}">
       <button @click="save" class="primaryButton">SAVE</button>
@@ -60,43 +63,62 @@
 </template>
 
 <style lang="scss" scoped>
-@import "./vars";
+@import "../common-styles/vars";
+
+//
+// Colors and borders
 
 .component-form {
-  background-color: #f2f6f7;
+  background-color: $bg-light;
+}
+
+.main-buttons .button {
+  border-radius: 20%;
+}
+
+.edit-button {
+  background-image: url("../assets/icons/edit.svg");
+  background-size: 24px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.close-button {
+  background-image: url("../assets/icons/close.svg");
+  background-size: 24px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+//
+// Layout and fonts
+
+.component-form {
   width: 800px;
   max-height: 100%;
   overflow-y: auto;
   border-radius: 2px;
-  box-shadow: 12px 13px 86px -24px rgba(0, 0, 0, 0.87);
   padding: 24px 24px 24px 32px;
   position: relative;
-  .edit-button {
-    background-image: url("../assets/icons/edit.png");
-    background-size: 20px;
-    background-repeat: no-repeat;
-    background-position: center;
-    position: absolute;
+}
+
+.main-buttons {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  .button {
+    display: inline-block;
     width: 20px;
     height: 20px;
-    right: 20px;
-    top: 20px;
-    cursor: pointer;
-    border-radius: 25%;
     padding: 8px;
-    &.active,
-    &:hover {
-      background-color: rgba(0, 0, 150, 0.05);
-      color: #666;
-    }
-    &:not(.active):not(:hover) {
-      opacity: 0.4;
+    &:not(:first-child) {
+      margin-left: 8px;
     }
   }
-  .picture-frame {
-    width: 40px;
-    height: 40px;
-  }
+}
+
+.picture-frame {
+  width: 40px;
+  height: 40px;
 }
 
 input {
@@ -117,21 +139,6 @@ textarea {
   line-height: 32px;
   padding-left: 8px;
   padding-top: 8px;
-}
-
-input[readonly=readonly],
-textarea[readonly=readonly] {
-  background-color: transparent;
-  &:focus {
-    outline: none;
-  }
-}
-
-input:not([readonly=readonly]):focus,
-textarea:not([readonly=readonly]):focus {
-  outline: none !important;
-  border-color: $color-blue-highlight;
-  box-shadow: 0px 0px 10px $color-blue-highlight;
 }
 
 .title {
@@ -178,6 +185,42 @@ textarea:not([readonly=readonly]):focus {
   display: inline-block;
 }
 
+
+//
+// Interaction
+
+.component-form {
+  .main-buttons .button {
+    cursor: pointer;
+    &.active,
+    &:hover {
+      background-color: rgba(0, 0, 150, 0.05);
+      color: #666;
+    }
+    &:not(.active):not(:hover) {
+      opacity: 0.4;
+    }
+  }
+}
+
+input[readonly=readonly],
+textarea[readonly=readonly] {
+  background-color: transparent;
+  &:focus {
+    outline: none;
+  }
+}
+
+input:not([readonly=readonly]):focus,
+textarea:not([readonly=readonly]):focus {
+  outline: none !important;
+  border-color: $color-blue-highlight;
+  box-shadow: 0px 0px 10px $color-blue-highlight;
+}
+
+//
+// To be sorted
+
 ::placeholder {
   color: #a9adaf;
   font-size: 20px;
@@ -209,12 +252,13 @@ textarea:not([readonly=readonly]):focus {
 
 /* Create a custom checkbox */
 .checkmark {
-  height: 40px;
-  width: 40px;
+  height: 32px;
+  width: 32px;
   background-color: #fff;
   margin-right: 32px;
   display: inline-block;
   position: relative;
+  border-radius: 4px;
 }
 
 /* On mouse-over, add a grey background color */
@@ -224,7 +268,7 @@ textarea:not([readonly=readonly]):focus {
 
 /* When the checkbox is checked, add a blue background */
 .container input:checked ~ .checkmark {
-  background-color: #56a8d1;
+  background-color: $color-blue-highlight;
 }
 
 /* When the checkmark is disabled (not editing), gray it out a bit */
@@ -246,8 +290,8 @@ input[type=checkbox][disabled=disabled] ~.checkmark {
 
 /* Style the checkmark/indicator */
 .container .checkmark:after {
-  left: 15px;
-  top: 6px;
+  left: 11px;
+  top: 2px;
   width: 8px;
   height: 18px;
   border: solid white;

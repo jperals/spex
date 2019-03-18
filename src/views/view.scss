@@ -7,9 +7,16 @@
   }
   .main {
     position: relative;
-    flex-grow: 1;
     overflow-x: hidden;
-    overflow-y: auto;
+    height: 100%;
+    .column {
+      max-height: 100%;
+      overflow-y: auto;
+      &.center {
+        padding-top: 48px;
+        box-sizing: border-box;
+      }
+    }
     .component-list {
       position: absolute;
       top: 0px;

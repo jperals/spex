@@ -1,7 +1,7 @@
 <template>
   <div class="frames">
     <FrameThumbnail v-for="frame in frames" :key="frame.id" :frame="frame"></FrameThumbnail>
-    <FrameThumbnailPlaceholder :story="story"></FrameThumbnailPlaceholder>
+    <FrameThumbnailPlaceholder class="frame-thumbnail" :story="story"></FrameThumbnailPlaceholder>
   </div>
 </template>
 
@@ -11,6 +11,10 @@
   max-width: 720px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 32px;
+}
+.frame-thumbnail {
+  padding: 17px 0;
 }
 </style>
 

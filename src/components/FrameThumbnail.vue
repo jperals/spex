@@ -10,7 +10,7 @@
 
 <style scoped lang="scss">
 @import "./frame-thumbnail-size";
-@import "./vars";
+@import "../common-styles/vars";
 .frame-thumbnail {
   display: flex;
   flex-direction: row;
@@ -18,7 +18,6 @@
   /*width: $frame-thumbnail-width;*/
   /*margin-right: 20px;*/
   position: relative;
-  padding: 17px 0;
   input::placeholder {
     opacity: 0.7;
   }

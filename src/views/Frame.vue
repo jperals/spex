@@ -1,75 +1,107 @@
 <template>
   <div class="view frame-view" @click="toggleSelection(false)">
-    <top-bar :story="story" :back-url="backUrl"></top-bar>
+    <top-bar :story="story"></top-bar>
     <div v-if="frame" class="main top">
-      <image-upload @upload="handleFile" :image-url="frame.imageUrl"></image-upload>
-      <div class="text">
-        <input class="title" v-model="frame.title" placeholder="Frame Title">
-        <smart-description
-          v-model="frame.description"
-          :frame="frame"
-          :placeholder="'Describe what happens in this frame'"
-        ></smart-description>
+      <div class="column frame-selector-column">
+        <a :href="storyViewUrl" class="button-back">← Overview</a>
+        <frame-selector v-if="storyFrames" :add-frame="true" :currentFrameId="frameId" :frames="storyFrames" :story="story"></frame-selector>
+      </div>
+      <div class="column center">
+        <image-upload @upload="handleFile" :image-url="frame.imageUrl"></image-upload>
+        <div class="text">
+          <input class="title" v-model="frame.title" placeholder="Frame Title">
+          <smart-description
+              v-model="frame.description"
+              :frame="frame"
+              :placeholder="'Describe what happens in this frame'"
+          ></smart-description>
+        </div>
       </div>
       <component-list
-        :class="{active:showComponents}"
-        :components="components"
-        :frame="frame"
-        :missing="missingComponents"
-        :story="story"
+          :class="{active:showComponents}"
+          :components="components"
+          :frame="frame"
+          :missing="missingComponents"
+          :story="story"
+          class="column right"
       ></component-list>
     </div>
     <div v-else class="top not-found">
       <not-found></not-found>
     </div>
-    <frame-selector class="inline" v-if="storyFrames" :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
+
   </div>
 </template>
 
 <style scoped lang="scss">
 @import './view';
+@import '../common-styles/vars';
+@import '../common-styles/headings';
+
+
+.button-back{
+  @extend %h4;
+  display: block;
+  margin: 16px 16px 4px;
+  /*margin: 10px;*/
+
+}
 .title {
-  font-weight: 800;
-  font-size: 40px;
-  width: 624px;
+  @extend %h3;
+  /*font-weight: 800;*/
+  /*font-size: 40px;*/
+  /*width: 624px;*/
   outline: none;
-  color: #031b26;
+  /*color: #031b26;*/
   border: none;
   line-height: 40px;
   text-overflow: ellipsis;
+  padding: 0;
 }
 
 .text {
+  @extend %body;
   max-width: 600px;
-  margin: auto;
-  margin-top: 24px;
+  margin: 24px auto;
 }
 
-.frame-selector {
-  $frame-height: 68px;
-  $height: 100px;
-  $horizontal-spacing: 24px;
-  $vertical-padding: ($height - $frame-height)/2;
-  height: $height - $vertical-padding*2;
-  padding-left: $horizontal-spacing;
-  background-color: #f2f6f7;
-  overflow-x: auto;
-  white-space: nowrap;
-  font-size: 0;
-  overflow-y: hidden;
-}
-
-.frame-selector.frames {
-  height: 100px;
-  width: 100%;
-  background-color: #f2f6f7;
-  position: fixed;
+.frame-selector-column {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
   bottom: 0;
+  /*$frame-height: 60px;*/
+  /*height: calc(100%-64px);;*/
+
+  /*top: 64px;*/
+  /*$horizontal-spacing: 24px;*/
+  /*$vertical-padding: ($height - $frame-height)/2;*/
+  /*height: $height - $vertical-padding*2;*/
+  /*padding-left: $horizontal-spacing;*/
+  background-color: $bg-light;
+  border-right: $border-default;
+  white-space: nowrap;
+  /*overflow-y: hidden;*/
+}
+
+component-list {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  /*top: 64px;*/
+  bottom: 0;
+  right: 0;
+  background-color: $bg-light;
+  border-left: $border-default;
+  width: 250px;
+  min-height: 100%;
+  overflow-y: hidden;
 }
 
 .component-list:not(.active) {
   transform: translateX(100%);
 }
+
 .picture-input {
   top: 0px;
   left: 0px;
@@ -147,6 +179,9 @@ export default {
     },
     storyFrames() {
       return this.changeTrack && store.getters.framesFromSameStory(this.frame);
+    },
+    storyViewUrl() {
+      return '#/story/' + this.story.id
     }
   },
   methods: {
@@ -165,13 +200,13 @@ export default {
     "frame.description"(description) {
       store.dispatch("sendFrameProperties", {
         frame: this.frame,
-        props: { description }
+        props: {description}
       });
     },
     "frame.title"(title) {
       store.dispatch("sendFrameProperties", {
         frame: this.frame,
-        props: { title }
+        props: {title}
       });
     }
   }

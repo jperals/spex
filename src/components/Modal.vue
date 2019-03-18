@@ -5,13 +5,15 @@
 </template>
 
 <style lang="scss" scoped>
+@import "../common-styles/vars";
+
 .modal {
   position: fixed;
   left: 0;
   top: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(100, 100, 100, 0.3);
+  background-color: rgba(10, 10, 20, 0.75);
   padding: 30px;
   display: flex;
   align-items: center;
