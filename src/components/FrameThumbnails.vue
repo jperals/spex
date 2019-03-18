@@ -11,6 +11,7 @@
   max-width: 720px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 32px;
 }
 .frame-thumbnail {
   padding: 17px 0;
