@@ -10,6 +10,10 @@
     flex-grow: 1;
     overflow-x: hidden;
     overflow-y: auto;
+    .column {
+      max-height: 100%;
+      overflow-y: auto;
+    }
     .component-list {
       position: absolute;
       top: 0px;
