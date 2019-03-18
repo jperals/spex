@@ -23,7 +23,6 @@
     background-image: url("../assets/icons/newFrame.png");
     background-repeat: no-repeat;
     background-position: left;
-    margin-top: -16px;
   }
 }
 </style>

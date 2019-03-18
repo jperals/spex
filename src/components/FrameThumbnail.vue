@@ -18,7 +18,6 @@
   /*width: $frame-thumbnail-width;*/
   /*margin-right: 20px;*/
   position: relative;
-  padding: 17px 0;
   input::placeholder {
     opacity: 0.7;
   }

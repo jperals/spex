@@ -50,7 +50,7 @@
     </div>
     <div class="row mentioned-field">
       <label class="label">Frames using this</label>
-      <frame-selector class="inline" :frames="framesThatLinkToComponent"></frame-selector>
+      <frame-selector class="inline" :frames="framesThatLinkToComponent" :add-frame="false"></frame-selector>
     </div>
     <div class="row buttons" :class="{hidden: !editing}">
       <button @click="save" class="primaryButton">SAVE</button>
