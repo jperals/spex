@@ -4,7 +4,7 @@
 
     <div v-if="frame" class="main top">
       <div class="frame-selector-column">
-        <a :href="storyViewUrl">Back to overview</a>
+        <a :href="storyViewUrl" class="button-back">← Overview</a>
         <frame-selector v-if="storyFrames" :add-frame="true" :currentFrameId="frameId" :frames="storyFrames" :story="story"></frame-selector>
       </div>
       <image-upload @upload="handleFile" :image-url="frame.imageUrl"></image-upload>
@@ -36,6 +36,14 @@
 @import '../common-styles/vars';
 @import '../common-styles/headings';
 
+
+.button-back{
+  @extend %h4;
+  display: block;
+  margin: 16px 16px 4px;
+  /*margin: 10px;*/
+
+}
 .title {
   @extend %h3;
   /*font-weight: 800;*/
