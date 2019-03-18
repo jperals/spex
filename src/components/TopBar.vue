@@ -122,6 +122,7 @@
     border: 0 none;
     margin: auto 16px;
     border-radius: 4px;
+    line-height: normal;
   }
 
   .NavToggle{
