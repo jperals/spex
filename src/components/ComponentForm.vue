@@ -1,6 +1,9 @@
 <template>
   <div class="component-form">
-    <div class="edit-button" title="Edit" v-if="exists" :class="{active: editing}" @click="toggleEdit"></div>
+    <div class="main-buttons">
+      <div class="button edit-button" title="Edit" v-if="exists" :class="{active: editing}" @click="toggleEdit"></div>
+      <div class="button close-button" title="Close" @click="cancel"></div>
+    </div>
     <span class="title" v-if="!exists">New Component</span>
     <div class="row name-field">
       <label class="label">NAME</label>
@@ -62,41 +65,54 @@
 <style lang="scss" scoped>
 @import "../common-styles/vars";
 
+//
+// Colors and borders
+
 .component-form {
   background-color: #f2f6f7;
+}
+
+.main-buttons .button {
+  border-radius: 20%;
+}
+
+.edit-button {
+  background-image: url("../assets/icons/edit.png");
+  background-size: 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+//
+// Layout and fonts
+
+.component-form {
   width: 800px;
   max-height: 100%;
   overflow-y: auto;
   border-radius: 2px;
-  box-shadow: 12px 13px 86px -24px rgba(0, 0, 0, 0.87);
   padding: 24px 24px 24px 32px;
   position: relative;
-  .edit-button {
-    background-image: url("../assets/icons/edit.png");
-    background-size: 20px;
-    background-repeat: no-repeat;
-    background-position: center;
-    position: absolute;
+}
+
+.main-buttons {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  .button {
+    display: inline-block;
     width: 20px;
     height: 20px;
-    right: 20px;
-    top: 20px;
-    cursor: pointer;
-    border-radius: 25%;
     padding: 8px;
-    &.active,
-    &:hover {
-      background-color: rgba(0, 0, 150, 0.05);
-      color: #666;
-    }
-    &:not(.active):not(:hover) {
-      opacity: 0.4;
+    &:not(:first-child) {
+      margin-left: 8px;
     }
   }
-  .picture-frame {
-    width: 40px;
-    height: 40px;
-  }
+}
+
+.picture-frame {
+  width: 40px;
+  height: 40px;
 }
 
 input {
@@ -117,21 +133,6 @@ textarea {
   line-height: 32px;
   padding-left: 8px;
   padding-top: 8px;
-}
-
-input[readonly=readonly],
-textarea[readonly=readonly] {
-  background-color: transparent;
-  &:focus {
-    outline: none;
-  }
-}
-
-input:not([readonly=readonly]):focus,
-textarea:not([readonly=readonly]):focus {
-  outline: none !important;
-  border-color: $color-blue-highlight;
-  box-shadow: 0px 0px 10px $color-blue-highlight;
 }
 
 .title {
@@ -177,6 +178,42 @@ textarea:not([readonly=readonly]):focus {
   resize: none;
   display: inline-block;
 }
+
+
+//
+// Interaction
+
+.component-form {
+  .main-buttons .button {
+    cursor: pointer;
+    &.active,
+    &:hover {
+      background-color: rgba(0, 0, 150, 0.05);
+      color: #666;
+    }
+    &:not(.active):not(:hover) {
+      opacity: 0.4;
+    }
+  }
+}
+
+input[readonly=readonly],
+textarea[readonly=readonly] {
+  background-color: transparent;
+  &:focus {
+    outline: none;
+  }
+}
+
+input:not([readonly=readonly]):focus,
+textarea:not([readonly=readonly]):focus {
+  outline: none !important;
+  border-color: $color-blue-highlight;
+  box-shadow: 0px 0px 10px $color-blue-highlight;
+}
+
+//
+// To be sorted
 
 ::placeholder {
   color: #a9adaf;
