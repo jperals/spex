@@ -141,18 +141,14 @@ export default {
     }
   },
   data() {
-    const component = this.item ? store.getters.componentById(this.item.componentId) : null
     const currentCoords = this.item ? Object.assign({}, this.item.position) : null
-    const imageUrl = component ? component.imageUrl : null
     return {
-      component,
       currentCoords,
       currentDrag: {
         x: 0,
         y: 0
       },
       dragging: false,
-      imageUrl,
       initialDragCoords: null,
       initialCoords: currentCoords,
       mouseDown: false
@@ -266,6 +262,13 @@ export default {
     })
   },
   computed: {
+    component() {
+      if (this.item) {
+        return store.getters.componentById(this.item.componentId)
+      } else {
+        return null
+      }
+    },
     componentName() {
       if (typeof this.component === 'object' && this.component !== null) {
         return this.component.name
@@ -284,6 +287,13 @@ export default {
     },
     focusedElement() {
       return store.getters.focusedElement
+    },
+    imageUrl() {
+      if (this.component) {
+        return this.component.imageUrl
+      } else {
+        return null
+      }
     },
     relating() {
       return !!(store.getters.newDiagramRelationship)
