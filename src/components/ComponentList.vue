@@ -35,19 +35,20 @@
 <style scoped lang="scss">
 @import "../common-styles/vars";
 
-$light-bg-color: #f2f6f7;
-$highlighted-bg-color: #e6eaf1;
+/*$light-bg-color: #f2f6f7;*/
+/*$highlighted-bg-color: #e6eaf1;*/
 $warning-color: #db4141;
 
 //
 // Colors and borders
 
 .component-list {
-  background-color: $light-bg-color;
+  background-color: $bg-light;
+  border-left: $border-default;
 }
 
 .component {
-  background-color: $light-bg-color;
+  background-color: $bg-light;
   border-bottom: $border-default;
 }
 
@@ -65,7 +66,7 @@ $warning-color: #db4141;
 }
 
 .add-item {
-  background-color: $light-bg-color;
+  background-color: $bg-light;
   border-radius: 3px;
   border: $border-default;
   color: $gray-transparent-4;
@@ -187,7 +188,7 @@ $warning-color: #db4141;
   cursor: pointer;
   user-select: none;
   &:hover {
-    background-color: $highlighted-bg-color;
+    background-color: $bg-highlighted;
   }
 }
 
