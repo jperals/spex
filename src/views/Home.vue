@@ -3,7 +3,7 @@
     <top-bar title="Projects">
       <template slot="right">
         <a @click="createNewStory">
-          <label class="new-story-button">New project</label>
+          <label class="new-story-button">New Project</label>
         </a>
       </template>
     </top-bar>
@@ -46,18 +46,18 @@
 .new-story-button {
   font-size: 16px;
   font-weight: 800;
-  padding-top: 4px;
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-bottom: 4px;
-  letter-spacing: 0.5px;
+  padding: 6px 16px;
+  /*padding-top: 4px;*/
+  /*padding-left: 16px;*/
+  /*padding-right: 16px;*/
+  /*padding-bottom: 4px;*/
   display: block;
   position: relative;
   margin-right: 40px;
   text-align: center;
   min-width: 100px;
-  border-radius: 2px;
-  text-transform: capitalize;
+  border-radius: 8px;
+  /*text-transform: capitalize;*/
 }
 
 //
@@ -66,7 +66,9 @@
 .new-story-button {
   cursor: pointer;
   &:hover {
-    background-color: #4b93b8;
+    background-color: $color-blue-highlight;
+    color: white;
+
   }
 }
 
@@ -74,8 +76,10 @@
 // Visual styles
 
 .new-story-button {
-  color: white;
-  background-color: #56a8d1;
+  background-color: white;
+  color: $color-blue-highlight;
+  border: $border-dark;
+
 }
 
 //
