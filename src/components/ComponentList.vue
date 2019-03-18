@@ -18,9 +18,15 @@
               :class="{checked: isSelected(component) }"
           >
           <span class="checkmark"></span>
+          <span class="component-image">
+            <img :src="component.imageUrl">
+          </span>
           <span class="component-name">{{component.name}}</span>
         </label>
         <div v-else class="component-entry">
+          <span class="component-image">
+            <img :src="component.imageUrl">
+          </span>
           <span class="component-name" @click="openComponent(component)">
             {{component.name}}
           </span>
@@ -77,6 +83,11 @@ $warning-color: #db4141;
   border-radius: 0 2px 2px 0;
 }
 
+.component-image {
+  background-color: $gray-transparent-1;
+  border-radius: 3px;
+}
+
 //
 // Layout and fonts
 
@@ -94,6 +105,20 @@ $warning-color: #db4141;
   }
 }
 
+.component-image {
+  $side: 25px;
+  display: inline-block;
+  font-size: 0;
+  margin-left: 16px;
+  height: $side;
+  width: $side;
+  overflow: hidden;
+  img {
+    display: inline-block;
+    width: 100%;
+  }
+}
+
 /* Hide the browser's default radio button */
 .component-entry input[type="radio"] {
   position: absolute;
@@ -106,11 +131,11 @@ $warning-color: #db4141;
 /* Create a custom radio button */
 .checkmark {
   display: flex;
-  height: 25px;
-  width: 25px;
+  height: 18px;
+  width: 18px;
   border-radius: 50%;
   margin-left: 16px;
-  padding: 9px;
+  padding: 6px;
   box-sizing: border-box;
   /* Create the indicator (the dot/circle - hidden when not checked) */
   &:after {
@@ -136,7 +161,7 @@ $warning-color: #db4141;
   display: inline-block;
   position: relative;
   box-sizing: border-box;
-  padding: 6px 16px;
+  padding: 6px 16px 6px 8px;
   font-size: 15px;
   line-height: 26px;
   cursor: pointer;

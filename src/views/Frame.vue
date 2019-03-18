@@ -3,18 +3,20 @@
     <top-bar :story="story"></top-bar>
 
     <div v-if="frame" class="main top">
-      <div class="frame-selector-column">
+      <div class="column frame-selector-column">
         <a :href="storyViewUrl" class="button-back">← Overview</a>
         <frame-selector v-if="storyFrames" :add-frame="true" :currentFrameId="frameId" :frames="storyFrames" :story="story"></frame-selector>
       </div>
-      <image-upload @upload="handleFile" :image-url="frame.imageUrl"></image-upload>
-      <div class="text">
-        <input class="title" v-model="frame.title" placeholder="Frame Title">
-        <smart-description
-            v-model="frame.description"
-            :frame="frame"
-            :placeholder="'Describe what happens in this frame'"
-        ></smart-description>
+      <div class="column center">
+        <image-upload @upload="handleFile" :image-url="frame.imageUrl"></image-upload>
+        <div class="text">
+          <input class="title" v-model="frame.title" placeholder="Frame Title">
+          <smart-description
+              v-model="frame.description"
+              :frame="frame"
+              :placeholder="'Describe what happens in this frame'"
+          ></smart-description>
+        </div>
       </div>
       <component-list
           :class="{active:showComponents}"
@@ -22,6 +24,7 @@
           :frame="frame"
           :missing="missingComponents"
           :story="story"
+          class="column right"
       ></component-list>
     </div>
     <div v-else class="top not-found">
