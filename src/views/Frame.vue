@@ -65,7 +65,7 @@
   /*$vertical-padding: ($height - $frame-height)/2;*/
   /*height: $height - $vertical-padding*2;*/
   /*padding-left: $horizontal-spacing;*/
-  background-color: #FAFAFA;
+  background-color: $bg-light;
   border-right: $border-default;
   white-space: nowrap;
   /*overflow-y: hidden;*/
@@ -86,7 +86,7 @@ component-list {
   /*top: 64px;*/
   bottom: 0;
   right: 0;
-  background-color: #FAFAFA;
+  background-color: $bg-light;
   border-left: $border-default;
   width: 250px;
   min-height: 100%;
