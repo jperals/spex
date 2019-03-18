@@ -1,6 +1,6 @@
 <template>
   <div class="view home-view">
-    <top-bar title="Stories"></top-bar>
+    <top-bar title="Projects"></top-bar>
     <div class="main">
       <div class="welcome-banner">
         <div class="welcome-banner-left">

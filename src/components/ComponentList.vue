@@ -1,28 +1,30 @@
 <template>
   <div class="component-list">
-    <div class="header">Components <button @click="createNewComponent" class="newButton"></button></div>
+    <div class="header">Components
+      <button @click="createNewComponent" class="newButton"></button>
+    </div>
 
-      <div class="components">
-        <div
-        class="component"
-        v-for="component in components.list"
-        :key="component.id"
-        :class="{missing: isMissing(component)}"
+    <div class="components">
+      <div
+          class="component"
+          v-for="component in components.list"
+          :key="component.id"
+          :class="{missing: isMissing(component)}"
       >
         <label v-if="selecting" class="component-entry" @click="select(component, $event)">
           <input
-            type="radio"
-            :checked="isSelected(component)"
-            :class="{checked: isSelected(component) }"
+              type="radio"
+              :checked="isSelected(component)"
+              :class="{checked: isSelected(component) }"
           >
           <span class="checkmark"></span>
           <span class="component-name">{{component.name}}</span>
         </label>
-        <div v-else>
-          <div class="add-item" @click="addItemToDiagram(component)" v-if="systemMode"> &lt; Add</div>
+        <div v-else class="component-entry">
           <span class="component-name" @click="openComponent(component)">
             {{component.name}}
           </span>
+          <div class="add-item" @click="addItemToDiagram(component)" v-if="systemMode">Add</div>
         </div>
       </div>
     </div>
@@ -37,38 +39,58 @@ $light-bg-color: #f2f6f7;
 $highlighted-bg-color: #e6eaf1;
 $warning-color: #db4141;
 
-input:checked {
-  background-color: pink;
+//
+// Colors and borders
+
+.component-list {
+  background-color: $light-bg-color;
+}
+
+.component {
+  background-color: $light-bg-color;
+  border-bottom: $border-default;
 }
 
 .header {
-  font-size: 12px;
-  line-height: 24px;
-  font-weight: 900;
-  text-transform: uppercase;
   color: #707679;
-  letter-spacing: 0.25px;
-  padding: 8px 16px 6px;
   border-bottom: $border-default;
-  background-color: rgba(221,223,223,0.1);
-  /*margin-bottom: 8px;*/
-  /*padding-top: 16px;*/
-  /*margin-left: 16px;*/
+  background-color: rgba(221, 223, 223, 0.1);
 }
 
-/* Customize the label (the container) */
+.checkmark {
+  background-color: #e5e8e9;
+  &:after {
+    background: white;
+  }
+}
+
+.add-item {
+  background-color: $light-bg-color;
+  border-radius: 3px;
+  border: $border-default;
+  color: $gray-transparent-4;
+}
+
+.component.missing:after {
+  background-color: #7C3AFF;
+  border-radius: 0 2px 2px 0;
+}
+
+//
+// Layout and fonts
+
+.component-list {
+  min-height: 100%;
+  min-width: 250px;
+}
+
 .component-entry {
-  display: block;
-  /* position: absolute; */
-  /*padding-left: 40px;*/
-  /*margin-bottom: 16px;*/
-  border-bottom: $border-default;
-  cursor: pointer;
-  /*font-size: 16px;*/
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  .component-name {
+    flex-grow: 1;
+  }
 }
 
 /* Hide the browser's default radio button */
@@ -82,57 +104,42 @@ input:checked {
 
 /* Create a custom radio button */
 .checkmark {
-  position: absolute;
-  left: 0;
+  display: flex;
   height: 25px;
   width: 25px;
-  background-color: #e5e8e9;
   border-radius: 50%;
-  margin-top: 5px;
   margin-left: 16px;
+  padding: 9px;
+  box-sizing: border-box;
+  /* Create the indicator (the dot/circle - hidden when not checked) */
+  &:after {
+    content: '';
+    display: block;
+    border-radius: 50%;
+    background: white;
+    width: 100%;
+    height: 100%;
+  }
 }
 
-/* On mouse-over, add a grey background color */
-.component-entry:hover input ~ .checkmark {
-  background-color: #818c92;
+.header {
+  font-size: 12px;
+  line-height: 24px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.25px;
+  padding: 8px 16px 6px;
 }
 
-/* When the radio button is checked, add a blue background */
-.component-entry input:checked ~ .checkmark {
-  background-color: #56a8d1;
-}
-
-/* Create the indicator (the dot/circle - hidden when not checked) */
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
-
-/* Show the indicator (dot/circle) when checked */
-.component-entry input:checked ~ .checkmark:after {
-  display: block;
-}
-
-/* Style the indicator (dot/circle) */
-.component-entry .checkmark:after {
-  top: 9px;
-  left: 9px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: white;
-}
-
-.component-list {
-  /*position: absolute;*/
-  /*top: 64px;*/
-  /*bottom: 0px;*/
-  /*right: 0px;*/
-  /*background-color: #FAFAFA;*/
-  /*border-left: $border-default;*/
-  /*width: 250px;*/
-  /*min-height: 100%;*/
+.component-name {
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  padding: 6px 16px;
+  font-size: 15px;
+  line-height: 26px;
+  cursor: pointer;
+  user-select: none;
 }
 
 .newButton {
@@ -146,49 +153,18 @@ input:checked {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-
   display: inline-block;
   border: none;
   outline: none;
   border-radius: 2px;
 }
 
-.newButton:hover {
-  /*background-color: #417f9e;*/
-}
-
-.component-name,
 .add-item {
-  padding: 6px 16px;
-  font-size: 15px;
-  line-height: 26px;
-}
-
-.component-name {
-  display: block;
-  position: relative;
-  box-sizing: border-box;
-  border-bottom: $border-default;
-  /*margin-left: 8px;*/
-  /*padding-left: 8px;*/
-  /*padding-right: 20px;*/
-  /*margin-right: 8px;*/
-
-  /*margin-bottom: 16px;*/
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  /*border-radius: 3px;*/
-  background-color: $light-bg-color;
-  &:hover {
-    background-color: $highlighted-bg-color;
-  }
-}
-
-.component {
-  position: relative;
+  font-size: 12px;
+  height: 1em;
+  margin-right: 10px;
+  line-height: 1em;
+  padding: 4px;
 }
 
 .component.missing {
@@ -200,27 +176,45 @@ input:checked {
     content: "";
     width: 4px;
     height: 14px;
-    background-color: #7C3AFF;
-    border-radius: 0 2px 2px 0;
   }
 }
 
-.add-item {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  transition: transform .3s;
-  border-radius: 3px 0 0 3px;
-  background-color: $light-bg-color;
+//
+// UX
+
+/* Customize the label (the container) */
+.component-entry {
+  cursor: pointer;
+  user-select: none;
   &:hover {
     background-color: $highlighted-bg-color;
   }
 }
 
-.component:hover .add-item {
-  transform: translateX(-100%);
+.add-item:hover {
+  background-color: $gray-transparent-1;
+  color: $gray-transparent-5;
 }
+
+/* On mouse-over, add a grey background color */
+.component-entry:hover input ~ .checkmark {
+  background-color: #818c92;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  display: none;
+}
+
+/* When the radio button is checked, add a blue background */
+.component-entry input:checked ~ .checkmark {
+  background-color: #56a8d1;
+  /* Show the indicator (dot/circle) when checked */
+  &:after {
+    display: block;
+  }
+}
+
 
 </style>
 
@@ -253,7 +247,7 @@ export default {
       })
     },
     createNewComponent() {
-      const component = store.getters.newComponent({ story: this.story });
+      const component = store.getters.newComponent({story: this.story});
       this.openComponent(component);
     },
     openComponent(component) {
@@ -271,7 +265,7 @@ export default {
       // Use stopPropagation
       // to avoid losing the text selection if the smart text field is focused.
       // https://stackoverflow.com/a/20759988
-      if(store.getters.focusedElement === 'smartText') {
+      if (store.getters.focusedElement === 'smartText') {
         event.preventDefault()
       }
       store.dispatch("setFocus", "componentList");
