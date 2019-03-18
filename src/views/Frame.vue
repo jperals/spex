@@ -1,7 +1,9 @@
 <template>
   <div class="view frame-view" @click="toggleSelection(false)">
     <top-bar :story="story" :back-url="'/story/' + story.id"></top-bar>
+
     <div v-if="frame" class="main top">
+      <frame-selector v-if="storyFrames" :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
       <image-upload @upload="handleFile" :image-url="frame.imageUrl"></image-upload>
       <div class="text">
         <input class="title" v-model="frame.title" placeholder="Frame Title">
@@ -22,41 +24,51 @@
     <div v-else class="top not-found">
       <not-found></not-found>
     </div>
-    <frame-selector class="inline" v-if="storyFrames" :frames="storyFrames" :currentFrameId="frameId"></frame-selector>
+
   </div>
 </template>
 
 <style scoped lang="scss">
 @import './view';
+@import '../common-styles/vars';
+@import '../common-styles/headings';
+
 .title {
-  font-weight: 800;
-  font-size: 40px;
-  width: 624px;
+  @extend %h3;
+  /*font-weight: 800;*/
+  /*font-size: 40px;*/
+  /*width: 624px;*/
   outline: none;
-  color: #031b26;
+  /*color: #031b26;*/
   border: none;
   line-height: 40px;
   text-overflow: ellipsis;
+  padding: 0;
 }
 
 .text {
+  @extend %body;
   max-width: 600px;
-  margin: auto;
-  margin-top: 24px;
+  margin: 24px auto;
 }
 
 .frame-selector {
-  $frame-height: 68px;
-  $height: 100px;
-  $horizontal-spacing: 24px;
-  $vertical-padding: ($height - $frame-height)/2;
-  height: $height - $vertical-padding*2;
-  padding-left: $horizontal-spacing;
-  background-color: #f2f6f7;
-  overflow-x: auto;
+  position: absolute;
+  overflow-y: auto;
+  top:0;
+  bottom: 0;
+  /*$frame-height: 60px;*/
+  /*height: calc(100%-64px);;*/
+
+  /*top: 64px;*/
+  /*$horizontal-spacing: 24px;*/
+  /*$vertical-padding: ($height - $frame-height)/2;*/
+  /*height: $height - $vertical-padding*2;*/
+  /*padding-left: $horizontal-spacing;*/
+  background-color: #FAFAFA;
+  border-right: $border-default;
   white-space: nowrap;
-  font-size: 0;
-  overflow-y: hidden;
+  /*overflow-y: hidden;*/
 }
 
 .frame-selector.frames {
@@ -65,6 +77,20 @@
   background-color: #f2f6f7;
   position: fixed;
   bottom: 0;
+}
+
+component-list {
+  position: absolute;
+  overflow-y: auto;
+  top:0;
+  /*top: 64px;*/
+  bottom: 0;
+  right: 0;
+  background-color: #FAFAFA;
+  border-left: $border-default;
+  width: 250px;
+  min-height: 100%;
+  overflow-y: hidden;
 }
 
 .component-list:not(.active) {

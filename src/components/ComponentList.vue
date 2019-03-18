@@ -1,6 +1,7 @@
 <template>
   <div class="component-list">
-    <div class="header">COMPONENTS</div>
+    <div class="header">Components <button @click="createNewComponent" class="newButton"></button></div>
+
       <div class="components">
         <div
         class="component"
@@ -25,12 +26,12 @@
         </div>
       </div>
     </div>
-    <button @click="createNewComponent" class="newButton">NEW</button>
+
   </div>
 </template>
 
 <style scoped lang="scss">
-@import "./vars";
+@import "../common-styles/vars";
 
 $light-bg-color: #f2f6f7;
 $highlighted-bg-color: #e6eaf1;
@@ -41,14 +42,18 @@ input:checked {
 }
 
 .header {
-  font-weight: 800;
-  margin-bottom: 8px;
-  padding-top: 16px;
-  margin-left: 16px;
-  font-size: 14px;
+  font-size: 12px;
+  line-height: 24px;
+  font-weight: 900;
+  text-transform: uppercase;
   color: #707679;
-  letter-spacing: 1px;
-  line-height: 32px;
+  letter-spacing: 0.25px;
+  padding: 8px 16px 6px;
+  border-bottom: $border-default;
+  background-color: rgba(221,223,223,0.1);
+  /*margin-bottom: 8px;*/
+  /*padding-top: 16px;*/
+  /*margin-left: 16px;*/
 }
 
 /* Customize the label (the container) */
@@ -120,32 +125,36 @@ input:checked {
 }
 
 .component-list {
-  position: absolute;
-  top: 64px;
-  right: 0px;
-  background-color: $light-bg-color;
-  width: 250px;
-  min-height: 100%;
+  /*position: absolute;*/
+  /*top: 64px;*/
+  /*bottom: 0px;*/
+  /*right: 0px;*/
+  /*background-color: #FAFAFA;*/
+  /*border-left: $border-default;*/
+  /*width: 250px;*/
+  /*min-height: 100%;*/
 }
 
 .newButton {
-  background-color: #56a8d1;
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background-color: transparent;
+  width: 16px;
+  height: 16px;
+  background-image: url("../assets/icons/add.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  display: inline-block;
   border: none;
-  color: white;
-  padding: 8px 24px;
-  font-weight: 600;
-  text-align: center;
-  text-decoration: none;
-  display: block;
-  font-size: 16px;
-  margin: 12px auto;
-  transition: all 0.3s;
   outline: none;
   border-radius: 2px;
 }
 
 .newButton:hover {
-  background-color: #417f9e;
+  /*background-color: #417f9e;*/
 }
 
 .component-name,
@@ -186,13 +195,13 @@ input:checked {
   position: relative;
   &:after {
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 13px;
+    left: 0;
     content: "";
     width: 4px;
-    height: 100%;
-    border-radius: 0px;
-    background-color: $warning-color;
+    height: 14px;
+    background-color: #7C3AFF;
+    border-radius: 0 2px 2px 0;
   }
 }
 

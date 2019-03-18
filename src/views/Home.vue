@@ -2,15 +2,21 @@
   <div class="view home-view">
     <top-bar title="Stories"></top-bar>
     <div class="main">
-      <div class="welcome-text">👋 Welcome to Profi</div>
+      <div class="welcome-banner">
+        <div class="welcome-banner-left">
+          <div class="welcome-title">Get your team speaking the same language.</div>
+          <div class="welcome-text">At any phase in a project being aligned on terminology is essential. Start with it in an early concept phase by referring to a single source of truth. Create a Story with references to the Components that describe the words you’re using.</div>
+        </div>
 
-      <div class="welcome-image">
-        <a @click="createNewStory">
-          <label class="new-story-button">NEW STORY</label>
-        </a>
+        <div class="welcome-banner-right">
+          <div class="welcome-image"></div>
+        </div>
       </div>
-      <div class="small-title">STORIES</div>
-      <hr class="divider">
+
+      <a @click="createNewStory">
+        <label class="new-story-button">NEW STORY</label>
+      </a>
+
       <router-link
           :to="'/story/' + story.id"
           class="story-list-item"
@@ -23,33 +29,58 @@
       </router-link>
     </div>
   </div>
+
 </template>
 
 
 <style scoped lang="scss">
 @import './view';
+@import '../common-styles/headings';
+@import '../common-styles/vars';
+
+.welcome-banner{
+  display: flex;
+  flex-direction: row;
+  max-width: 960px;
+  margin: 80px auto 16px;
+}
+
+.welcome-banner-left{
+  width: 66.67%;
+}
+
+.welcome-banner-right{
+  width: 33.33%;
+}
+
+.welcome-title {
+  @extend %h1;
+  margin-bottom: 12px;
+}
+
 .welcome-text {
-  font-size: 40px;
-  color: #031b26;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 48px;
-  font-weight: 800;
-  max-width: 590px;
+  @extend %body;
+  /*font-size: 40px;*/
+  /*color: #031b26;*/
+  /*margin-left: auto;*/
+  /*margin-right: auto;*/
+  /*margin-top: 48px;*/
+  /*font-weight: 800;*/
+  /*max-width: 590px;*/
 }
 
 .welcome-image {
-  background-size: 600px;
+  background-size: 320px;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("../assets/icons/Home-Story.png");
-  height: 333px;
-  width: 600px;
-  box-sizing: border-box;
-  border-radius: 2px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 24px;
+  background-image: url("../assets/icons/welcome-image.png");
+  height: 262px;
+  /*width: 600px;*/
+  /*box-sizing: border-box;*/
+  /*border-radius: 2px;*/
+  /*margin-left: auto;*/
+  /*margin-right: auto;*/
+  /*margin-top: 24px;*/
 }
 
 .new-story-button {
@@ -91,13 +122,16 @@ hr.divider {
   height: 60px;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 16px;
+  /*padding-top: 16px;*/
   display: block;
+  padding: 24px 0;
+  border-bottom: $border-default;
 }
 
 .story-list-item:hover {
   background-color: #f3f6f7;
   cursor: pointer;
+
 }
 
 .story-icon {
@@ -114,23 +148,25 @@ hr.divider {
 }
 
 .storyTitle {
-  font-size: 24px;
-  color: #031b26;
-  line-height: 32px;
+  @extend %h3;
+  /*font-size: 24px;*/
+  /*color: #031b26;*/
+  /*line-height: 32px;*/
   display: inline-block;
-  margin-top: -8px;
+  /*margin-top: -8px;*/
   margin-left: 8px;
   position: absolute;
 }
 
 .storySecondary {
-  font-size: 18px;
+  @extend %body;
+  /*font-size: 18px;*/
   color: #707679;
-  line-height: 26px;
+  /*line-height: 26px;*/
   display: inline-block;
   position: absolute;
   margin-left: 8px;
-  margin-top: 25px;
+  margin-top: 32px;
 }
 
 .small-title {

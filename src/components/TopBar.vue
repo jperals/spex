@@ -11,16 +11,16 @@
     <div class="center-items">
       <h3 v-if="title" class="PageTitle">{{title}}</h3>
       <div v-else-if="story" class="NavToggle">
-        <router-link :to="storyLink" class="tooltip" v-if="story" :class="{active: inStoryMode}">
+        <router-link :to="storyLink" class="toggle" v-if="story" :class="{active: inStoryMode}">
           <div class="StoryIcon"></div>
           <span>Story</span>
-          <!-- <span class="tooltiptext">Story</span> -->
+          <!-- <span class="toggletext">Story</span> -->
         </router-link>
 
-        <router-link :to="systemLink" class="tooltip" v-if="story">
+        <router-link :to="systemLink" class="toggle" v-if="story">
           <div class="SystemIcon"></div>
           <span>System</span>
-          <!-- <span class="tooltiptext">System</span> -->
+          <!-- <span class="toggletext">System</span> -->
         </router-link>
 
       </div>
@@ -28,19 +28,16 @@
     </div>
 
     <div class="right-items">
-      <div class="Divider" v-if="story"></div>
-
-
-
-      <SuggestionsIndicator :number-of-suggestions="numberOfSuggestions"></SuggestionsIndicator>
+      <!-- <div class="Divider" v-if="story"></div> -->
+      <!-- <SuggestionsIndicator :number-of-suggestions="numberOfSuggestions"></SuggestionsIndicator> -->
 
       <div v-if="story"
-           class="tooltip"
+           class="toggle"
            @click="toggleComponents($event)"
            :class="{active: showComponents, warning: componentsMissing}"
       >
         <div class="Components"></div>
-        <span class="tooltiptext">Components</span>
+        <!-- <span class="toggletext">Components</span> -->
       </div>
 
       <div class="ProfileThumbnail"></div>
@@ -50,7 +47,7 @@
 
 
 <style scoped lang="scss">
-@import "./vars";
+@import "../common-styles/vars";
 @import '../common-styles/headings';
 .Logo{
     width: 78px;
@@ -90,8 +87,8 @@
     align-items: center;
     width: 24px;
     height: 24px;
-    margin-left: 16px;
-    margin-right: 16px;
+    margin-left: 24px;
+    margin-right: 24px;
     margin-top: 20px;
     margin-bottom: 20px;
     background-image: url("../assets/icons/component-list-default.png");
@@ -100,33 +97,39 @@
     background-position: center;
   }
 
-  .tooltip.active .Components {
-    background-image: url("../assets/icons/components-active.png");
+  .toggle.active .Components {
+    background-image: url("../assets/icons/component-list-active.png");
   }
-  .tooltip.warning {
+  .toggle.warning {
     background-color: none;
     &:after {
       position: absolute;
-      top: 10px;
-      right: 7px;
+      top: 12px;
+      right: 16px;
       content: "";
-      width: 14px;
-      height: 14px;
+      width: 5px;
+      height: 5px;
       border-radius: 50%;
-      background-color: #db4141;
+      background-color: #7C3AFF;
+      border: 1px solid #632ECB;
     }
   }
 
   .PageTitle {
     @extend %h3;
     border: 0 none;
-    padding: 5px;
+    padding: 4px 8px;
+    margin-left: -8px;
     vertical-align: middle;
-    margin: auto 16px;
+    /*margin: auto 16px;*/
     flex-grow: 1;
+    border-radius: 4px;
   }
 
   .NavToggle{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     vertical-align: middle;
     margin: auto 16px;
   }
@@ -135,16 +138,17 @@
     width: 24px;
     height: 24px;
     margin: auto;
-    background-image: url("../assets/icons/story-idle.png");
+    background-image: url("../assets/icons/story-default.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    margin-left: 16px;
+    margin-right: 16px;
+/*    margin-left: 16px;
     margin-right: 16px;
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 20px;*/
   }
-  .tooltip.active .StoryIcon {
+  .toggle.active .StoryIcon {
     background-image: url("../assets/icons/story-active.png");
   }
 
@@ -153,7 +157,7 @@
     width: 24px;
     height: 24px;
     margin: auto;
-    background-image: url("../assets/icons/system-idle.png");
+    background-image: url("../assets/icons/system-default.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -164,8 +168,8 @@
   }
 
   .ProfileThumbnail {
-    width: 44px;
-    height: 44px;
+    width: 36px;
+    height: 36px;
     background-image: url("../assets/icons/profile-thumbnail.png");
     background-size: contain;
     border-radius: 50%;
@@ -175,7 +179,7 @@
     margin-right: 16px;
   }
 
-  .tooltip.router-link-active .SystemIcon {
+  .toggle.router-link-active .SystemIcon {
     background-image: url("../assets/icons/system-active.png");
   }
 
@@ -194,39 +198,50 @@
     margin-bottom: 20px;
   }
 
-  /* Tooltip container */
-  .tooltip {
+  /* toggle container */
+  .toggle {
+    display: flex;
+    color: #68767D;
+    font-weight: 700;
+    flex-direction: row;
+    align-items: center;
     position: relative;
-    display: inline-block;
-    z-index: 40;
+    margin: auto 8px;
+    /*display: inline-block;*/
+    /*z-index: 40;*/
   }
 
-  /* Tooltip text */
-  .tooltip .tooltiptext {
+  .toggle.active {
+    color: #031B26;
+
+  }
+
+  /* toggle text */
+  .toggle .toggletext {
     visibility: hidden;
     width: 120px;
     margin-left: -32px;
-    background-color: #707679;
+    /*background-color: #707679;*/
     color: #fff;
     font-weight: 200;
     text-align: center;
     padding: 5px 0;
     border-radius: 6px;
 
-    /* Position the tooltip text - see examples below! */
+    /* Position the toggle text - see examples below! */
     position: absolute;
     z-index: 1;
   }
 
-  /* Show the tooltip text when you mouse over the tooltip container */
-  .tooltip:not(.active):hover .tooltiptext {
+  /* Show the toggle text when you mouse over the toggle container */
+  .toggle:not(.active):hover .toggletext {
     visibility: visible;
   }
 
-  .tooltip .tooltiptext::after {
+  .toggle .toggletext::after {
     content: " ";
     position: absolute;
-    bottom: 100%; /* At the top of the tooltip */
+    bottom: 100%; /* At the top of the toggle */
     left: 50%;
     margin-left: -5px;
     border-width: 5px;
@@ -249,6 +264,7 @@
     display: flex;
     width: 20%;
     justify-content: center;
+    text-align: center;
   }
 
   .link-back {
