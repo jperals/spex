@@ -1,4 +1,4 @@
-# ProFi MVP
+# Spex MVP
 
 This project uses [Vue.js](https://vuejs.org) with [Vuex](https://vuex.vuejs.org) for state management and [Vue Styleguidist](https://vue-styleguidist.github.io/) to generate a living style guide.
 
