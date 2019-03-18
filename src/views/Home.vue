@@ -46,14 +46,16 @@
 .new-story-button {
   font-size: 16px;
   font-weight: 800;
-  padding: 6px 16px;
+  padding: 0 16px;
+  height: 36px;
+  line-height: 35px;
   /*padding-top: 4px;*/
   /*padding-left: 16px;*/
   /*padding-right: 16px;*/
   /*padding-bottom: 4px;*/
   display: block;
   position: relative;
-  margin-right: 40px;
+  margin-right: 16px;
   text-align: center;
   min-width: 100px;
   border-radius: 8px;

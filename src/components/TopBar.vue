@@ -209,8 +209,10 @@
     /*z-index: 40;*/
   }
 
-  .toggle.active {
+  .toggle.router-link-active {
+    /*color: #ff0000;*/
     color: #031B26;
+
 
   }
 
