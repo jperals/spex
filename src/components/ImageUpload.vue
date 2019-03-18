@@ -2,11 +2,13 @@
   <div class="picture-frame image" ref="dragAndDropArea" :class="{empty: !imageUrl}">
     <input type="file" class="picture-input" @change="handleFileSelect" ref="fileInput">
     <FrameImage :image-url="imageUrl" v-if="imageUrl"></FrameImage>
-    <label class="chooseButton">CHOOSE FILE</label>
+    <label class="chooseButton">Upload an Image</label>
   </div>
 </template>
 
 <style lang="scss" scoped>
+@import '../common-styles/vars';
+
 .picture-frame {
   height: 333px;
   width: 600px;
@@ -97,22 +99,22 @@
     .chooseButton {
       font-size: 16px;
       font-weight: 800;
-      padding-top: 4px;
+      padding:  4px 16px;
+      /*padding-top: 4px;
       padding-left: 16px;
       padding-right: 16px;
-      padding-bottom: 4px;
-      letter-spacing: 0.5px;
+      padding-bottom: 4px;*/
       color: white;
-      background-color: #56a8d1;
+      background-color: $color-blue-highlight;
       display: block;
       position: relative;
       margin-left: auto;
       margin-right: auto;
-      top: 270px;
+      top: 280px;
       text-align: center;
-      width: 100px;
+      width: 150px;
       pointer-events: none;
-      border-radius: 2px;
+      border-radius: 4px;
       cursor: pointer; /* "hand" cursor */
       &:hover {
         background-color: #4b93b8;

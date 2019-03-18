@@ -69,7 +69,7 @@
 // Colors and borders
 
 .component-form {
-  background-color: #f2f6f7;
+  background-color: $bg-light;
 }
 
 .main-buttons .button {
@@ -77,8 +77,14 @@
 }
 
 .edit-button {
-  background-image: url("../assets/icons/edit.png");
-  background-size: 20px;
+  background-image: url("../assets/icons/edit.svg");
+  background-size: 24px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.close-button {
+  background-image: url("../assets/icons/close.svg");
+  background-size: 24px;
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -246,12 +252,13 @@ textarea:not([readonly=readonly]):focus {
 
 /* Create a custom checkbox */
 .checkmark {
-  height: 40px;
-  width: 40px;
+  height: 32px;
+  width: 32px;
   background-color: #fff;
   margin-right: 32px;
   display: inline-block;
   position: relative;
+  border-radius: 4px;
 }
 
 /* On mouse-over, add a grey background color */
@@ -261,7 +268,7 @@ textarea:not([readonly=readonly]):focus {
 
 /* When the checkbox is checked, add a blue background */
 .container input:checked ~ .checkmark {
-  background-color: #56a8d1;
+  background-color: $color-blue-highlight;
 }
 
 /* When the checkmark is disabled (not editing), gray it out a bit */
@@ -283,8 +290,8 @@ input[type=checkbox][disabled=disabled] ~.checkmark {
 
 /* Style the checkmark/indicator */
 .container .checkmark:after {
-  left: 15px;
-  top: 6px;
+  left: 11px;
+  top: 2px;
   width: 8px;
   height: 18px;
   border: solid white;

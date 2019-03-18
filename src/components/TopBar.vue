@@ -118,11 +118,7 @@
   .PageTitle {
     @extend %h3;
     border: 0 none;
-    padding: 4px 8px;
-    margin-left: -8px;
-    vertical-align: middle;
-    /*margin: auto 16px;*/
-    flex-grow: 1;
+    margin: auto 16px;
     border-radius: 4px;
   }
 
