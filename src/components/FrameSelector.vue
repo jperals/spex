@@ -3,6 +3,7 @@
     <div @click="onFrameSelect"
          v-for="frame in frames"
          :key="frame.id"
+         class="frame-container"
     >
       <router-link
           :to="'/frame/' + frame.id"
@@ -97,13 +98,13 @@ $vertical-padding: ($height - $frame-height)/2;
 }
 
 .frame-selector:not(.inline) {
-  .frame {
+  .frame-container {
     margin-bottom: 16px;
   }
 }
 
 .frame-selector.inline {
-  .frame {
+  .frame-container {
     display: inline-block;
   }
 }
