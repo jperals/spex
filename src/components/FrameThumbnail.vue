@@ -4,7 +4,7 @@
       <frame-image class="picture" :imageUrl="frame.imageUrl"></frame-image>
       <div class="delete-icon" @click="remove($event)"></div>
     </router-link>
-    <textarea class="h3 title" v-model="frame.title" placeholder="Frame Title" rows="2" maxlength="27"></textarea>
+    <textarea class="h3 title" v-model="frame.title" placeholder="Frame Title" rows="3" maxlength="60"></textarea>
   </div>
 </template>
 
@@ -34,7 +34,7 @@
     /*display: flex;*/
     /* width: 100%; */
 
-    margin: 8px 0 0 20px;
+    margin: 0 0 0 20px;
     padding: 0;
     border: none;
     /*margin-top: 8px;*/
@@ -42,7 +42,7 @@
     /*font-weight: 400;*/
     /*color: #00ff00;*/
     /*line-height: 32px;*/
-    height: 64px;
+    height: 90px;
     /*max-width: 180px;*/
     /* overflow: hidden; */
   }
