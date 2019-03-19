@@ -62,8 +62,9 @@ const stories = {
     },
     missingComponentsFromStory: (state, getters) => story => {
       const storyComponents = getters.componentsFromStory(story)
+      const mandatoryStoryComponents = storyComponents.filter(component => component.mandatory)
       const linkedComponentIds = getters.linkedComponents(story).map(component => component.id)
-      return storyComponents.filter(component => !(linkedComponentIds.includes(component.id)))
+      return mandatoryStoryComponents.filter(component => !(linkedComponentIds.includes(component.id)))
     },
     stories: state => state.stories,
     storyById: (state, getters) => id => getters.stories.find(story => story.id === id),
