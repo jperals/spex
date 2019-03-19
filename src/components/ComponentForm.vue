@@ -8,34 +8,35 @@
     <div class="row name-field">
       <label class="label">NAME</label>
       <input
-        type="text"
-        class="name-text-box"
-        v-model="componentCopy.name"
-        placeholder="Give your component a name..."
-        :readonly="!editing"
+          type="text"
+          class="name-text-box"
+          v-model="componentCopy.name"
+          placeholder="Give your component a name..."
+          :readonly="!editing"
       >
     </div>
     <div class="row description-field">
       <label class="label">DESCRIPTION</label>
       <textarea
-        class="description-text-box"
-        v-model="componentCopy.description"
-        placeholder="Describe your component..."
-        style="height:144px;"
-        :readonly="!editing"
+          class="description-text-box"
+          v-model="componentCopy.description"
+          placeholder="Describe your component..."
+          style="height:144px;"
+          :readonly="!editing"
       ></textarea>
     </div>
     <div class="row icon-field">
       <label class="label">ICON</label>
-      <image-upload class="small" :class="{readonly: !editing}" :image-url="componentCopy.imageUrl" @upload="handleFile"></image-upload>
+      <image-upload class="small" :class="{readonly: !editing}" :image-url="componentCopy.imageUrl"
+                    @upload="handleFile"></image-upload>
     </div>
     <div class="row alias-field">
       <label class="label">ALIAS</label>
       <textarea
-        class="alias-text-box"
-        v-model="componentCopy.aliases"
-        placeholder="What other words do people use to describe this component?"
-        :readonly="!editing"
+          class="alias-text-box"
+          v-model="componentCopy.aliases"
+          placeholder="What other words do people use to describe this component?"
+          :readonly="!editing"
       ></textarea>
     </div>
     <div class="row mandatory-field">
@@ -82,6 +83,7 @@
   background-repeat: no-repeat;
   background-position: center;
 }
+
 .close-button {
   background-image: url("../assets/icons/close.svg");
   background-size: 24px;
@@ -185,7 +187,6 @@ textarea {
   display: inline-block;
 }
 
-
 //
 // Interaction
 
@@ -229,13 +230,9 @@ textarea:not([readonly=readonly]):focus {
 }
 
 /* Customize the label (the container) */
-.container {
+label.container {
   margin-bottom: 12px;
-  cursor: pointer;
   font-size: 20px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   width: 700px;
 }
@@ -246,7 +243,7 @@ textarea:not([readonly=readonly]):focus {
 }
 
 /* Hide the browser's default checkbox */
-.container input {
+label.container input {
   display: none;
 }
 
@@ -254,25 +251,38 @@ textarea:not([readonly=readonly]):focus {
 .checkmark {
   height: 32px;
   width: 32px;
-  background-color: #fff;
-  margin-right: 32px;
+  background-color: $gray-transparent-1;
   display: inline-block;
   position: relative;
   border-radius: 4px;
 }
 
+.mandatory-text {
+  padding-left: 16px;
+}
+
 /* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
-  background-color: #e1e4e6;
+.container:hover input:not([disabled=disabled]) {
+  & ~ * {
+    cursor: pointer;
+  }
 }
 
 /* When the checkbox is checked, add a blue background */
-.container input:checked ~ .checkmark {
-  background-color: $color-blue-highlight;
+.container input:checked {
+  & ~ .checkmark {
+    background-color: $color-blue-highlight;
+  }
+}
+
+.container:hover input:not(:checked):not([disabled=disabled]) {
+  & ~ .checkmark {
+    background-color: $gray-transparent-1-2;
+  }
 }
 
 /* When the checkmark is disabled (not editing), gray it out a bit */
-input[type=checkbox][disabled=disabled] ~.checkmark {
+input[type=checkbox][disabled=disabled] ~ .checkmark {
   opacity: 0.6;
 }
 
