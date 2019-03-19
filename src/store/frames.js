@@ -76,14 +76,17 @@ const frames = {
       return collection.get()
         .catch(console.error)
         .then(documents => {
-          const frames = []
-          documents.forEach(document => {
-            const frame = document.data()
-            frame.id = document.id
-            frames.push(frame)
-          })
-          context.commit('updateFrames', frames)
+          return context.dispatch('loadFramesFromDatabaseDocuments', documents)
         })
+    },
+    loadFramesFromDatabaseDocuments(context, documents) {
+      const frames = []
+      documents.forEach(document => {
+        const frame = document.data()
+        frame.id = document.id
+        frames.push(frame)
+      })
+      context.commit('updateFrames', frames)
     },
     removeFrame(context, frame) {
       return collection.doc(frame.id)

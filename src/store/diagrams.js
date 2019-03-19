@@ -3,12 +3,16 @@ import {db} from './firebase'
 const diagramItemsCollection = db.collection('diagram-items')
 const diagramRelationshipsCollection = db.collection('diagram-relationships')
 
-const diagrams = {
-  state: {
+function initialState() {
+  return {
     diagramRelationships: [],
     diagramItems: [],
     diagramGroups: []
-  },
+  }
+}
+
+const diagrams = {
+  state: initialState(),
   getters: {
     // Returns which components are included in the diagram of a story
     componentsFromStoryDiagram: (state, getters) => story => {
@@ -82,6 +86,16 @@ const diagrams = {
       }
       state.diagramRelationships.splice(index, 1)
     },
+    resetDiagramItems(state) {
+      Object.assign(state, {
+        diagramItems: initialState().diagramItems
+      })
+    },
+    resetDiagramRelationships(state) {
+      Object.assign(state, {
+        diagramRelationships: initialState().diagramRelationships
+      })
+    },
     updateDiagramItem(state, {item, newProperties}) {
       Object.assign(item, newProperties)
     },
@@ -112,9 +126,18 @@ const diagrams = {
         })
     },
     loadDiagramItems(context) {
-      return diagramItemsCollection.get()
-        .catch(console.error)
-        .then(documents => {
+      return context.dispatch('resetDiagramItems')
+        .then(() => {
+          diagramItemsCollection.get()
+            .catch(console.error)
+            .then(documents => {
+              return context.dispatch('loadDiagramItemsFromDatabaseDocuments', documents)
+            })
+        })
+    },
+    loadDiagramItemsFromDatabaseDocuments(context, documents) {
+      context.dispatch('resetDiagramItems')
+        .then(() => {
           documents.forEach(document => {
             const diagramItem = Object.assign({
                 id: document.id
@@ -126,13 +149,22 @@ const diagrams = {
         })
     },
     loadDiagramRelationships(context) {
-      return diagramRelationshipsCollection.get()
-        .catch(console.error)
-        .then(documents => {
+      return context.dispatch('resetDiagramRelationships')
+        .then(() => {
+          diagramRelationshipsCollection.get()
+            .catch(console.error)
+            .then(documents => {
+              return context.dispatch('loadDiagramRelationshipsFromDatabaseDocuments', documents)
+            })
+        })
+    },
+    loadDiagramRelationshipsFromDatabaseDocuments(context, documents) {
+      context.dispatch('resetDiagramRelationships')
+        .then(() => {
           documents.forEach(document => {
             const relationship = Object.assign({
-              id: document.id
-            },
+                id: document.id
+              },
               document.data()
             )
             context.commit('addDiagramRelationship', relationship)
@@ -178,6 +210,12 @@ const diagrams = {
             newProperties
           })
         })
+    },
+    resetDiagramItems(context) {
+      context.commit('resetDiagramItems')
+    },
+    resetDiagramRelationships(context) {
+      context.commit('resetDiagramRelationships')
     }
   }
 }

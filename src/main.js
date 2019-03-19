@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import listen from './realtime-updates'
 import dummyData from "./generate-dummy-data";
 
 Vue.config.productionTip = false;
@@ -12,7 +13,8 @@ Promise.all([
   store.dispatch('loadFrames'),
   store.dispatch('loadStories')
 ]).then(() => {
-  dummyData()
+    dummyData()
+    listen()
     new Vue({
       router,
       store,

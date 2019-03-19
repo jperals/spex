@@ -200,14 +200,17 @@ const stories = {
     loadStories(context) {
       return collection.get()
         .then(documents => {
-          const stories = []
-          documents.forEach(document => {
-            const story = Object.assign({id: document.id}, document.data())
-            stories.push(story)
-          })
-          context.commit('updateStories', stories)
+          context.dispatch('loadStoriesFromDatabaseDocuments', documents)
         })
         .catch(console.error)
+    },
+    loadStoriesFromDatabaseDocuments(context, documents) {
+      const stories = []
+      documents.forEach(document => {
+        const story = Object.assign({id: document.id}, document.data())
+        stories.push(story)
+      })
+      context.commit('updateStories', stories)
     },
     removeComponent(context, component) {
       const story = context.getters.storyFromComponent(component)
