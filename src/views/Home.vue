@@ -27,7 +27,7 @@
       >
         <div class="story-icon">📕</div>
         <div class="storyTitle">{{story.title}}</div>
-        <div class="storySecondary">Edited 58 minutes ago</div>
+        <div class="storySecondary" v-if="story.modifiedTime">Edited {{story.modifiedTime | timeAgo}}</div>
       </router-link>
     </div>
   </div>
@@ -210,7 +210,13 @@ hr.divider {
 
 <script>
 import store from "@/store";
+import TimeAgo from 'javascript-time-ago'
 import TopBar from "@/components/TopBar";
+
+import en from 'javascript-time-ago/locale/en'
+TimeAgo.addLocale(en)
+
+const timeAgo = new TimeAgo('en-US')
 
 export default {
   name: "home-view",
@@ -219,7 +225,23 @@ export default {
   },
   computed: {
     stories() {
-      return store.getters.stories;
+      return store.getters.stories.sort((a, b) => {
+        if (!a.modifiedTime || !b.modifiedTime) {
+          return 0
+        }
+        const timestampA = this.toTimestamp(a.modifiedTime)
+        const timestampB = this.toTimestamp(b.modifiedTime)
+        return timestampB - timestampA
+      });
+    }
+  },
+  filters: {
+    timeAgo(date) {
+      if (date instanceof Date) {
+        return timeAgo.format(date)
+      } else if (date.seconds) {
+        return timeAgo.format(date.seconds*1000)
+      }
     }
   },
   methods: {
@@ -228,6 +250,13 @@ export default {
         .then(id => {
           this.$router.push('/story/' + id)
         })
+    },
+    toTimestamp(date) {
+      if (date instanceof Date) {
+        return date.getTime()
+      } else if (date.seconds) {
+        return date.seconds*1000
+      }
     }
   }
 };
