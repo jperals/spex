@@ -11,13 +11,13 @@
     <div class="center-items">
       <h3 v-if="title" class="PageTitle">{{title}}</h3>
       <div v-else-if="story" class="NavToggle">
-        <router-link :to="storyLink" class="toggle" v-if="story" :class="{active: inStoryMode}">
+        <router-link :to="storyLink" class="toggle" v-if="story" :class="{active: inStoryMode, warning: componentsMissingInStory}">
           <div class="StoryIcon"></div>
           <span>Story</span>
           <!-- <span class="toggletext">Story</span> -->
         </router-link>
 
-        <router-link :to="systemLink" class="toggle" v-if="story">
+        <router-link :to="systemLink" class="toggle" v-if="story" :class="{warning: componentsMissingInDiagram}">
           <div class="SystemIcon"></div>
           <span>System</span>
           <!-- <span class="toggletext">System</span> -->
@@ -36,7 +36,7 @@
       <div v-if="story"
            class="toggle"
            @click="toggleComponents($event)"
-           :class="{active: showComponents, warning: componentsMissing}"
+           :class="{active: showComponents}"
       >
         <div class="Components"></div>
         <!-- <span class="toggletext">Components</span> -->
@@ -106,8 +106,8 @@
     background-color: none;
     &:after {
       position: absolute;
-      top: 12px;
-      right: 16px;
+      top: 0;
+      right: -10px;
       content: "";
       width: 5px;
       height: 5px;
@@ -162,8 +162,8 @@
     background-position: center;
     margin-left: 16px;
     margin-right: 16px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: auto;
+    margin-bottom: auto;
   }
 
   .ProfileThumbnail {
@@ -302,8 +302,13 @@ export default {
     }
   },
   computed: {
-    componentsMissing() {
-      return this.story && store.getters.componentsMissing(this.story);
+    componentsMissingInDiagram() {
+      const componentsMissing = this.story && store.getters.missingComponentsInStoryDiagram(this.story)
+      return componentsMissing instanceof Array && componentsMissing.length
+    },
+    componentsMissingInStory() {
+      const componentsMissing = this.story && store.getters.missingComponentsFromStory(this.story)
+      return componentsMissing instanceof Array && componentsMissing.length
     },
     homeUrl() {
       return '/'
