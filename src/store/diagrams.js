@@ -18,7 +18,7 @@ const diagrams = {
     diagramItemComponent: (state, getters) => item => {
       return getters.componentById(item.componentId)
     },
-    diagramItemPosition: state => item => {
+    diagramItemPosition: () => item => {
       return item.position
     },
     diagramItemsFromStory: (state, getters) => story => {
