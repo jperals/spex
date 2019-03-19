@@ -67,6 +67,11 @@ const stories = {
     },
     stories: state => state.stories,
     storyById: (state, getters) => id => getters.stories.find(story => story.id === id),
+    storyFromComponent: (state, getters) => component => {
+      if (typeof component === 'object') {
+        return getters.stories.find(story => story.id === component.storyId)
+      }
+    },
     storyFromFrame: (state, getters) => (frame) => {
       if (typeof frame === 'object') {
         return getters.stories.find(story => story.id === frame.storyId)
@@ -122,11 +127,19 @@ const stories = {
     }
   },
   actions: {
+    addComponent(context, component) {
+      const story = context.getters.storyFromComponent(component)
+      if (story) {
+        return context.dispatch('updateStoryModifiedTime', story)
+      }
+    },
     addNewStory(context) {
       return context.dispatch('addStory', {
-        title: '',
+        createdTime: new Date(),
         description: '',
-        frames: []
+        frames: [],
+        modifiedTime: new Date(),
+        title: ''
       })
     },
     addStory(context, story) {
@@ -139,13 +152,21 @@ const stories = {
         .catch(console.warn)
     },
     addFrameToStory(context, {story, frame}) {
+      const modifiedTime = new Date()
       return collection.doc(story.id)
         .update({
-          frames: firebase.firestore.FieldValue.arrayUnion(frame.id)
+          frames: firebase.firestore.FieldValue.arrayUnion(frame.id),
+          modifiedTime
         })
         .catch(console.error)
         .then(() => {
           context.commit('addFrameToStory', {frame, story})
+          context.commit('updateStory', {
+            story,
+            props: {
+              modifiedTime
+            }
+          })
         })
     },
     loadStories(context) {
@@ -160,6 +181,24 @@ const stories = {
         })
         .catch(console.error)
     },
+    removeComponent(context, component) {
+      const story = context.getters.storyFromComponent(component)
+      if (story) {
+        return context.dispatch('updateStoryModifiedTime', story)
+      }
+    },
+    removeFrame(context, frame) {
+      const story = context.getters.storyFromFrame(frame)
+      if (story) {
+        return context.dispatch('updateStoryModifiedTime', story)
+      }
+    },
+    sendFrameProperties(context, {frame}) {
+      const story = context.getters.storyFromFrame(frame)
+      if (story) {
+        return context.dispatch('updateStoryModifiedTime', story)
+      }
+    },
     // Update story properties remotely without waiting for an answer.
     // (Used in text fields where we want an immediate reaction)
     sendStoryProperties(context, {story, props}) {
@@ -168,11 +207,31 @@ const stories = {
         {
           merge: true
         }
-      )
+      ).then(() => {
+        context.commit('updateStory', {
+          story,
+          props: {
+            modifiedTime: new Date()
+          }
+        })
+      })
+    },
+    updateComponent(context, {component}) {
+      const story = context.getters.storyFromComponent(component)
+      if (story) {
+        return context.dispatch('updateStoryModifiedTime', story)
+      }
+    },
+    updateFrame(context, {frame}) {
+      const story = context.getters.storyFromFrame(frame)
+      if (story) {
+        return context.dispatch('updateStoryModifiedTime', story)
+      }
     },
     updateStory(context, {story, props}) {
+      const propsWithModifiedTime = Object.assign({}, props, {modifiedTime: new Date()})
       return collection.doc(story.id).set(
-        props,
+        propsWithModifiedTime,
         {
           merge: true
         }
@@ -180,7 +239,26 @@ const stories = {
         .then(() => {
           context.commit('updateStory', {
             story,
-            props
+            props: propsWithModifiedTime
+          })
+        })
+    },
+    updateStoryModifiedTime(context, story) {
+      const modifiedTime = new Date()
+      return collection.doc(story.id).set(
+        {
+          modifiedTime
+        },
+        {
+          merge: true
+        }
+      )
+        .then(() => {
+          context.commit('updateStory', {
+            story,
+            props: {
+              modifiedTime
+            }
           })
         })
     }
