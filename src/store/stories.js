@@ -72,6 +72,22 @@ const stories = {
         return getters.stories.find(story => story.id === component.storyId)
       }
     },
+    storyFromDiagramItem: (state, getters) => item => {
+      if (typeof item === 'object') {
+        const component = getters.componentById(item.componentId)
+        if (typeof component === 'object') {
+          return getters.storyFromComponent(component)
+        }
+      }
+    },
+    storyFromDiagramRelationship: (state, getters) => relationship => {
+      if (typeof relationship === 'object') {
+        const firstItem = getters.diagramItemById(relationship.from.itemId)
+        if (typeof firstItem === 'object') {
+          return getters.storyFromDiagramItem(firstItem)
+        }
+      }
+    },
     storyFromFrame: (state, getters) => (frame) => {
       if (typeof frame === 'object') {
         return getters.stories.find(story => story.id === frame.storyId)
@@ -133,6 +149,18 @@ const stories = {
         return context.dispatch('updateStoryModifiedTime', story)
       }
     },
+    addDiagramItem(context, item) {
+      const story = context.getters.storyFromDiagramItem(item)
+      if (typeof story === 'object') {
+        return context.dispatch('updateStoryModifiedTime', story)
+      }
+    },
+    addDiagramRelationship(context, relationship) {
+      const story = context.getters.storyFromDiagramRelationship(relationship)
+      if (typeof story === 'object') {
+        return context.dispatch('updateStoryModifiedTime', story)
+      }
+    },
     addNewStory(context) {
       return context.dispatch('addStory', {
         createdTime: new Date(),
@@ -187,6 +215,18 @@ const stories = {
         return context.dispatch('updateStoryModifiedTime', story)
       }
     },
+    removeDiagramItem(context, item) {
+      const story = context.getters.storyFromDiagramItem(item)
+      if (typeof story === 'object') {
+        return context.dispatch('updateStoryModifiedTime', story)
+      }
+    },
+    removeDiagramRelationship(context, relationship) {
+      const story = context.getters.storyFromDiagramRelationship(relationship)
+      if (typeof story === 'object') {
+        return context.dispatch('updateStoryModifiedTime', story)
+      }
+    },
     removeFrame(context, frame) {
       const story = context.getters.storyFromFrame(frame)
       if (story) {
@@ -219,6 +259,12 @@ const stories = {
     updateComponent(context, {component}) {
       const story = context.getters.storyFromComponent(component)
       if (story) {
+        return context.dispatch('updateStoryModifiedTime', story)
+      }
+    },
+    updateDiagramItem(context, {item}) {
+      const story = context.getters.storyFromDiagramItem(item)
+      if (typeof story === 'object') {
         return context.dispatch('updateStoryModifiedTime', story)
       }
     },
