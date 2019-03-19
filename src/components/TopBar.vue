@@ -11,14 +11,14 @@
     <div class="center-items">
       <h3 v-if="title" class="PageTitle">{{title}}</h3>
       <div v-else-if="story" class="NavToggle">
-        <router-link :to="storyLink" class="toggle" v-if="story" :class="{active: inStoryMode}">
-          <div class="StoryIcon"></div>
+        <router-link :to="storyLink" class="toggle" v-if="story" :class="{active: inStoryMode, warning: componentsMissingInStory}">
+          <div class="toggle-view-icon StoryIcon"></div>
           <span>Story</span>
           <!-- <span class="toggletext">Story</span> -->
         </router-link>
 
-        <router-link :to="systemLink" class="toggle" v-if="story">
-          <div class="SystemIcon"></div>
+        <router-link :to="systemLink" class="toggle" v-if="story" :class="{warning: componentsMissingInDiagram}">
+          <div class="toggle-view-icon SystemIcon"></div>
           <span>System</span>
           <!-- <span class="toggletext">System</span> -->
         </router-link>
@@ -36,7 +36,7 @@
       <div v-if="story"
            class="toggle"
            @click="toggleComponents($event)"
-           :class="{active: showComponents, warning: componentsMissing}"
+           :class="{active: showComponents}"
       >
         <div class="Components"></div>
         <!-- <span class="toggletext">Components</span> -->
@@ -51,6 +51,19 @@
 <style scoped lang="scss">
 @import "../common-styles/vars";
 @import '../common-styles/headings';
+
+//
+// Layout
+
+.toggle-view-icon {
+  margin-right: 8px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+//
+// To be sorted
+
 .Logo{
     width: 78px;
     height: 40px;
@@ -106,8 +119,8 @@
     background-color: none;
     &:after {
       position: absolute;
-      top: 12px;
-      right: 16px;
+      top: 0;
+      right: -10px;
       content: "";
       width: 5px;
       height: 5px;
@@ -136,16 +149,10 @@
     justify-content: flex-end;
     width: 24px;
     height: 24px;
-    margin: auto;
     background-image: url("../assets/icons/story-default.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    margin-right: 16px;
-/*    margin-left: 16px;
-    margin-right: 16px;
-    margin-top: 20px;
-    margin-bottom: 20px;*/
   }
   .toggle.active .StoryIcon {
     background-image: url("../assets/icons/story-active.png");
@@ -155,15 +162,11 @@
     justify-content: flex-end;
     width: 24px;
     height: 24px;
-    margin: auto;
     background-image: url("../assets/icons/system-default.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     margin-left: 16px;
-    margin-right: 16px;
-    margin-top: 20px;
-    margin-bottom: 20px;
   }
 
   .ProfileThumbnail {
@@ -302,8 +305,13 @@ export default {
     }
   },
   computed: {
-    componentsMissing() {
-      return this.story && store.getters.componentsMissing(this.story);
+    componentsMissingInDiagram() {
+      const componentsMissing = this.story && store.getters.missingComponentsInStoryDiagram(this.story)
+      return componentsMissing instanceof Array && componentsMissing.length
+    },
+    componentsMissingInStory() {
+      const componentsMissing = this.story && store.getters.missingComponentsFromStory(this.story)
+      return componentsMissing instanceof Array && componentsMissing.length
     },
     homeUrl() {
       return '/'

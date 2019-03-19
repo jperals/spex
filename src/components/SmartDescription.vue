@@ -6,7 +6,7 @@
         ref="textarea"
         v-bind:value="value"
         @click="updateSelection"
-        @input="onInput"
+        @input="onChange"
         v-on:mousemove="onMouseMove($event)"
         :placeholder="placeholder"
         rows="4"
@@ -173,7 +173,7 @@ export default {
     }
   },
   methods: {
-    onInput() {
+    onChange() {
       this.$emit("input", this.$refs.textarea.innerHTML);
     },
     onMouseMove(event) {
@@ -272,6 +272,7 @@ export default {
       if (newElement) {
         selectText(newElement)
       }
+      this.onChange()
       this.changeTracker += 1;
     },
     unsetRelationship(id) {
@@ -282,7 +283,9 @@ export default {
       }
       const newElement = document.createElement('span')
       newElement.innerText = element.innerText
+      this.tooltipVisible = false
       element.parentNode.replaceChild(newElement, element)
+      this.onChange()
     },
     updateContent() {
       const textarea = this.$refs.textarea;
