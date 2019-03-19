@@ -1,18 +1,21 @@
 <template>
   <div class="frame-selector">
-    <router-link
-      :to="'/frame/' + frame.id"
-      class="frame"
-      v-for="frame in frames"
-      :key="frame.id"
-      :class="{active: isCurrent(frame)}"
+    <div @click="onFrameSelect"
+         v-for="frame in frames"
+         :key="frame.id"
     >
-      <frame-image :image-url="frame.imageUrl"></frame-image>
-      <div class="frame-title" v-if="frame.title">{{ frame.title }}</div>
-      <!-- <div class="frame-description">
-            {{ frame.description }}
-      </div>-->
-    </router-link>
+      <router-link
+          :to="'/frame/' + frame.id"
+          class="frame"
+          :class="{active: isCurrent(frame)}"
+      >
+        <frame-image :image-url="frame.imageUrl"></frame-image>
+        <div class="frame-title" v-if="frame.title">{{ frame.title }}</div>
+        <!-- <div class="frame-description">
+              {{ frame.description }}
+        </div>-->
+      </router-link>
+    </div>
     <AddNewFrame v-if="addFrame" class="frame" :story="story"></AddNewFrame>
   </div>
 </template>
@@ -80,7 +83,7 @@ $vertical-padding: ($height - $frame-height)/2;
     background-color: rgba(3, 27, 38, 0.8);
   }
   .frame:not(.active):hover {
-     /*border: 1px solid #56a8d1;*/
+    /*border: 1px solid #56a8d1;*/
     .frame-image {
       background-color: rgba(3, 27, 38, 0.7);
       border-radius: 4px;
@@ -92,6 +95,7 @@ $vertical-padding: ($height - $frame-height)/2;
     }
   }
 }
+
 .frame-selector:not(.inline) {
   .frame {
     margin-bottom: 16px;
@@ -99,7 +103,7 @@ $vertical-padding: ($height - $frame-height)/2;
 }
 
 .frame-selector.inline {
-  .frame{
+  .frame {
     display: inline-block;
   }
 }
@@ -110,6 +114,7 @@ $vertical-padding: ($height - $frame-height)/2;
 <script>
 import AddNewFrame from '@/components/AddNewFrame'
 import FrameImage from "@/components/FrameImage.vue";
+
 export default {
   name: "frame-selector",
   props: {
@@ -135,6 +140,10 @@ export default {
   methods: {
     isCurrent(frame) {
       return frame.id === this.currentFrameId;
+    },
+    onFrameSelect() {
+      console.log('frame select')
+      this.$emit('onFrameSelect')
     }
   }
 };
@@ -142,6 +151,7 @@ export default {
 
 <docs>
   ```jsx
-  <frame-selector :current-frame-id="'2'" :frames="[{title: 'Frame title', 'description': 'Frame description', 'imageUrl': 'https://www.ixds.com/system/files/styles/image_in_content/private/media-images/_mg_9342.jpg?itok=q3uo0o-H'}, {'title': 'Frame title', 'description': 'Frame description'}, {'title': 'Frame title', 'description': 'Frame description', id: '2'}, {title: 'Frame title'}]" />
+  <frame-selector :current-frame-id="'2'"
+                  :frames="[{title: 'Frame title', 'description': 'Frame description', 'imageUrl': 'https://www.ixds.com/system/files/styles/image_in_content/private/media-images/_mg_9342.jpg?itok=q3uo0o-H'}, {'title': 'Frame title', 'description': 'Frame description'}, {'title': 'Frame title', 'description': 'Frame description', id: '2'}, {title: 'Frame title'}]"/>
   ```
 </docs>
