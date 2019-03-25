@@ -36,3 +36,7 @@ Please follow this data flow:
 ```sh
 yarn build
 ```
+
+## License
+
+This source code is provided under the MIT License. See [LICENSE](LICENSE).
