@@ -284,11 +284,9 @@
 
 <script>
 import store from "@/store";
-import SuggestionsIndicator from "@/components/SuggestionsIndicator";
 
 export default {
   name: "top-bar",
-  components: {SuggestionsIndicator},
   props: {
     backUrl: {
       type: String
