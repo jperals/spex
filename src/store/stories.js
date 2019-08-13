@@ -178,7 +178,9 @@ const stories = {
           context.commit('addStory', Object.assign(story, {id}))
           return id
         })
-        .catch(console.warn)
+        .catch(error => {
+          context.dispatch('setError', error)
+        })
     },
     addFrameToStory(context, {story, frame}) {
       const modifiedTime = new Date()
@@ -187,7 +189,9 @@ const stories = {
           frames: firebase.firestore.FieldValue.arrayUnion(frame.id),
           modifiedTime
         })
-        .catch(console.error)
+        .catch(error => {
+          context.dispatch('setError', error)
+        })
         .then(() => {
           context.commit('addFrameToStory', {frame, story})
           context.commit('updateStory', {
@@ -208,7 +212,9 @@ const stories = {
           })
           context.commit('updateStories', stories)
         })
-        .catch(console.error)
+        .catch(error => {
+          context.dispatch('setError', error)
+        })
     },
     removeComponent(context, component) {
       const story = context.getters.storyFromComponent(component)
@@ -256,6 +262,9 @@ const stories = {
           }
         })
       })
+      .catch(error => {
+        context.dispatch('setError', error)
+      })
     },
     updateComponent(context, {component}) {
       const story = context.getters.storyFromComponent(component)
@@ -277,29 +286,34 @@ const stories = {
     },
     updateStory(context, {story, props}) {
       const propsWithModifiedTime = Object.assign({}, props, {modifiedTime: new Date()})
-      return collection.doc(story.id).set(
-        propsWithModifiedTime,
-        {
-          merge: true
-        }
-      )
+      return collection.doc(story.id)
+        .set(
+          propsWithModifiedTime,
+          {
+            merge: true
+          }
+        )
         .then(() => {
           context.commit('updateStory', {
             story,
             props: propsWithModifiedTime
           })
         })
+        .catch(error => {
+          context.dispatch('setError', error)
+        })
     },
     updateStoryModifiedTime(context, story) {
       const modifiedTime = new Date()
-      return collection.doc(story.id).set(
-        {
-          modifiedTime
-        },
-        {
-          merge: true
-        }
-      )
+      return collection.doc(story.id)
+        .set(
+          {
+            modifiedTime
+          },
+          {
+            merge: true
+          }
+        )
         .then(() => {
           context.commit('updateStory', {
             story,
@@ -307,6 +321,9 @@ const stories = {
               modifiedTime
             }
           })
+        })
+        .catch(error => {
+          context.dispatch('setError', error)
         })
     }
   }

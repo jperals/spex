@@ -1,6 +1,7 @@
 function initialState() {
   return {
     editingComponent: null,
+    error: null,
     focusedElement: null,
     hoveredDiagramItem: null,
     lastAddedRelationship: null,
@@ -12,10 +13,14 @@ function initialState() {
 }
 
 const ui = {
+  errorTimeout: null,
   state: initialState(),
   getters: {
     editingComponent(state) {
       return state.editingComponent
+    },
+    error(state) {
+      return state.error
     },
     focusedElement: (state) => state.focusedElement,
     hoveredDiagramItem: (state) => state.hoveredDiagramItem,
@@ -34,6 +39,9 @@ const ui = {
     }
   },
   mutations: {
+    clearError(state) {
+      state.error = null
+    },
     openComponent(state, component) {
       state.editingComponent = component
     },
@@ -42,6 +50,9 @@ const ui = {
     },
     setFocus(state, elementId) {
       state.focusedElement = elementId
+    },
+    setError(state, error) {
+      state.error = error
     },
     setRelationship(state, id) {
       state.lastAddedRelationship = id
@@ -77,6 +88,15 @@ const ui = {
     },
     openComponent(context, component) {
       context.commit('openComponent', component)
+    },
+    setError(context, error) {
+      if(this.errorTimeout) {
+        clearTimeout(this.errorTimeout)
+      }
+      context.commit('setError', error)
+      this.errorTimeout = setTimeout(() => {
+        context.commit('clearError')
+      }, 1500)
     },
     setFocus(context, focusedElement) {
       context.commit('setFocus', focusedElement)

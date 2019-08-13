@@ -98,22 +98,24 @@ const diagrams = {
         .then(docRef => {
           context.commit('addDiagramItem', Object.assign(item, {id: docRef.id}))
         })
-        .catch(function (error) {
-          console.error("Error writing document: ", error);
-        });
-    },
+        .catch((error) => {
+          context.dispatch('setError', error)
+        })
+  },
     addDiagramRelationship(context, relationship) {
       diagramRelationshipsCollection.add(relationship)
         .then(docRef => {
           context.commit('addDiagramRelationship', Object.assign(relationship, {id: docRef.id}))
         })
-        .catch(function (error) {
-          console.error("Error writing document: ", error);
+        .catch((error) => {
+          context.dispatch('setError', error)
         })
-    },
+  },
     loadDiagramItems(context) {
       return diagramItemsCollection.get()
-        .catch(console.error)
+        .catch((error) => {
+          context.dispatch('setError', error)
+        })
         .then(documents => {
           documents.forEach(document => {
             const diagramItem = Object.assign({
@@ -127,7 +129,9 @@ const diagrams = {
     },
     loadDiagramRelationships(context) {
       return diagramRelationshipsCollection.get()
-        .catch(console.error)
+        .catch((error) => {
+          context.dispatch('setError', error)
+        })
         .then(documents => {
           documents.forEach(document => {
             const relationship = Object.assign({
@@ -150,7 +154,9 @@ const diagrams = {
         .then(() => context.dispatch('removeDiagramRelationshipsToItem', item))
         .then(() => diagramItemsCollection.doc(item.id).delete())
         .then(() => context.commit('removeDiagramItem', item))
-        .catch(console.warn)
+        .catch((error) => {
+          context.dispatch('setError', error)
+        })
     },
     removeDiagramRelationship(context, relationship) {
       return diagramRelationshipsCollection.doc(relationship.id)
@@ -158,7 +164,9 @@ const diagrams = {
         .then(() => {
           context.commit('removeDiagramRelationship', relationship)
         })
-        .catch(console.warn)
+        .catch((error) => {
+          context.dispatch('setError', error)
+        })
     },
     removeDiagramRelationshipsFromItem(context, item) {
       const relationships = context.getters.diagramRelationshipsFromItem(item)
@@ -177,6 +185,9 @@ const diagrams = {
             item,
             newProperties
           })
+        })
+        .catch((error) => {
+          context.dispatch('setError', error)
         })
     }
   }

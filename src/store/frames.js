@@ -59,14 +59,16 @@ const frames = {
           context.commit('addFrame', Object.assign(frame, {id: docRef.id}))
           return context.dispatch('addFrameToStory', {story, frame: {id: docRef.id}})
         })
-        .catch(function (error) {
-          console.error("Error writing document: ", error);
+        .catch(error => {
+          context.dispatch('setError', error)
         })
     },
     addImageToFrame(context, {frame, imageFile}) {
       const imageRef = storageRef.child(`frame-images/${frame.id}`)
       return imageRef.put(imageFile)
-        .catch(e => console.error(e))
+        .catch(error => {
+          context.dispatch('setError', error)
+        })
         .then(() => imageRef.getDownloadURL())
         .then(imageUrl => {
           return context.dispatch('updateFrame', {frame, newProperties: {imageUrl}}).then(() => imageUrl)
@@ -74,7 +76,9 @@ const frames = {
     },
     loadFrames(context) {
       return collection.get()
-        .catch(console.error)
+        .catch(error => {
+          context.dispatch('setError', error)
+        })
         .then(documents => {
           const frames = []
           documents.forEach(document => {
@@ -91,21 +95,28 @@ const frames = {
         .then(() => {
           context.commit('removeFrame', frame)
         })
-        .catch(console.warn)
+        .catch(error => {
+          context.dispatch('setError', error)
+        })
     },
     // Update frame properties remotely without waiting for an answer.
     // (Used in text fields where we want immediate reaction)
     sendFrameProperties(context, {frame, props}) {
-      return collection.doc(frame.id).set(
+      return collection.doc(frame.id)
+      .set(
         props,
         {
           merge: true
         }
       )
+      .catch(error => {
+        context.dispatch('setError', error)
+      })
     },
     // Update frame properties remotely before doing so locally.
     updateFrame(context, {frame, newProperties}) {
-      return collection.doc(frame.id).set(
+      return collection.doc(frame.id)
+      .set(
         newProperties,
         {
           merge: true
@@ -116,6 +127,9 @@ const frames = {
             newProperties
           })
           context.commit('forceFrameUpdate', frame)
+        })
+        .catch(error => {
+          context.dispatch('setError', error)
         })
     },
   }

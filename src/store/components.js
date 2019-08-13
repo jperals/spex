@@ -54,15 +54,17 @@ const components = {
         .then(docRef => {
           context.commit('addComponent', Object.assign(component, {id: docRef.id}))
         })
-        .catch(function (error) {
-          console.error("Error writing document: ", error);
+        .catch((error) => {
+          context.dispatch('setError', error)
         });
     },
     addImageToComponent(context, {component, imageFile}) {
       const refId = uniqid()
       const imageRef = storageRef.child(`component-images/${refId}`)
       return imageRef.put(imageFile)
-        .catch(console.error)
+        .catch((error) => {
+          context.dispatch('setError', error)
+        })
         .then(() => imageRef.getDownloadURL())
         .then(imageUrl => context.dispatch('updateComponent', {
             component, newProperties: {imageUrl}
@@ -95,7 +97,9 @@ const components = {
         .then(() => {
           context.commit('removeComponent', component)
         })
-        .catch(console.warn)
+        .catch((error) => {
+          context.dispatch('setError', error)
+        })
     },
     // The component might exist or not.
     // Add to the components if it's not there;
@@ -126,10 +130,10 @@ const components = {
               newProperties
             })
           })
-          .catch(function (error) {
-            console.error("Error writing document: ", error);
+          .catch((error) => {
+            context.dispatch('setError', error)
           })
-      } else {
+        } else {
         // Otherwise, it is a new component which has not been saved yet
         // and doesn't have an id. Just update the in-memory instance.
         context.commit('updateComponent', {

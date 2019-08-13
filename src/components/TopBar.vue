@@ -30,7 +30,7 @@
     <div class="right-items">
       <!-- <div class="Divider" v-if="story"></div> -->
       <!-- <SuggestionsIndicator :number-of-suggestions="numberOfSuggestions"></SuggestionsIndicator> -->
-
+      
       <slot name="right"></slot>
 
       <div v-if="story"
@@ -42,7 +42,7 @@
         <!-- <span class="toggletext">Components</span> -->
       </div>
 
-      <div class="ProfileThumbnail"></div>
+      <div class="ProfileThumbnail" :class="{error: permissionsError}"></div>
     </div>
   </div>
 </template>
@@ -179,6 +179,29 @@
     background-repeat: no-repeat;
     background-position: center;
     margin-right: 16px;
+    position: relative;
+    &.error:after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(240, 237, 225, 0.75);
+      background-image: url('../assets/icons/cloud-off.svg');
+      background-size: 60%;
+      animation: blink-animation 0.5s steps(5, start) infinite;
+      background-position: center;
+      background-repeat: no-repeat;
+      border: $border-default;
+      border-radius: 50%;
+    }
+  }
+
+  @keyframes blink-animation {
+    to {
+      background-image: none;
+    }
   }
 
   .toggle.router-link-active .SystemIcon {
@@ -310,6 +333,9 @@ export default {
     componentsMissingInStory() {
       const componentsMissing = this.story && store.getters.missingComponentsFromStory(this.story)
       return componentsMissing instanceof Array && componentsMissing.length
+    },
+    permissionsError() {
+      return store.getters.error
     },
     homeUrl() {
       return '/'
